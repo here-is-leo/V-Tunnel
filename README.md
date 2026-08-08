@@ -2,7 +2,6 @@
 
 **DNS, Proxy & VPN Management Tool**
 
-<<<<<<< HEAD
 [![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/here-is-leo)
 =======
 [![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/here-is-leo)
