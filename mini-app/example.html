@@ -1,0 +1,1490 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>V-Tunnel 🤖 ربات تلگرام</title>
+    <style>
+        /* ========================================
+           CSS Variables & Reset
+           ======================================== */
+        :root {
+            --primary: #0088cc;
+            --primary-dark: #006699;
+            --primary-light: #4da6d9;
+            --bg-dark: #0e1621;
+            --bg-chat: #17212b;
+            --bg-message: #182533;
+            --bg-user-message: #2b5278;
+            --text-primary: #ffffff;
+            --text-secondary: #a0b4c8;
+            --text-message: #e8edf2;
+            --border-color: #2b3b4a;
+            --shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+            --radius: 12px;
+            --radius-sm: 8px;
+            --transition: all 0.3s ease;
+            --font: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* ========================================
+           Reset & Base
+           ======================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        /* ========================================
+           Phone Frame
+           ======================================== */
+        .phone-frame {
+            width: 400px;
+            height: 780px;
+            background: var(--bg-dark);
+            border-radius: 40px;
+            padding: 12px;
+            box-shadow: var(--shadow), 0 0 0 2px #2b3b4a inset;
+            position: relative;
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: var(--bg-chat);
+            border-radius: 30px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* ========================================
+           Status Bar
+           ======================================== */
+        .status-bar {
+            padding: 8px 20px 4px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-secondary);
+            background: var(--bg-chat);
+            flex-shrink: 0;
+        }
+
+        .status-bar .time {
+            font-weight: 600;
+        }
+        .status-bar .icons {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+        }
+
+        /* ========================================
+           Header
+           ======================================== */
+        .header {
+            background: var(--bg-chat);
+            padding: 8px 16px 12px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-shrink: 0;
+        }
+
+        .header .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            color: white;
+            flex-shrink: 0;
+        }
+
+        .header .info {
+            flex: 1;
+        }
+
+        .header .info .name {
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--text-primary);
+        }
+
+        .header .info .status {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .header .info .status .dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #4caf50;
+            border-radius: 50%;
+            margin-left: 4px;
+            animation: pulse-dot 2s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+
+        .header .actions {
+            display: flex;
+            gap: 12px;
+            color: var(--text-secondary);
+            font-size: 18px;
+        }
+
+        .header .actions span {
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .header .actions span:hover {
+            color: var(--text-primary);
+        }
+
+        /* ========================================
+           Chat Messages Area
+           ======================================== */
+        .chat-area {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 12px 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            scroll-behavior: smooth;
+        }
+
+        .chat-area::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .chat-area::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .chat-area::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+
+        /* ========================================
+           Messages
+           ======================================== */
+        .message {
+            max-width: 85%;
+            padding: 10px 14px;
+            border-radius: var(--radius);
+            font-size: 14px;
+            line-height: 1.6;
+            word-wrap: break-word;
+            animation: messageIn 0.3s ease;
+            position: relative;
+        }
+
+        @keyframes messageIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .message.bot {
+            background: var(--bg-message);
+            color: var(--text-message);
+            align-self: flex-start;
+            border-bottom-left-radius: 4px;
+        }
+
+        .message.user {
+            background: var(--bg-user-message);
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 4px;
+        }
+
+        .message .time {
+            font-size: 10px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+            display: block;
+            text-align: left;
+            opacity: 0.7;
+        }
+
+        .message.user .time {
+            text-align: right;
+        }
+
+        .message .text {
+            margin-bottom: 2px;
+        }
+
+        .message .text strong {
+            color: var(--primary-light);
+        }
+
+        .message .text .highlight {
+            color: #ffd54f;
+        }
+
+        /* ========================================
+           Inline Keyboard (Buttons)
+           ======================================== */
+        .inline-keyboard {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 8px;
+            align-self: flex-start;
+            width: 100%;
+        }
+
+        .inline-keyboard .row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            width: 100%;
+        }
+
+        .inline-keyboard .btn {
+            padding: 8px 16px;
+            background: var(--bg-message);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-size: 13px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            flex: 1 0 auto;
+            justify-content: center;
+            min-width: 60px;
+            text-decoration: none;
+        }
+
+        .inline-keyboard .btn:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            transform: scale(1.02);
+        }
+
+        .inline-keyboard .btn:active {
+            transform: scale(0.95);
+        }
+
+        .inline-keyboard .btn.primary {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+
+        .inline-keyboard .btn.primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .inline-keyboard .btn.success {
+            background: #2e7d32;
+            border-color: #2e7d32;
+        }
+
+        .inline-keyboard .btn.success:hover {
+            background: #1b5e20;
+        }
+
+        .inline-keyboard .btn.warning {
+            background: #f57c00;
+            border-color: #f57c00;
+        }
+
+        .inline-keyboard .btn.warning:hover {
+            background: #e65100;
+        }
+
+        .inline-keyboard .btn.danger {
+            background: #c62828;
+            border-color: #c62828;
+        }
+
+        .inline-keyboard .btn.danger:hover {
+            background: #b71c1c;
+        }
+
+        .inline-keyboard .btn.full-width {
+            flex: 1 0 100%;
+        }
+
+        .inline-keyboard .btn .icon {
+            font-size: 16px;
+        }
+
+        /* ========================================
+           Typing Indicator
+           ======================================== */
+        .typing-indicator {
+            display: none;
+            align-self: flex-start;
+            background: var(--bg-message);
+            padding: 10px 16px;
+            border-radius: var(--radius);
+            border-bottom-left-radius: 4px;
+            gap: 4px;
+            align-items: center;
+        }
+
+        .typing-indicator.active {
+            display: flex;
+        }
+
+        .typing-indicator .dot {
+            width: 8px;
+            height: 8px;
+            background: var(--text-secondary);
+            border-radius: 50%;
+            animation: typingBounce 1.4s infinite;
+        }
+
+        .typing-indicator .dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        .typing-indicator .dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typingBounce {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.4;
+            }
+            30% {
+                transform: translateY(-6px);
+                opacity: 1;
+            }
+        }
+
+        /* ========================================
+           Input Area
+           ======================================== */
+        .input-area {
+            padding: 8px 12px 12px;
+            background: var(--bg-chat);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 8px;
+            flex-shrink: 0;
+            align-items: flex-end;
+        }
+
+        .input-area input {
+            flex: 1;
+            padding: 10px 14px;
+            background: var(--bg-message);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            color: var(--text-primary);
+            font-size: 14px;
+            outline: none;
+            transition: var(--transition);
+            font-family: var(--font);
+        }
+
+        .input-area input::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .input-area input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(0, 136, 204, 0.2);
+        }
+
+        .input-area .send-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--primary);
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .input-area .send-btn:hover {
+            background: var(--primary-dark);
+            transform: scale(1.05);
+        }
+
+        .input-area .send-btn:active {
+            transform: scale(0.9);
+        }
+
+        .input-area .send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* ========================================
+           WebApp Modal
+           ======================================== */
+        .webapp-modal {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg-dark);
+            border-radius: 30px;
+            z-index: 100;
+            padding: 20px;
+            flex-direction: column;
+            animation: modalIn 0.4s ease;
+        }
+
+        .webapp-modal.active {
+            display: flex;
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .webapp-modal .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-color);
+            flex-shrink: 0;
+        }
+
+        .webapp-modal .modal-header h3 {
+            font-size: 18px;
+            color: var(--text-primary);
+        }
+
+        .webapp-modal .modal-header .close-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 24px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .webapp-modal .modal-header .close-btn:hover {
+            color: var(--text-primary);
+            transform: rotate(90deg);
+        }
+
+        .webapp-modal .modal-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .webapp-modal .modal-body .service-card {
+            background: var(--bg-message);
+            border-radius: var(--radius);
+            padding: 16px;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+        }
+
+        .webapp-modal .modal-body .service-card:hover {
+            border-color: var(--primary);
+            transform: translateX(-4px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .webapp-modal .modal-body .service-card .title {
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--text-primary);
+        }
+
+        .webapp-modal .modal-body .service-card .desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 4px;
+        }
+
+        .webapp-modal .modal-body .service-card .badge {
+            display: inline-block;
+            font-size: 11px;
+            padding: 2px 10px;
+            border-radius: 12px;
+            background: var(--primary);
+            color: white;
+            margin-top: 6px;
+        }
+
+        .webapp-modal .modal-body .service-detail {
+            background: var(--bg-message);
+            border-radius: var(--radius);
+            padding: 16px;
+            border: 1px solid var(--border-color);
+        }
+
+        .webapp-modal .modal-body .service-detail .item {
+            padding: 10px 12px;
+            background: var(--bg-dark);
+            border-radius: var(--radius-sm);
+            margin-bottom: 6px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .webapp-modal .modal-body .service-detail .item:hover {
+            background: var(--border-color);
+        }
+
+        .webapp-modal .modal-body .service-detail .item .copy-btn {
+            background: var(--primary);
+            border: none;
+            color: white;
+            padding: 4px 12px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 12px;
+            transition: var(--transition);
+        }
+
+        .webapp-modal .modal-body .service-detail .item .copy-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .webapp-modal .modal-body .back-btn {
+            background: var(--border-color);
+            border: none;
+            color: var(--text-primary);
+            padding: 10px;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            font-size: 14px;
+            transition: var(--transition);
+            font-family: var(--font);
+        }
+
+        .webapp-modal .modal-body .back-btn:hover {
+            background: var(--primary);
+        }
+
+        /* ========================================
+           Toast Notification
+           ======================================== */
+        .toast {
+            position: absolute;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--bg-message);
+            color: var(--text-primary);
+            padding: 10px 20px;
+            border-radius: var(--radius-sm);
+            font-size: 13px;
+            opacity: 0;
+            transition: all 0.4s ease;
+            pointer-events: none;
+            z-index: 200;
+            border: 1px solid var(--border-color);
+            white-space: nowrap;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ========================================
+           Responsive
+           ======================================== */
+        @media (max-width: 440px) {
+            .phone-frame {
+                width: 100vw;
+                height: 100vh;
+                border-radius: 0;
+                padding: 0;
+                box-shadow: none;
+            }
+            .phone-screen {
+                border-radius: 0;
+            }
+            .webapp-modal {
+                border-radius: 0;
+            }
+        }
+
+        @media (max-width: 380px) {
+            .message {
+                max-width: 92%;
+                font-size: 13px;
+                padding: 8px 12px;
+            }
+            .inline-keyboard .btn {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+        }
+
+        /* ========================================
+           Scrollbar for WebApp
+           ======================================== */
+        .webapp-modal .modal-body::-webkit-scrollbar,
+        .chat-area::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .webapp-modal .modal-body::-webkit-scrollbar-track,
+        .chat-area::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .webapp-modal .modal-body::-webkit-scrollbar-thumb,
+        .chat-area::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+
+        /* ========================================
+           Donation Animation
+           ======================================== */
+        .coffee-emoji {
+            display: inline-block;
+            animation: coffeeFloat 2s ease-in-out infinite;
+        }
+
+        @keyframes coffeeFloat {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(10deg) scale(1.1); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="phone-frame">
+        <div class="phone-screen">
+
+            <!-- ===== Status Bar ===== -->
+            <div class="status-bar">
+                <span class="time" id="statusTime">12:00</span>
+                <span class="icons">
+                    <span>📶</span>
+                    <span>🔋</span>
+                </span>
+            </div>
+
+            <!-- ===== Header ===== -->
+            <div class="header">
+                <div class="avatar">V</div>
+                <div class="info">
+                    <div class="name">V-Tunnel Bot</div>
+                    <div class="status">
+                        <span class="dot"></span>
+                        آنلاین
+                    </div>
+                </div>
+                <div class="actions">
+                    <span title="بیشتر" onclick="showToast('ℹ️ نسخه 2.0.0')">•••</span>
+                </div>
+            </div>
+
+            <!-- ===== Chat Area ===== -->
+            <div class="chat-area" id="chatArea">
+
+                <!-- Welcome Message -->
+                <div class="message bot">
+                    <div class="text">
+                        🚀 <strong>به V-Tunnel خوش آمدید!</strong> 🚀
+                        <br><br>
+                        سلام کاربر عزیز! 👋
+                        <br><br>
+                        <strong>V-Tunnel</strong> یک ابزار قدرتمند برای مدیریت <strong>IP، DNS و پروکسی</strong> است که به شما کمک می‌کند:
+                        <br><br>
+                        🌐 <strong>DNS</strong> خود را به سرعت تغییر دهید<br>
+                        🔗 <strong>پروکسی</strong> مناسب برای تلگرام پیدا کنید<br>
+                        🔒 <strong>VPN</strong> با کیفیت و رایگان دریافت کنید
+                        <br><br>
+                        ---
+                        <br><br>
+                        📌 <strong>اهداف توسعه V-Tunnel:</strong>
+                        <br><br>
+                        1️⃣ دسترسی آسان به تمام ابزارهای تغییر IP<br>
+                        2️⃣ رایگان و عمومی برای همه کاربران<br>
+                        3️⃣ به‌روزرسانی خودکار سرورها<br>
+                        4️⃣ حریم خصوصی کامل
+                        <br><br>
+                        ⚠️ <strong>توجه مهم:</strong>
+                        <br>
+                        - این سرویس کاملاً <strong>رایگان</strong> است<br>
+                        - مسئولیت استفاده بر عهده کاربر است
+                    </div>
+                    <span class="time">اکنون</span>
+
+                    <!-- Inline Keyboard -->
+                    <div class="inline-keyboard">
+                        <div class="row">
+                            <button class="btn primary full-width" onclick="openWebApp()">
+                                <span class="icon">🚀</span> باز کردن V-Tunnel
+                            </button>
+                        </div>
+                        <div class="row">
+                            <button class="btn warning" onclick="handleButton('donate')">
+                                <span class="icon">☕</span> حمایت مالی
+                            </button>
+                            <button class="btn" onclick="handleButton('support')">
+                                <span class="icon">👨‍💻</span> ارتباط با سازنده
+                            </button>
+                        </div>
+                        <div class="row">
+                            <button class="btn" onclick="handleButton('help')">
+                                <span class="icon">📖</span> راهنما
+                            </button>
+                            <button class="btn" onclick="handleButton('about')">
+                                <span class="icon">ℹ️</span> درباره
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Typing Indicator -->
+                <div class="typing-indicator" id="typingIndicator">
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
+
+            </div>
+
+            <!-- ===== Input Area ===== -->
+            <div class="input-area">
+                <input type="text" id="userInput" placeholder="پیام خود را بنویسید..." 
+                       onkeydown="if(event.key === 'Enter') sendMessage()">
+                <button class="send-btn" id="sendBtn" onclick="sendMessage()">➤</button>
+            </div>
+
+            <!-- ===== WebApp Modal ===== -->
+            <div class="webapp-modal" id="webappModal">
+                <div class="modal-header">
+                    <h3>🚀 V-Tunnel</h3>
+                    <button class="close-btn" onclick="closeWebApp()">✕</button>
+                </div>
+                <div class="modal-body" id="webappBody">
+                    <!-- Content loaded dynamically -->
+                </div>
+            </div>
+
+            <!-- ===== Toast ===== -->
+            <div class="toast" id="toast"></div>
+
+        </div>
+    </div>
+
+    <script>
+        // ================================================================
+        // DATA
+        // ================================================================
+
+        const DNS_LIST = [
+            { name: 'Google DNS', value: '8.8.8.8 / 8.8.4.4' },
+            { name: 'Cloudflare DNS', value: '1.1.1.1 / 1.0.0.1' },
+            { name: 'OpenDNS', value: '208.67.222.222 / 208.67.220.220' },
+            { name: 'Quad9', value: '9.9.9.9 / 149.112.112.112' },
+            { name: 'AdGuard DNS', value: '94.140.14.14 / 94.140.15.15' },
+            { name: 'Shecan (ایران)', value: '178.22.122.100 / 185.51.200.2' },
+            { name: '403.online (ایران)', value: '10.202.10.202 / 10.202.10.102' },
+        ];
+
+        const PROXY_LIST = [
+            { name: 'MTProto Proxy #1', value: 't.me/proxy?server=1.2.3.4&port=443&secret=abc123' },
+            { name: 'MTProto Proxy #2', value: 't.me/proxy?server=5.6.7.8&port=80&secret=xyz789' },
+            { name: 'MTProto Proxy #3', value: 't.me/proxy?server=9.10.11.12&port=1080&secret=def456' },
+            { name: 'MTProto Proxy #4', value: 't.me/proxy?server=13.14.15.16&port=8443&secret=ghi012' },
+        ];
+
+        const VPN_LIST = [
+            { name: 'V2Ray Config #1', value: 'vmess://ewogICJ2IjogIjIiLAogICJwcyI6ICJWMi1UVU5ORUwgIzEiLAogICJhZGQiOiAiMS4yLjMuNCIsCiAgInBvcnQiOiA0NDMsCiAgImlkIjogImFiYzEyMy1kZWY0NTYtZ2hpNzg5IiwKICAiYWlkIjogMCwKICAibmV0IjogIndzIiwKICAidHlwZSI6ICJub25lIiwKICAiaG9zdCI6ICJleGFtcGxlLmNvbSIKfQ==' },
+            { name: 'V2Ray Config #2', value: 'vmess://ewogICJ2IjogIjIiLAogICJwcyI6ICJWMi1UVU5ORUwgIzIiLAogICJhZGQiOiAiNS42LjcuOCIsCiAgInBvcnQiOiA4MCwKICAiaWQiOiAiMTIzNDU2LTc4OTAtYWJjZC1lZmdoIiwKICAiYWlkIjogMCwKICAibmV0IjogIndzIiwKICAidHlwZSI6ICJub25lIiwKICAiaG9zdCI6ICJ0ZWxlZ3JhbS5vcmciCn0=' },
+            { name: 'V2Ray Config #3', value: 'vmess://ewogICJ2IjogIjIiLAogICJwcyI6ICJWMi1UVU5ORUwgIzMiLAogICJhZGQiOiAiOS4xMC4xMS4xMiIsCiAgInBvcnQiOiA4NDQzLAogICJpZCI6ICJhYmNkZWYtZ2hpamtsbW5vcCIsCiAgImFpZCI6IDAsCiAgIm5ldCI6ICJ3cyIsCiAgInR5cGUiOiAibm9uZSIsCiAgImhvc3QiOiAiY2xvdWRmbGFyZS5jb20iCn0=' },
+        ];
+
+        const ADMIN_IDS = [123456789, 987654321];
+        const isAdmin = true; // شبیه‌سازی ادمین بودن
+
+        let state = {
+            currentView: 'home', // home, dns, proxy, vpn, detail
+            currentList: [],
+            currentTitle: '',
+            donationCount: 0,
+            donorCount: 0,
+        };
+
+        // ================================================================
+        // HELPERS
+        // ================================================================
+
+        function getTime() {
+            const now = new Date();
+            return now.toLocaleTimeString('fa-IR', { hour: '2-digit', minute: '2-digit' });
+        }
+
+        function updateStatusTime() {
+            document.getElementById('statusTime').textContent = getTime();
+        }
+        setInterval(updateStatusTime, 30000);
+        updateStatusTime();
+
+        function scrollToBottom() {
+            const area = document.getElementById('chatArea');
+            setTimeout(() => {
+                area.scrollTop = area.scrollHeight;
+            }, 50);
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            clearTimeout(toast._timeout);
+            toast._timeout = setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+
+        function addMessage(text, type = 'bot', keyboard = null) {
+            const area = document.getElementById('chatArea');
+            const div = document.createElement('div');
+            div.className = `message ${type}`;
+
+            const textDiv = document.createElement('div');
+            textDiv.className = 'text';
+            textDiv.innerHTML = text;
+            div.appendChild(textDiv);
+
+            const timeSpan = document.createElement('span');
+            timeSpan.className = 'time';
+            timeSpan.textContent = getTime();
+            div.appendChild(timeSpan);
+
+            if (keyboard) {
+                const kbDiv = document.createElement('div');
+                kbDiv.className = 'inline-keyboard';
+                keyboard.forEach(row => {
+                    const rowDiv = document.createElement('div');
+                    rowDiv.className = 'row';
+                    row.forEach(btn => {
+                        const button = document.createElement('button');
+                        button.className = `btn ${btn.class || ''}`;
+                        button.innerHTML = btn.icon ? `<span class="icon">${btn.icon}</span> ${btn.text}` :
+                            btn.text;
+                        if (btn.url) {
+                            button.onclick = () => window.open(btn.url, '_blank');
+                        } else if (btn.action) {
+                            button.onclick = () => handleButton(btn.action);
+                        }
+                        rowDiv.appendChild(button);
+                    });
+                    kbDiv.appendChild(rowDiv);
+                });
+                div.appendChild(kbDiv);
+            }
+
+            // حذف تایپینگ ایندیکیتور قبل از اضافه کردن پیام جدید
+            const typing = document.getElementById('typingIndicator');
+            if (typing) typing.classList.remove('active');
+
+            area.appendChild(div);
+            scrollToBottom();
+        }
+
+        function showTyping() {
+            const typing = document.getElementById('typingIndicator');
+            typing.classList.add('active');
+            scrollToBottom();
+        }
+
+        function hideTyping() {
+            const typing = document.getElementById('typingIndicator');
+            typing.classList.remove('active');
+        }
+
+        // ================================================================
+        // MESSAGE HANDLERS
+        // ================================================================
+
+        function sendMessage() {
+            const input = document.getElementById('userInput');
+            const text = input.value.trim();
+            if (!text) return;
+
+            // اضافه کردن پیام کاربر
+            addMessage(text, 'user');
+            input.value = '';
+            document.getElementById('sendBtn').disabled = true;
+
+            // شبیه‌سازی پاسخ ربات
+            showTyping();
+            setTimeout(() => {
+                hideTyping();
+                handleUserMessage(text);
+                document.getElementById('sendBtn').disabled = false;
+            }, 800 + Math.random() * 600);
+        }
+
+        function handleUserMessage(text) {
+            const lower = text.toLowerCase();
+
+            if (lower.includes('سلام') || lower.includes('سلامتی') || lower.includes('hi')) {
+                addMessage('👋 سلام! خوش آمدید. برای شروع روی دکمه 🚀 V-Tunnel کلیک کنید.', 'bot');
+                return;
+            }
+
+            if (lower.includes('راهنما') || lower.includes('help')) {
+                handleButton('help');
+                return;
+            }
+
+            if (lower.includes('درباره') || lower.includes('about')) {
+                handleButton('about');
+                return;
+            }
+
+            if (lower.includes('حمایت') || lower.includes('donate') || lower.includes('قهوه')) {
+                handleButton('donate');
+                return;
+            }
+
+            if (lower.includes('ادمین') || lower.includes('admin') || lower.includes('مدیر')) {
+                handleButton('admin');
+                return;
+            }
+
+            if (lower.includes('dns')) {
+                handleButton('dns');
+                return;
+            }
+
+            if (lower.includes('پروکسی') || lower.includes('proxy')) {
+                handleButton('proxy');
+                return;
+            }
+
+            if (lower.includes('vpn') || lower.includes('v2ray')) {
+                handleButton('vpn');
+                return;
+            }
+
+            // پاسخ پیش‌فرض
+            addMessage(
+                '❓ دستور شما را متوجه نشدم.\n\n' +
+                '📌 دستورات موجود:\n' +
+                '• سلام - احوالپرسی\n' +
+                '• راهنما - مشاهده راهنما\n' +
+                '• درباره - اطلاعات ربات\n' +
+                '• حمایت - حمایت مالی\n' +
+                '• dns - لیست DNS\n' +
+                '• پروکسی - لیست پروکسی\n' +
+                '• vpn - لیست VPN\n' +
+                '• ادمین - پنل مدیریت (فقط ادمین)',
+                'bot'
+            );
+        }
+
+        // ================================================================
+        // BUTTON HANDLERS
+        // ================================================================
+
+        function handleButton(action) {
+            switch (action) {
+                case 'home':
+                    showHome();
+                    break;
+                case 'help':
+                    showHelp();
+                    break;
+                case 'about':
+                    showAbout();
+                    break;
+                case 'donate':
+                    showDonate();
+                    break;
+                case 'support':
+                    showSupport();
+                    break;
+                case 'stats':
+                    showStats();
+                    break;
+                case 'admin':
+                    showAdminPanel();
+                    break;
+                case 'dns':
+                    showDNSList();
+                    break;
+                case 'proxy':
+                    showProxyList();
+                    break;
+                case 'vpn':
+                    showVPNList();
+                    break;
+                default:
+                    showToast('⚠️ عملیات نامشخص');
+            }
+        }
+
+        // ================================================================
+        // HOME
+        // ================================================================
+
+        function showHome() {
+            const keyboard = [
+                [{ text: '🚀 باز کردن V-Tunnel', class: 'primary full-width', action: 'open_webapp' }],
+                [{ text: '☕ حمایت مالی', class: 'warning', action: 'donate' },
+                 { text: '👨‍💻 ارتباط با سازنده', action: 'support' }
+                ],
+                [{ text: '📖 راهنما', action: 'help' },
+                 { text: 'ℹ️ درباره', action: 'about' }
+                ]
+            ];
+
+            // اصلاح برای باز کردن وب اپ
+            const kbWithWebApp = keyboard.map(row =>
+                row.map(btn => {
+                    if (btn.action === 'open_webapp') {
+                        return { ...btn, action: null, onclick: 'openWebApp()' };
+                    }
+                    return btn;
+                })
+            );
+
+            // حذف پیام‌های قبلی به جز welcome
+            const area = document.getElementById('chatArea');
+            const messages = area.querySelectorAll('.message');
+            if (messages.length > 1) {
+                messages.forEach((msg, index) => {
+                    if (index > 0) msg.remove();
+                });
+            }
+
+            // اضافه کردن welcome جدید
+            const welcomeText =
+                '🚀 <strong>به V-Tunnel خوش آمدید!</strong> 🚀<br><br>' +
+                'سلام کاربر عزیز! 👋<br><br>' +
+                '<strong>V-Tunnel</strong> یک ابزار قدرتمند برای مدیریت <strong>IP، DNS و پروکسی</strong> است.<br><br>' +
+                '🌐 <strong>DNS</strong> خود را تغییر دهید<br>' +
+                '🔗 <strong>پروکسی</strong> مناسب پیدا کنید<br>' +
+                '🔒 <strong>VPN</strong> رایگان دریافت کنید';
+
+            // پاک کردن و اضافه کردن مجدد
+            area.innerHTML = '';
+            addMessage(welcomeText, 'bot', [
+                [{ text: '🚀 باز کردن V-Tunnel', class: 'primary full-width', action: 'open_webapp' }],
+                [{ text: '☕ حمایت مالی', class: 'warning', action: 'donate' },
+                 { text: '👨‍💻 ارتباط با سازنده', action: 'support' }
+                ],
+                [{ text: '📖 راهنما', action: 'help' },
+                 { text: 'ℹ️ درباره', action: 'about' }
+                ]
+            ]);
+
+            // اضافه کردن ایندیکاتور تایپینگ
+            const typing = document.createElement('div');
+            typing.className = 'typing-indicator';
+            typing.id = 'typingIndicator';
+            typing.innerHTML = '<span class="dot"></span><span class="dot"></span><span class="dot"></span>';
+            area.appendChild(typing);
+
+            // اصلاح دکمه‌ها برای باز کردن وب اپ
+            document.querySelectorAll('.inline-keyboard .btn').forEach(btn => {
+                if (btn.textContent.includes('باز کردن V-Tunnel')) {
+                    btn.onclick = openWebApp;
+                }
+            });
+        }
+
+        // ================================================================
+        // HELP
+        // ================================================================
+
+        function showHelp() {
+            const text =
+                '📖 <strong>راهنمای کامل V-Tunnel</strong><br><br>' +
+                '🔹 <strong>دستورات اصلی:</strong><br>' +
+                '/start - شروع مجدد<br>' +
+                '/help - مشاهده راهنما<br>' +
+                '/about - اطلاعات ربات<br>' +
+                '/mini - باز کردن مینی‌اپ<br>' +
+                '/feedback - ارسال بازخورد<br>' +
+                '/support - ارتباط با سازنده<br>' +
+                '/donate - حمایت مالی<br><br>' +
+                '🔸 <strong>نحوه استفاده از مینی‌اپ:</strong><br>' +
+                '1️⃣ روی دکمه 🚀 V-Tunnel کلیک کنید<br>' +
+                '2️⃣ یکی از ۳ گزینه را انتخاب کنید<br>' +
+                '3️⃣ روی آیتم کلیک کنید تا کپی شود';
+
+            addMessage(text, 'bot', [
+                [{ text: '🚀 باز کردن V-Tunnel', class: 'primary', action: 'open_webapp' }],
+                [{ text: '☕ حمایت مالی', class: 'warning', action: 'donate' }],
+                [{ text: '🏠 خانه', action: 'home' },
+                 { text: 'ℹ️ درباره', action: 'about' }
+                ]
+            ]);
+        }
+
+        // ================================================================
+        // ABOUT
+        // ================================================================
+
+        function showAbout() {
+            const text =
+                'ℹ️ <strong>درباره V-Tunnel</strong><br><br>' +
+                '---<br>' +
+                '<strong>نام:</strong> V-Tunnel<br>' +
+                '<strong>نسخه:</strong> 2.0.0<br>' +
+                '<strong>توسعه‌دهنده:</strong> <a href="#" onclick="showToast(\'@Here_is_leo\')" style="color:#4da6d9;">V-Tunnel Team</a><br>' +
+                '<strong>زبان:</strong> Python + Telegram Bot API<br>' +
+                '<strong>وضعیت:</strong> فعال ✅<br><br>' +
+                '---<br><br>' +
+                '📌 <strong>ویژگی‌های V-Tunnel:</strong><br>' +
+                '✅ مدیریت DNS با بیش از ۱۰۰ سرور<br>' +
+                '✅ مدیریت پروکسی MTProto<br>' +
+                '✅ مدیریت کانفیگ V2Ray<br>' +
+                '✅ رابط کاربری مدرن<br>' +
+                '✅ کاملاً رایگان<br>' +
+                '✅ حریم خصوصی کامل';
+
+            addMessage(text, 'bot', [
+                [{ text: '🚀 باز کردن V-Tunnel', class: 'primary', action: 'open_webapp' }],
+                [{ text: '☕ حمایت مالی', class: 'warning', action: 'donate' }],
+                [{ text: '🏠 خانه', action: 'home' },
+                 { text: '📖 راهنما', action: 'help' }
+                ]
+            ]);
+        }
+
+        // ================================================================
+        // DONATE
+        // ================================================================
+
+        function showDonate() {
+            state.donationCount += 1;
+            state.donorCount += 1;
+
+            const text =
+                '🎉 <strong>🎊 حمایت از تولید محتوا</strong> 🎊<br><br>' +
+                'سلام کاربر عزیز! 👋<br><br>' +
+                '✨ <strong>اگر از محتوای من لذت می‌برید</strong> ✨<br><br>' +
+                'با <strong>یک قهوه ☕</strong> از من حمایت کنید تا<br>' +
+                'بتوانم محتوای باکیفیت‌تری تولید کنم.<br><br>' +
+                '---<br><br>' +
+                '☕ <strong>برای من قهوه بخر</strong><br><br>' +
+                '🎊 <strong>هر قهوه = یک جشن تازه</strong><br><br>' +
+                '---<br><br>' +
+                '📊 <strong>آمار حمایت‌ها:</strong><br>' +
+                `🎉 کل حمایت‌ها: ${state.donationCount}<br>` +
+                `🤝 تعداد حامیان: ${state.donorCount}<br><br>` +
+                '🙏 <strong>حمایت شما، انگیزه ادامه مسیر است!</strong> 🚀';
+
+            addMessage(text, 'bot', [
+                [{ text: '☕ برای من قهوه بخر', class: 'warning', url: 'https://www.coffeebede.com/leo' }],
+                [{ text: '🏠 بازگشت به خانه', action: 'home' }]
+            ]);
+        }
+
+        // ================================================================
+        // SUPPORT
+        // ================================================================
+
+        function showSupport() {
+            const text =
+                '🆘 <strong>پشتیبانی V-Tunnel</strong><br><br>' +
+                'برای ارتباط با سازنده، روی دکمه زیر کلیک کنید.<br><br>' +
+                '☕ همچنین می‌توانید با حمایت مالی، به توسعه پروژه کمک کنید.';
+
+            addMessage(text, 'bot', [
+                [{ text: '☕ حمایت مالی', class: 'warning', action: 'donate' }],
+                [{ text: '👨‍💻 ارتباط با سازنده', url: 'https://t.me/Here_is_leo' }],
+                [{ text: '🏠 خانه', action: 'home' }]
+            ]);
+        }
+
+        // ================================================================
+        // STATS (Admin Only)
+        // ================================================================
+
+        function showStats() {
+            if (!isAdmin) {
+                addMessage('❌ <strong>دسترسی محدود!</strong><br><br>این بخش فقط برای مدیران ربات قابل مشاهده است.', 'bot', [
+                    [{ text: '🏠 خانه', action: 'home' }]
+                ]);
+                return;
+            }
+
+            const text =
+                '📊 <strong>آمار V-Tunnel</strong><br><br>' +
+                '---<br><br>' +
+                '👥 <strong>کاربران:</strong><br>' +
+                'کل کاربران: 1,524<br>' +
+                'فعال امروز: 342<br><br>' +
+                '📈 <strong>آمار استفاده:</strong><br>' +
+                'کل دستورات: 8,231<br><br>' +
+                '☕ <strong>حمایت‌ها:</strong><br>' +
+                `کل حمایت‌ها: ${state.donationCount}<br>` +
+                `تعداد حامیان: ${state.donorCount}<br><br>` +
+                '⏱️ <strong>اطلاعات سیستم:</strong><br>' +
+                'آپتایم: 14 ساعت و 32 دقیقه<br>' +
+                'نسخه: 2.0.0<br>' +
+                'وضعیت: فعال ✅';
+
+            addMessage(text, 'bot', [
+                [{ text: '🔄 بروزرسانی', action: 'stats' }],
+                [{ text: '🏠 خانه', action: 'home' }]
+            ]);
+        }
+
+        // ================================================================
+        // ADMIN PANEL
+        // ================================================================
+
+        function showAdminPanel() {
+            if (!isAdmin) {
+                addMessage('❌ <strong>دسترسی محدود!</strong><br><br>این بخش فقط برای مدیران ربات قابل مشاهده است.', 'bot', [
+                    [{ text: '🏠 خانه', action: 'home' }]
+                ]);
+                return;
+            }
+
+            const text =
+                '👑 <strong>پنل مدیریت V-Tunnel</strong><br><br>' +
+                'سلام ادمین عزیز! 👋<br><br>' +
+                'از این پنل می‌توانید ربات را مدیریت کنید.<br><br>' +
+                '---<br><br>' +
+                '📊 <strong>آمار سریع:</strong><br>' +
+                '👥 کل کاربران: 1,524<br>' +
+                '📈 کل دستورات: 8,231<br>' +
+                '✅ کاربران فعال امروز: 342<br>' +
+                `☕ حمایت‌ها: ${state.donationCount}<br><br>` +
+                '🔧 <strong>دستورات مدیریتی:</strong><br>' +
+                '/broadcast - ارسال پیام همگانی<br>' +
+                '/adminstats - مشاهده آمار کامل<br>' +
+                '/adminlist - لیست کاربران<br>' +
+                '/adminfeedback - بازخوردها<br>' +
+                '/adminban - مسدود کردن کاربر<br>' +
+                '/adminunban - رفع مسدودیت';
+
+            addMessage(text, 'bot', [
+                [{ text: '📢 پیام همگانی', action: 'broadcast' }],
+                [{ text: '📊 آمار کامل', action: 'stats' }],
+                [{ text: '👥 لیست کاربران', action: 'userlist' }],
+                [{ text: '📝 بازخوردها', action: 'feedback' }],
+                [{ text: '🚫 مسدود کردن', action: 'ban' }],
+                [{ text: '✅ رفع مسدودیت', action: 'unban' }],
+                [{ text: '🏠 خانه', action: 'home' }]
+            ]);
+        }
+
+        // ================================================================
+        // WEBAPP (Mini App)
+        // ================================================================
+
+        function openWebApp() {
+            const modal = document.getElementById('webappModal');
+            modal.classList.add('active');
+            showWebAppHome();
+        }
+
+        function closeWebApp() {
+            document.getElementById('webappModal').classList.remove('active');
+        }
+
+        function showWebAppHome() {
+            const body = document.getElementById('webappBody');
+            body.innerHTML = `
+                <div style="text-align:center;padding:20px 0;">
+                    <div style="font-size:48px;margin-bottom:12px;">🚀</div>
+                    <h2 style="color:var(--text-primary);margin-bottom:8px;">V-Tunnel</h2>
+                    <p style="color:var(--text-secondary);margin-bottom:20px;">یکی از گزینه‌های زیر را انتخاب کنید</p>
+                </div>
+                <div class="service-card" onclick="showWebAppList('dns')">
+                    <div class="title">🌐 DNS</div>
+                    <div class="desc">لیست DNS های عمومی و سریع</div>
+                    <span class="badge">${DNS_LIST.length} سرور</span>
+                </div>
+                <div class="service-card" onclick="showWebAppList('proxy')">
+                    <div class="title">🔗 Proxy</div>
+                    <div class="desc">پروکسی‌های MTProto برای تلگرام</div>
+                    <span class="badge">${PROXY_LIST.length} پروکسی</span>
+                </div>
+                <div class="service-card" onclick="showWebAppList('vpn')">
+                    <div class="title">🔒 VPN</div>
+                    <div class="desc">کانفیگ‌های V2Ray رایگان</div>
+                    <span class="badge">${VPN_LIST.length} کانفیگ</span>
+                </div>
+                <div style="margin-top:12px;">
+                    <button class="back-btn" onclick="closeWebApp()" style="width:100%;">
+                        ✕ بستن
+                    </button>
+                </div>
+            `;
+        }
+
+        function showWebAppList(type) {
+            const body = document.getElementById('webappBody');
+            let list = [];
+            let title = '';
+            let icon = '';
+
+            switch (type) {
+                case 'dns':
+                    list = DNS_LIST;
+                    title = '🌐 DNS';
+                    icon = '🌐';
+                    break;
+                case 'proxy':
+                    list = PROXY_LIST;
+                    title = '🔗 Proxy';
+                    icon = '🔗';
+                    break;
+                case 'vpn':
+                    list = VPN_LIST;
+                    title = '🔒 VPN';
+                    icon = '🔒';
+                    break;
+            }
+
+            let itemsHtml = list.map((item, index) => `
+                <div class="item" onclick="copyToClipboard('${item.value.replace(/'/g, "\\'")}', '${item.name}')">
+                    <span>${item.name}</span>
+                    <button class="copy-btn">📋 کپی</button>
+                </div>
+            `).join('');
+
+            body.innerHTML = `
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                    <h3 style="color:var(--text-primary);">${icon} ${title}</h3>
+                    <span style="color:var(--text-secondary);font-size:12px;">${list.length} آیتم</span>
+                </div>
+                <div class="service-detail">
+                    ${itemsHtml}
+                </div>
+                <button class="back-btn" onclick="showWebAppHome()" style="margin-top:12px;">
+                    ← بازگشت
+                </button>
+            `;
+        }
+
+        function copyToClipboard(value, name) {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(value).then(() => {
+                    showToast(`✅ ${name} کپی شد!`);
+                }).catch(() => {
+                    fallbackCopy(value);
+                });
+            } else {
+                fallbackCopy(value);
+            }
+        }
+
+        function fallbackCopy(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showToast('✅ کپی شد!');
+            } catch (e) {
+                showToast('❌ کپی نشد. دستی کپی کنید.');
+            }
+            document.body.removeChild(textarea);
+        }
+
+        // ================================================================
+        // HANDLE ADMIN COMMANDS FROM CHAT
+        // ================================================================
+
+        // اضافه کردن دستورات خاص برای تست
+        document.addEventListener('keydown', (e) => {
+            if (e.ctrlKey && e.key === 'd') {
+                // شبیه‌سازی /admin
+                handleButton('admin');
+            }
+        });
+
+        // ================================================================
+        // INIT
+        // ================================================================
+
+        // بازنویسی دکمه‌های welcome برای باز کردن وب اپ
+        setTimeout(() => {
+            document.querySelectorAll('.inline-keyboard .btn').forEach(btn => {
+                if (btn.textContent.includes('باز کردن V-Tunnel') && !btn._patched) {
+                    btn._patched = true;
+                    btn.onclick = openWebApp;
+                }
+            });
+        }, 100);
+
+        console.log('🚀 V-Tunnel Telegram Bot Simulator');
+        console.log('📌 دستورات تست: سلام, راهنما, درباره, حمایت, dns, پروکسی, vpn, ادمین');
+        console.log('🔑 کلید Ctrl+D برای باز کردن پنل ادمین');
+        console.log('📱 برای شبیه‌سازی کلیک روی دکمه‌ها از ماوس استفاده کنید');
+
+        // ================================================================
+        // CLOSE MODAL ON ESC
+        // ================================================================
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeWebApp();
+            }
+        });
+    </script>
+
+</body>
+</html>
