@@ -2,7 +2,11 @@
 
 **DNS, Proxy & VPN Management Tool**
 
-[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/this-is-the-leo)
+<<<<<<< HEAD
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/here-is-leo)
+=======
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/here-is-leo)
+>>>>>>> 73694c9f996b3978a72cbddf6338de2cefb159ed
 [![Telegram](https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/Here_is_leo)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/ilya-farahani-2160103b0)
 
@@ -96,7 +100,11 @@ The web interface (`mini-app/` folder) is fully responsive and built with:
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/this-is-the-leo/V-Tunnel.git
+<<<<<<< HEAD
+git clone https://github.com/here-is-leo/V-Tunnel.git
+=======
+git clone https://github.com/here-is-leo/V-Tunnel.git
+>>>>>>> 73694c9f996b3978a72cbddf6338de2cefb159ed
 cd V-Tunnel
 ```
 
@@ -220,7 +228,11 @@ If you have ideas for improvement, I'd love to hear them:
 
 | Platform | Link |
 |---|---|
-| **GitHub** | [@this-is-the-leo](https://github.com/this-is-the-leo) |
+<<<<<<< HEAD
+| **GitHub** | [@here-is-leo](https://github.com/here-is-leo) |
+=======
+| **GitHub** | [@here-is-leo](https://github.com/here-is-leo) |
+>>>>>>> 73694c9f996b3978a72cbddf6338de2cefb159ed
 | **Telegram** | [@Here_is_leo](https://t.me/Here_is_leo) |
 | **LinkedIn** | [Ilya Farahani](https://www.linkedin.com/in/ilya-farahani-2160103b0) |
 
@@ -274,7 +286,11 @@ If you like this project, please give it a **⭐ star**!
 
 **ابزار مدیریت DNS، پروکسی و VPN**
 
-[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/this-is-the-leo)
+<<<<<<< HEAD
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/here-is-leo)
+=======
+[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/here-is-leo)
+>>>>>>> 73694c9f996b3978a72cbddf6338de2cefb159ed
 [![Telegram](https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/Here_is_leo)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/ilya-farahani-2160103b0)
 
@@ -368,7 +384,11 @@ python bot.py
 
 ### ۱. کلون کردن مخزن
 ```bash
-git clone https://github.com/this-is-the-leo/V-Tunnel.git
+<<<<<<< HEAD
+git clone https://github.com/here-is-leo/V-Tunnel.git
+=======
+git clone https://github.com/here-is-leo/V-Tunnel.git
+>>>>>>> 73694c9f996b3978a72cbddf6338de2cefb159ed
 cd V-Tunnel
 ```
 
@@ -491,7 +511,11 @@ python-dotenv==1.0.1
 
 | پلتفرم | لینک |
 |---|---|
-| **GitHub** | [@this-is-the-leo](https://github.com/this-is-the-leo) |
+<<<<<<< HEAD
+| **GitHub** | [@here-is-leo](https://github.com/here-is-leo) |
+=======
+| **GitHub** | [@here-is-leo](https://github.com/here-is-leo) |
+>>>>>>> 73694c9f996b3978a72cbddf6338de2cefb159ed
 | **Telegram** | [@Here_is_leo](https://t.me/Here_is_leo) |
 | **LinkedIn** | [ایلیا فراهانی](https://www.linkedin.com/in/ilya-farahani-2160103b0) |
 
