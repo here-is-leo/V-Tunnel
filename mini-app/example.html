@@ -36,34 +36,55 @@
             height: 100%;
             overflow: hidden;
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            background: #000000;
+            background: #0a0a0a;
             color: var(--tg-text);
         }
 
         /* ========================================
-           PHONE FRAME - سایز اصلاح‌شده
+           DESKTOP BACKGROUND
+           ======================================== */
+        .desktop-bg {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            background: 
+                radial-gradient(ellipse at 20% 50%, #1a1a2e 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 50%, #1a1a2e 0%, transparent 50%),
+                #0a0a0a;
+            padding: 20px;
+        }
+
+        /* ========================================
+           PHONE FRAME
            ======================================== */
         .phone-wrapper {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            background: #0a0a0a;
-            padding: 20px;
+            height: 100%;
+            width: 100%;
+            max-width: 420px;
+            max-height: 900px;
         }
 
         .phone {
-            width: 393px;
-            height: 852px;
+            width: 100%;
+            height: 100%;
+            max-width: 393px;
+            max-height: 852px;
             background: #000000;
             border-radius: 48px;
             padding: 12px;
             box-shadow: 
                 0 0 0 2px #1a1a1a,
                 0 0 0 4px #0a0a0a,
-                0 20px 80px rgba(0, 0, 0, 0.9);
+                0 20px 80px rgba(0, 0, 0, 0.9),
+                0 0 60px rgba(43, 108, 176, 0.05);
             position: relative;
             flex-shrink: 0;
+            transition: all 0.3s ease;
         }
 
         /* خط ناچ آیفون */
@@ -826,17 +847,57 @@
         }
 
         /* ========================================
-           RESPONSIVE
+           ADMIN HINT - مخفی
+           ======================================== */
+        .admin-hint {
+            display: none;
+        }
+
+        /* ========================================
+           RESPONSIVE - DESKTOP
+           ======================================== */
+        @media (min-width: 769px) {
+            .desktop-bg {
+                padding: 40px;
+            }
+            
+            .phone {
+                box-shadow: 
+                    0 0 0 2px #1a1a1a,
+                    0 0 0 4px #0a0a0a,
+                    0 30px 100px rgba(0, 0, 0, 0.9),
+                    0 0 80px rgba(43, 108, 176, 0.08);
+            }
+
+            /* Hover effect on desktop */
+            .phone:hover {
+                transform: translateY(-4px);
+                box-shadow: 
+                    0 0 0 2px #1a1a1a,
+                    0 0 0 4px #0a0a0a,
+                    0 40px 120px rgba(0, 0, 0, 0.95),
+                    0 0 80px rgba(43, 108, 176, 0.12);
+                transition: all 0.4s ease;
+            }
+        }
+
+        /* ========================================
+           RESPONSIVE - MOBILE
            ======================================== */
         @media (max-width: 440px) {
-            .phone-wrapper {
+            .desktop-bg {
                 padding: 0;
-                align-items: stretch;
+                background: #0a0a0a;
+            }
+
+            .phone-wrapper {
+                max-width: 100%;
+                max-height: 100%;
             }
 
             .phone {
-                width: 100%;
-                height: 100vh;
+                max-width: 100%;
+                max-height: 100vh;
                 border-radius: 0;
                 padding: 0;
                 box-shadow: none;
@@ -883,11 +944,11 @@
             }
         }
 
-        @media (max-height: 700px) {
+        @media (max-height: 700px) and (min-width: 441px) {
             .phone {
-                height: 100vh;
-                border-radius: 0;
-                padding: 0;
+                max-height: 90vh;
+                border-radius: 32px;
+                padding: 8px;
             }
 
             .phone::before,
@@ -896,7 +957,7 @@
             }
 
             .phone-screen {
-                border-radius: 0;
+                border-radius: 24px;
             }
 
             .status-bar {
@@ -925,13 +986,6 @@
         }
 
         /* ========================================
-           ADMIN HINT - مخفی
-           ======================================== */
-        .admin-hint {
-            display: none;
-        }
-
-        /* ========================================
            SCROLLBAR FIX
            ======================================== */
         .chat-area {
@@ -942,123 +996,125 @@
 </head>
 <body>
 
-    <div class="phone-wrapper">
-        <div class="phone">
-            <div class="phone-screen">
+    <div class="desktop-bg">
+        <div class="phone-wrapper">
+            <div class="phone">
+                <div class="phone-screen">
 
-                <!-- ===== Status Bar ===== -->
-                <div class="status-bar">
-                    <span class="time" id="statusTime">12:00</span>
-                    <span class="icons">
-                        <span>📶</span>
-                        <span>📶</span>
-                        <span class="battery">
-                            <span class="level">
-                                <span class="fill"></span>
+                    <!-- ===== Status Bar ===== -->
+                    <div class="status-bar">
+                        <span class="time" id="statusTime">12:00</span>
+                        <span class="icons">
+                            <span>📶</span>
+                            <span>📶</span>
+                            <span class="battery">
+                                <span class="level">
+                                    <span class="fill"></span>
+                                </span>
                             </span>
                         </span>
-                    </span>
-                </div>
+                    </div>
 
-                <!-- ===== Header ===== -->
-                <div class="header">
-                    <button class="back-btn" id="backBtn" onclick="goBack()">‹</button>
-                    <div class="avatar">V</div>
-                    <div class="info">
-                        <div class="name">V-Tunnel</div>
-                        <div class="status">
+                    <!-- ===== Header ===== -->
+                    <div class="header">
+                        <button class="back-btn" id="backBtn" onclick="goBack()">‹</button>
+                        <div class="avatar">V</div>
+                        <div class="info">
+                            <div class="name">V-Tunnel</div>
+                            <div class="status">
+                                <span class="dot"></span>
+                                آنلاین
+                            </div>
+                        </div>
+                        <div class="actions">
+                            <span title="جستجو">🔍</span>
+                            <span title="بیشتر" onclick="showToast('ℹ️ نسخه 2.0.0')">⋯</span>
+                        </div>
+                    </div>
+
+                    <!-- ===== Chat Area ===== -->
+                    <div class="chat-area" id="chatArea">
+
+                        <!-- Welcome Message -->
+                        <div class="message bot" id="welcomeMsg">
+                            <div class="text">
+                                🚀 <strong>به V-Tunnel خوش آمدید!</strong> 🚀
+                                <br><br>
+                                سلام کاربر عزیز! 👋
+                                <br><br>
+                                <strong>V-Tunnel</strong> یک ابزار قدرتمند برای مدیریت <strong>IP، DNS و پروکسی</strong> است.
+                                <br><br>
+                                🌐 <strong>DNS</strong> خود را به سرعت تغییر دهید<br>
+                                🔗 <strong>پروکسی</strong> مناسب برای تلگرام پیدا کنید<br>
+                                🔒 <strong>VPN</strong> با کیفیت و رایگان دریافت کنید
+                                <br><br>
+                                ---
+                                <br><br>
+                                ⚠️ <strong>توجه مهم:</strong>
+                                <br>
+                                - این سرویس کاملاً <strong>رایگان</strong> است<br>
+                                - مسئولیت استفاده بر عهده کاربر است
+                            </div>
+                            <span class="time">اکنون</span>
+
+                            <div class="inline-keyboard">
+                                <div class="row">
+                                    <button class="btn primary full-width" onclick="openWebApp()">
+                                        <span class="icon">🚀</span> باز کردن V-Tunnel
+                                    </button>
+                                </div>
+                                <div class="row">
+                                    <button class="btn warning" onclick="handleButton('donate')">
+                                        <span class="icon">☕</span> حمایت مالی
+                                    </button>
+                                    <button class="btn" onclick="handleButton('support')">
+                                        <span class="icon">👨‍💻</span> پشتیبانی
+                                    </button>
+                                </div>
+                                <div class="row">
+                                    <button class="btn" onclick="handleButton('help')">
+                                        <span class="icon">📖</span> راهنما
+                                    </button>
+                                    <button class="btn" onclick="handleButton('about')">
+                                        <span class="icon">ℹ️</span> درباره
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Typing Indicator -->
+                        <div class="typing-indicator" id="typingIndicator">
                             <span class="dot"></span>
-                            آنلاین
+                            <span class="dot"></span>
+                            <span class="dot"></span>
                         </div>
-                    </div>
-                    <div class="actions">
-                        <span title="جستجو">🔍</span>
-                        <span title="بیشتر" onclick="showToast('ℹ️ نسخه 2.0.0')">⋯</span>
-                    </div>
-                </div>
 
-                <!-- ===== Chat Area ===== -->
-                <div class="chat-area" id="chatArea">
+                    </div>
 
-                    <!-- Welcome Message -->
-                    <div class="message bot" id="welcomeMsg">
-                        <div class="text">
-                            🚀 <strong>به V-Tunnel خوش آمدید!</strong> 🚀
-                            <br><br>
-                            سلام کاربر عزیز! 👋
-                            <br><br>
-                            <strong>V-Tunnel</strong> یک ابزار قدرتمند برای مدیریت <strong>IP، DNS و پروکسی</strong> است.
-                            <br><br>
-                            🌐 <strong>DNS</strong> خود را به سرعت تغییر دهید<br>
-                            🔗 <strong>پروکسی</strong> مناسب برای تلگرام پیدا کنید<br>
-                            🔒 <strong>VPN</strong> با کیفیت و رایگان دریافت کنید
-                            <br><br>
-                            ---
-                            <br><br>
-                            ⚠️ <strong>توجه مهم:</strong>
-                            <br>
-                            - این سرویس کاملاً <strong>رایگان</strong> است<br>
-                            - مسئولیت استفاده بر عهده کاربر است
+                    <!-- ===== Input Area ===== -->
+                    <div class="input-area">
+                        <div class="input-wrapper">
+                            <input type="text" id="userInput" placeholder="پیام..." 
+                                   onkeydown="if(event.key === 'Enter') sendMessage()" autofocus>
                         </div>
-                        <span class="time">اکنون</span>
+                        <button class="send-btn" id="sendBtn" onclick="sendMessage()">➤</button>
+                    </div>
 
-                        <div class="inline-keyboard">
-                            <div class="row">
-                                <button class="btn primary full-width" onclick="openWebApp()">
-                                    <span class="icon">🚀</span> باز کردن V-Tunnel
-                                </button>
-                            </div>
-                            <div class="row">
-                                <button class="btn warning" onclick="handleButton('donate')">
-                                    <span class="icon">☕</span> حمایت مالی
-                                </button>
-                                <button class="btn" onclick="handleButton('support')">
-                                    <span class="icon">👨‍💻</span> پشتیبانی
-                                </button>
-                            </div>
-                            <div class="row">
-                                <button class="btn" onclick="handleButton('help')">
-                                    <span class="icon">📖</span> راهنما
-                                </button>
-                                <button class="btn" onclick="handleButton('about')">
-                                    <span class="icon">ℹ️</span> درباره
-                                </button>
-                            </div>
+                    <!-- ===== WebApp Modal ===== -->
+                    <div class="webapp-modal" id="webappModal">
+                        <div class="modal-header">
+                            <h3>🚀 V-Tunnel</h3>
+                            <button class="close-btn" onclick="closeWebApp()">✕</button>
+                        </div>
+                        <div class="modal-body" id="webappBody">
+                            <!-- Dynamic content -->
                         </div>
                     </div>
 
-                    <!-- Typing Indicator -->
-                    <div class="typing-indicator" id="typingIndicator">
-                        <span class="dot"></span>
-                        <span class="dot"></span>
-                        <span class="dot"></span>
-                    </div>
+                    <!-- ===== Toast ===== -->
+                    <div class="toast" id="toast"></div>
 
                 </div>
-
-                <!-- ===== Input Area ===== -->
-                <div class="input-area">
-                    <div class="input-wrapper">
-                        <input type="text" id="userInput" placeholder="پیام..." 
-                               onkeydown="if(event.key === 'Enter') sendMessage()" autofocus>
-                    </div>
-                    <button class="send-btn" id="sendBtn" onclick="sendMessage()">➤</button>
-                </div>
-
-                <!-- ===== WebApp Modal ===== -->
-                <div class="webapp-modal" id="webappModal">
-                    <div class="modal-header">
-                        <h3>🚀 V-Tunnel</h3>
-                        <button class="close-btn" onclick="closeWebApp()">✕</button>
-                    </div>
-                    <div class="modal-body" id="webappBody">
-                        <!-- Dynamic content -->
-                    </div>
-                </div>
-
-                <!-- ===== Toast ===== -->
-                <div class="toast" id="toast"></div>
-
             </div>
         </div>
     </div>
