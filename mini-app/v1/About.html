@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" id="htmlRoot">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title id="pageTitle">درباره V-Tunnel</title>
+    <style>
+        /* ================================================================
+           1) ROOT VARIABLES & RESET
+           ================================================================ */
+        :root {
+            --bg: #05070d;
+            --bg-glow-1: rgba(74, 138, 181, 0.12);
+            --bg-glow-2: rgba(74, 181, 138, 0.08);
+            --glass-bg: rgba(16, 26, 42, 0.55);
+            --glass-border: rgba(120, 170, 255, 0.16);
+            --glass-blur: 18px;
+            --accent: #4a8ab5;
+            --accent-bright: #6cb6e8;
+            --accent-green: #4ade80;
+            --text: #e8edf5;
+            --text-dim: #8db0d0;
+            --text-faint: #5a7a95;
+            --danger: #d45a6a;
+            --radius-xl: 34px;
+            --radius-lg: 26px;
+            --radius-md: 18px;
+            --radius-pill: 999px;
+            --shadow-soft: 0 20px 60px rgba(0, 0, 0, 0.55);
+            --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.35);
+            --neon-glow: 0 0 22px rgba(108, 182, 232, 0.16);
+            --ease: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Vazirmatn', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background:
+                radial-gradient(circle at 15% 0%, var(--bg-glow-1), transparent 45%),
+                radial-gradient(circle at 85% 100%, var(--bg-glow-2), transparent 45%),
+                var(--bg);
+            background-attachment: fixed;
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 14px 28px;
+        }
+
+        body.lang-en {
+            font-family: 'Segoe UI', 'Inter', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+        ::selection {
+            background: rgba(108, 182, 232, 0.3);
+        }
+
+        a:focus-visible,
+        button:focus-visible,
+        input:focus-visible,
+        [tabindex]:focus-visible {
+            outline: 2px solid var(--accent-bright);
+            outline-offset: 3px;
+            border-radius: 8px;
+        }
+
+        /* ================================================================
+           2) SITE HEADER
+           ================================================================ */
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 600;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 16px 12px 10px;
+        }
+
+        .nav-glass {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2px;
+            max-width: 980px;
+            width: 100%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-pill);
+            padding: 6px 8px;
+            box-shadow: var(--shadow-soft), var(--neon-glow);
+            transition: box-shadow 0.3s var(--ease);
+        }
+
+        .nav-glass:hover {
+            box-shadow: var(--shadow-soft), 0 0 30px rgba(108, 182, 232, 0.22);
+        }
+
+        .nav-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: var(--radius-pill);
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: 500;
+            white-space: nowrap;
+            transition: all 0.25s var(--ease);
+            letter-spacing: 0.2px;
+        }
+
+        .nav-item:hover,
+        .nav-item:focus-visible {
+            background: rgba(74, 138, 181, 0.18);
+            color: #fff;
+            box-shadow: 0 0 16px rgba(108, 182, 232, 0.22);
+            transform: translateY(-1px);
+        }
+
+        .nav-item.active {
+            background: rgba(74, 138, 181, 0.25);
+            color: #fff;
+        }
+
+        .nav-brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 14px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--text-dim);
+            white-space: nowrap;
+        }
+
+        .nav-brand .brand-dot {
+            color: #ffd166;
+            font-size: 0.6rem;
+            filter: drop-shadow(0 0 6px rgba(255, 209, 102, 0.4));
+        }
+
+        .nav-brand-name {
+            color: var(--accent-bright);
+            font-weight: 700;
+            text-decoration: none;
+            border-bottom: 1px dotted transparent;
+            transition: 0.2s;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-brand-name:hover {
+            color: #fff;
+            border-bottom-color: var(--accent-bright);
+        }
+
+        .nav-divider {
+            width: 1px;
+            height: 22px;
+            background: rgba(120, 170, 255, 0.12);
+            margin: 0 3px;
+            flex-shrink: 0;
+        }
+
+        .nav-item .nav-label {
+            font-size: 0.78rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        .nav-brand .brand-label {
+            color: var(--text-faint);
+            font-size: 0.75rem;
+        }
+
+        .lang-switch {
+            display: flex;
+            gap: 2px;
+            background: rgba(0, 0, 0, 0.28);
+            padding: 3px;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--glass-border);
+        }
+
+        .lang-btn {
+            border: none;
+            background: transparent;
+            color: var(--text-dim);
+            padding: 6px 14px;
+            border-radius: var(--radius-pill);
+            font-size: 0.72rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s var(--ease);
+            white-space: nowrap;
+            letter-spacing: 0.3px;
+        }
+
+        .lang-btn:hover {
+            color: #fff;
+        }
+
+        .lang-btn.active {
+            background: linear-gradient(135deg, #1a4a6a, #0d2a44);
+            color: #fff;
+            box-shadow: 0 0 14px rgba(108, 182, 232, 0.3), inset 0 0 12px rgba(108, 182, 232, 0.08);
+        }
+
+        @media (max-width: 640px) {
+            .nav-glass {
+                flex-direction: column;
+                border-radius: 22px;
+                padding: 12px;
+                align-items: stretch;
+            }
+            .nav-item,
+            .nav-brand {
+                justify-content: center;
+                width: 100%;
+                padding: 8px 12px;
+            }
+            .nav-divider {
+                display: none;
+            }
+            .lang-switch {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* ================================================================
+           3) MAIN CONTAINER
+           ================================================================ */
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border-radius: var(--radius-xl);
+            padding: 36px 32px 40px;
+            box-shadow: var(--shadow-soft), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--glass-border);
+            margin-top: 14px;
+        }
+
+        /* ===== ABOUT CONTENT ===== */
+        .about-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .about-header .logo {
+            font-size: 3.6rem;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .about-header h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #8bb8e8, #4a8ab5, #2a6a95);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+        }
+
+        .about-header .subtitle {
+            color: var(--text-dim);
+            font-size: 1rem;
+        }
+
+        .about-section {
+            margin-bottom: 28px;
+            padding-bottom: 28px;
+            border-bottom: 1px solid rgba(60, 100, 140, 0.12);
+        }
+
+        .about-section:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .about-section h2 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--accent-bright);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .about-section h2 .icon {
+            font-size: 1.5rem;
+        }
+
+        .about-section p {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            line-height: 1.9;
+            margin-bottom: 10px;
+        }
+
+        .about-section p:last-child {
+            margin-bottom: 0;
+        }
+
+        .about-section .highlight {
+            color: var(--accent-bright);
+            font-weight: 600;
+        }
+
+        /* ===== DONATION BANNER ===== */
+        .donation-banner-wrapper {
+            position: relative;
+            max-width: 100%;
+            width: 100%;
+            border-radius: 36px;
+            padding: 3px;
+            background: linear-gradient(135deg, #1a1a4a, #4a3a7a, #2a2a5a);
+            box-shadow: 0 0 60px rgba(42, 42, 90, 0.06);
+            margin-bottom: 2rem;
+        }
+
+        .donation-banner {
+            position: relative;
+            width: 100%;
+            background: rgba(2, 4, 12, 0.85);
+            backdrop-filter: blur(28px) saturate(1.4);
+            -webkit-backdrop-filter: blur(28px) saturate(1.4);
+            border-radius: 34px;
+            padding: 40px 48px 36px;
+            border: 1px solid rgba(42, 42, 90, 0.08);
+            transition: transform 0.3s var(--ease);
+        }
+
+        .donation-banner:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+        }
+
+        .donation-content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+            text-align: center;
+        }
+
+        .donation-title {
+            font-size: 32px;
+            font-weight: 900;
+            color: #e8e8f5;
+            line-height: 1.2;
+            font-family: 'Vazirmatn', 'Inter', sans-serif;
+            letter-spacing: -0.5px;
+        }
+
+        .donation-title .highlight {
+            background: linear-gradient(135deg, #ffd93d, #ff6b6b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .donation-sub {
+            font-size: 17px;
+            font-weight: 300;
+            color: #9a9ac0;
+            max-width: 80%;
+            line-height: 1.9;
+            font-family: 'Vazirmatn', 'Inter', sans-serif;
+        }
+
+        .donation-sub strong {
+            color: #ffd93d;
+            font-weight: 700;
+        }
+
+        .donation-footer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 24px;
+            margin-top: 4px;
+            width: 100%;
+        }
+
+        .donate-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            padding: 18px 44px;
+            background: linear-gradient(135deg, #5a5aaa, #3a3a7a);
+            color: #e8e8f5;
+            font-size: 18px;
+            font-weight: 700;
+            border: none;
+            border-radius: 60px;
+            cursor: pointer;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.5px;
+            box-shadow: 0 8px 40px rgba(42, 42, 90, 0.12);
+            min-width: 200px;
+            font-family: 'Vazirmatn', 'Inter', sans-serif;
+            transition: all 0.3s var(--ease);
+        }
+
+        .donate-btn:hover {
+            background: linear-gradient(135deg, #ffd93d, #ff6b6b);
+            color: #02040c;
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 12px 50px rgba(255, 217, 61, 0.25);
+        }
+
+        .donate-btn:active {
+            transform: scale(0.95);
+        }
+
+        .donate-btn .icon {
+            font-size: 24px;
+            line-height: 1;
+        }
+
+        .donate-btn .ripple-effect {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+            transform: scale(0);
+            animation: rippleAnim 0.6s ease-out forwards;
+            pointer-events: none;
+        }
+
+        @keyframes rippleAnim {
+            to {
+                transform: scale(6);
+                opacity: 0;
+            }
+        }
+
+        .donate-message {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #8a8aaa;
+            font-size: 14px;
+            font-weight: 300;
+            padding: 10px 20px;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            font-family: 'Vazirmatn', 'Inter', sans-serif;
+            transition: all 0.3s var(--ease);
+        }
+
+        .donate-message:hover {
+            background: rgba(255, 217, 61, 0.04);
+            border-color: rgba(255, 217, 61, 0.06);
+        }
+
+        .donate-message .emoji {
+            font-size: 20px;
+        }
+
+        .donate-message .highlight-msg {
+            color: #ffd93d;
+            font-weight: 600;
+        }
+
+        .donation-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(42, 42, 90, 0.06);
+            border: 1px solid rgba(42, 42, 90, 0.08);
+            padding: 6px 18px;
+            border-radius: 40px;
+            font-size: 13px;
+            font-weight: 400;
+            color: #8a8aba;
+            letter-spacing: 0.3px;
+            backdrop-filter: blur(4px);
+            font-family: 'Vazirmatn', 'Inter', sans-serif;
+        }
+
+        .donation-badge .dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #4ade80;
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(74, 222, 128, 0.2);
+        }
+
+        /* ===== BACK BUTTON ===== */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 28px;
+            border-radius: var(--radius-pill);
+            background: linear-gradient(135deg, #1a3a5a, #0d2a44);
+            border: 1px solid rgba(60, 100, 140, 0.2);
+            color: #eef4fa;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s var(--ease);
+            text-decoration: none;
+            margin-top: 8px;
+        }
+
+        .back-btn:hover {
+            background: linear-gradient(135deg, #2a5a7a, #1a3a5a);
+            border-color: var(--accent);
+            transform: scale(1.02);
+            box-shadow: 0 4px 20px rgba(108, 182, 232, 0.15);
+        }
+
+        .back-btn:active {
+            transform: scale(0.95);
+        }
+
+        .btn-center {
+            text-align: center;
+            margin-top: 16px;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            margin-top: 32px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(60, 100, 140, 0.12);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: var(--text-faint);
+            text-align: center;
+            flex-wrap: wrap;
+        }
+
+        .footer .footer-heart {
+            color: var(--danger);
+            animation: heartbeat 1.5s infinite;
+        }
+
+        @keyframes heartbeat {
+            0%,
+            100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.15);
+            }
+        }
+
+        .footer .footer-name {
+            color: #7aa0c0;
+            text-decoration: none;
+            font-weight: 700;
+            transition: 0.2s;
+            border-bottom: 1px dotted transparent;
+        }
+
+        .footer .footer-name:hover {
+            color: var(--text-dim);
+            border-bottom-color: var(--accent);
+        }
+
+        /* ================================================================
+           4) RESPONSIVE
+           ================================================================ */
+        @media (max-width: 768px) {
+            .container {
+                padding: 28px 20px 28px;
+                border-radius: var(--radius-lg);
+            }
+            .about-header h1 {
+                font-size: 1.8rem;
+            }
+            .about-header .logo {
+                font-size: 3rem;
+            }
+            .about-section h2 {
+                font-size: 1.1rem;
+            }
+            .about-section p {
+                font-size: 0.88rem;
+            }
+            .donation-banner {
+                padding: 28px 20px 24px;
+                border-radius: 26px;
+            }
+            .donation-title {
+                font-size: 26px;
+            }
+            .donation-sub {
+                max-width: 100%;
+                font-size: 16px;
+            }
+            .donation-footer {
+                flex-direction: column;
+                align-items: center;
+                gap: 14px;
+            }
+            .donate-btn {
+                justify-content: center;
+                padding: 14px 28px;
+                font-size: 16px;
+                width: 100%;
+                min-width: unset;
+            }
+            .donate-btn .icon {
+                font-size: 22px;
+            }
+            .donate-message {
+                justify-content: center;
+                padding: 8px 16px;
+                font-size: 13px;
+                width: 100%;
+            }
+            .donation-badge {
+                font-size: 12px;
+                padding: 4px 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 0 6px 20px;
+            }
+            .container {
+                padding: 20px 14px 22px;
+                border-radius: var(--radius-md);
+            }
+            .about-header h1 {
+                font-size: 1.5rem;
+            }
+            .about-header .logo {
+                font-size: 2.6rem;
+            }
+            .about-header .subtitle {
+                font-size: 0.85rem;
+            }
+            .about-section h2 {
+                font-size: 1rem;
+            }
+            .about-section h2 .icon {
+                font-size: 1.2rem;
+            }
+            .about-section p {
+                font-size: 0.82rem;
+            }
+            .back-btn {
+                padding: 8px 20px;
+                font-size: 0.78rem;
+            }
+            .footer {
+                font-size: 0.7rem;
+            }
+            .donation-banner {
+                padding: 20px 14px 18px;
+                border-radius: 20px;
+            }
+            .donation-title {
+                font-size: 20px;
+            }
+            .donation-sub {
+                font-size: 14px;
+                padding-right: 0;
+            }
+            .donate-btn {
+                font-size: 14px;
+                padding: 12px 18px;
+                gap: 10px;
+            }
+            .donate-btn .icon {
+                font-size: 18px;
+            }
+            .donate-message {
+                font-size: 12px;
+                padding: 6px 12px;
+            }
+            .donate-message .emoji {
+                font-size: 16px;
+            }
+            .donation-badge {
+                font-size: 10px;
+                padding: 4px 12px;
+                gap: 6px;
+            }
+            .donation-badge .dot {
+                width: 6px;
+                height: 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+         SITE HEADER
+         ============================================================ -->
+    <header class="site-header" role="banner">
+        <nav class="nav-glass" aria-label="Main navigation">
+            <a class="nav-item" href="index.html" data-i18n-title="nav_home" title="خانه">
+                <span class="nav-label" data-i18n="nav_home">خانه</span>
+            </a>
+            <div class="nav-divider" aria-hidden="true"></div>
+            <a class="nav-item active" href="About.html" data-i18n-title="nav_about" title="درباره">
+                <span class="nav-label" data-i18n="nav_about">درباره</span>
+            </a>
+            <div class="nav-divider" aria-hidden="true"></div>
+            <span class="nav-brand">
+                <span class="brand-dot">◆</span>
+                <span class="brand-label" data-i18n="nav_brand">ساخته شده توسط</span>
+                <a class="nav-brand-name" href="https://github.com/this-is-the-leo" target="_blank" rel="noopener noreferrer">Leo</a>
+            </span>
+            <div class="nav-divider" aria-hidden="true"></div>
+            <a class="nav-item" href="https://github.com/this-is-the-leo" target="_blank" rel="noopener noreferrer" data-i18n-title="nav_github" title="گیت‌هاب">
+                <span class="nav-label" data-i18n="nav_github">گیت‌هاب</span>
+            </a>
+            <a class="nav-item" href="https://www.linkedin.com/in/ilya-farahani-2160103b0" target="_blank" rel="noopener noreferrer" data-i18n-title="nav_linkedin" title="لینکدین">
+                <span class="nav-label" data-i18n="nav_linkedin">لینکدین</span>
+            </a>
+            <a class="nav-item" href="https://t.me/Here_is_leo" target="_blank" rel="noopener noreferrer" data-i18n-title="nav_telegram" title="تلگرام">
+                <span class="nav-label" data-i18n="nav_telegram">تلگرام</span>
+            </a>
+            <div class="nav-divider" aria-hidden="true"></div>
+            <div class="lang-switch" id="navLangSwitch" role="group" aria-label="Language switch">
+                <button type="button" class="lang-btn active" data-lang="fa">فارسی</button>
+                <button type="button" class="lang-btn" data-lang="en">English</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ============================================================
+         MAIN CONTENT
+         ============================================================ -->
+    <div class="container" id="mainContent">
+
+        <!-- ABOUT HEADER -->
+        <div class="about-header">
+            <span class="logo">🛡️</span>
+            <h1 data-i18n="about_title">درباره V-Tunnel</h1>
+            <p class="subtitle" data-i18n="about_subtitle">ابزار مدیریت DNS، پروکسی و VPN در بستر تلگرام</p>
+        </div>
+
+        <!-- SECTION: Mission -->
+        <div class="about-section">
+            <h2><span class="icon">🎯</span> <span data-i18n="section_mission_title">هدف پروژه</span></h2>
+            <p data-i18n="section_mission_p1">
+                <span class="highlight">V-Tunnel</span> با یک هدف ساده ساخته شده: <span class="highlight">راحتی</span>.
+                راحتی برای <span class="highlight">توسعه‌دهندگان</span>ی که برای تست و دیباگ نیاز به دسترسی سریع به سرورها دارند،
+                و راحتی برای <span class="highlight">کاربران عادی</span>ی که بدون دانش فنی و بدون دردسر می‌خواهند از اینترنت استفاده کنند.
+            </p>
+            <p data-i18n="section_mission_p2">
+                این پروژه قرار نیست پیچیده باشد یا کاربر را گیج کند. فقط یک ابزار ساده، تمیز و قابل اعتماد است
+                تا هر کسی بتواند <span class="highlight">بدون سختی</span> به لیست‌های به‌روز DNS، پروکسی و کانفیگ‌های VPN دسترسی داشته باشد.
+            </p>
+        </div>
+
+        <!-- SECTION: About Developer -->
+        <div class="about-section">
+            <h2><span class="icon">👨‍💻</span> <span data-i18n="section_dev_title">درباره من</span></h2>
+            <p data-i18n="section_dev_p1">
+                من <span class="highlight">ایلیا فراهانی</span> هستم، یک برنامه‌نویس و هکر کلاه‌سفید (اخلاقی).
+                حدود <span class="highlight">۴ تا ۵ سال</span> است که در دنیای برنامه‌نویسی و امنیت سایبری فعالیت می‌کنم.
+            </p>
+            <p data-i18n="section_dev_p2">
+                این پروژه بخشی از <span class="highlight">پورتفولیوی شخصی</span> من است تا بتوانم توانایی‌هایم را در کنار هم قرار دهم
+                و یک رزومه کاری قوی‌تر بسازم. هدفم این است که چیزهایی بسازم که هم برای خودم مفید باشد و هم به دیگران کمک کند.
+            </p>
+            <p data-i18n="section_dev_p3">
+                اگر ایده‌ای دارید یا پیشنهادی برای بهبود این پروژه دارید، خوشحال می‌شوم که بشنوم. 🚀
+            </p>
+        </div>
+
+        <!-- SECTION: How to Use -->
+        <div class="about-section">
+            <h2><span class="icon">🚀</span> <span data-i18n="section_howto_title">نحوه استفاده</span></h2>
+            <p data-i18n="section_howto_p1">
+                ۱. ربات تلگرام را با ارسال پیام <span class="highlight">/start</span> راه‌اندازی کنید.
+            </p>
+            <p data-i18n="section_howto_p2">
+                ۲. روی دکمه <span class="highlight">"باز کردن برنامه"</span> کلیک کنید تا Mini App باز شود.
+            </p>
+            <p data-i18n="section_howto_p3">
+                ۳. از بین سه بخش <span class="highlight">DNS</span>، <span class="highlight">Proxy</span> و <span class="highlight">VPN</span> یکی را انتخاب کنید.
+            </p>
+            <p data-i18n="section_howto_p4">
+                ۴. لیست سرورها را با فیلتر، جستجو و مرتب‌سازی مشاهده کنید.
+            </p>
+            <p data-i18n="section_howto_p5">
+                ۵. با کلیک روی دکمه <span class="highlight">"کپی"</span>، لینک یا کانفیگ مورد نظر را کپی کنید.
+            </p>
+        </div>
+
+        <!-- SECTION: Disclaimer -->
+        <div class="about-section">
+            <h2><span class="icon">⚠️</span> <span data-i18n="section_disclaimer_title">هشدارها</span></h2>
+            <p data-i18n="section_disclaimer_p1">
+                🔴 این پروژه صرفاً برای <span class="highlight">آزمایش و توسعه</span> طراحی شده است.
+            </p>
+            <p data-i18n="section_disclaimer_p2">
+                🔴 سرورها ممکن است در هر زمان <span class="highlight">قطع یا غیرفعال</span> شوند.
+            </p>
+            <p data-i18n="section_disclaimer_p3">
+                🔴 مسئولیت استفاده از این سرویس بر عهده <span class="highlight">کاربر</span> می‌باشد.
+            </p>
+            <p data-i18n="section_disclaimer_p4">
+                🔴 استفاده از این سرورها برای فعالیت‌های <span class="highlight">غیرقانونی</span> ممنوع است.
+            </p>
+        </div>
+
+        <!-- ===== DONATION BANNER ===== -->
+        <div class="donation-banner-wrapper">
+            <div class="donation-banner">
+                <div class="donation-content">
+                    <div class="donation-badge">
+                        <span class="dot"></span>
+                        <span data-i18n="donate_badge">🎉 حمایت از تولید محتوا</span>
+                    </div>
+
+                    <h2 class="donation-title" data-i18n="donate_title">
+                        اگر از محتوای من<br>
+                        <span class="highlight">لذت می‌برید</span>
+                    </h2>
+
+                    <p class="donation-sub" data-i18n="donate_sub">
+                        با <strong>یک قهوه ☕</strong> از من حمایت کنید تا<br>
+                        بتوانم محتوای باکیفیت‌تری تولید کنم.
+                    </p>
+
+                    <div class="donation-footer">
+                        <a href="https://www.coffeebede.com/leo" target="_blank" class="donate-btn" id="donateBtn">
+                            <span class="icon">☕</span>
+                            <span class="btn-text" data-i18n="donate_btn">برای من قهوه بخر</span>
+                        </a>
+
+                        <div class="donate-message">
+                            <span class="emoji">🎊</span>
+                            <span data-i18n="donate_msg">هر قهوه = <span class="highlight-msg">یک جشن تازه</span></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BACK BUTTON -->
+        <div class="btn-center">
+            <a href="index.html" class="back-btn" data-i18n="back_btn">🏠 بازگشت به صفحه اصلی</a>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <span class="footer-heart" aria-hidden="true">❤️</span>
+            <span data-i18n="footer_text">توسعه‌یافته توسط</span>
+            <a class="footer-name" href="https://github.com/this-is-the-leo" target="_blank" rel="noopener noreferrer">Leo</a>
+        </div>
+    </div>
+
+    <script>
+        // ================================================================
+        // MODULE: STATE
+        // ================================================================
+        var currentLang = localStorage.getItem('about_lang') || 'fa';
+
+        // ================================================================
+        // MODULE: TRANSLATIONS (i18n)
+        // ================================================================
+        var translations = {
+            fa: {
+                nav_home: 'خانه',
+                nav_about: 'درباره',
+                nav_brand: 'ساخته شده توسط',
+                nav_telegram: 'تلگرام',
+                nav_linkedin: 'لینکدین',
+                nav_github: 'گیت‌هاب',
+                about_title: 'درباره V-Tunnel',
+                about_subtitle: 'ابزار مدیریت DNS، پروکسی و VPN در بستر تلگرام',
+                section_mission_title: 'هدف پروژه',
+                section_mission_p1: '<span class="highlight">V-Tunnel</span> با یک هدف ساده ساخته شده: <span class="highlight">راحتی</span>. راحتی برای <span class="highlight">توسعه‌دهندگان</span>ی که برای تست و دیباگ نیاز به دسترسی سریع به سرورها دارند، و راحتی برای <span class="highlight">کاربران عادی</span>ی که بدون دانش فنی و بدون دردسر می‌خواهند از اینترنت استفاده کنند.',
+                section_mission_p2: 'این پروژه قرار نیست پیچیده باشد یا کاربر را گیج کند. فقط یک ابزار ساده، تمیز و قابل اعتماد است تا هر کسی بتواند <span class="highlight">بدون سختی</span> به لیست‌های به‌روز DNS، پروکسی و کانفیگ‌های VPN دسترسی داشته باشد.',
+                section_dev_title: 'درباره من',
+                section_dev_p1: 'من <span class="highlight">ایلیا فراهانی</span> هستم، یک برنامه‌نویس و هکر کلاه‌سفید (اخلاقی). حدود <span class="highlight">۴ تا ۵ سال</span> است که در دنیای برنامه‌نویسی و امنیت سایبری فعالیت می‌کنم.',
+                section_dev_p2: 'این پروژه بخشی از <span class="highlight">پورتفولیوی شخصی</span> من است تا بتوانم توانایی‌هایم را در کنار هم قرار دهم و یک رزومه کاری قوی‌تر بسازم. هدفم این است که چیزهایی بسازم که هم برای خودم مفید باشد و هم به دیگران کمک کند.',
+                section_dev_p3: 'اگر ایده‌ای دارید یا پیشنهادی برای بهبود این پروژه دارید، خوشحال می‌شوم که بشنوم. 🚀',
+                section_howto_title: 'نحوه استفاده',
+                section_howto_p1: '۱. ربات تلگرام را با ارسال پیام <span class="highlight">/start</span> راه‌اندازی کنید.',
+                section_howto_p2: '۲. روی دکمه <span class="highlight">"باز کردن برنامه"</span> کلیک کنید تا Mini App باز شود.',
+                section_howto_p3: '۳. از بین سه بخش <span class="highlight">DNS</span>، <span class="highlight">Proxy</span> و <span class="highlight">VPN</span> یکی را انتخاب کنید.',
+                section_howto_p4: '۴. لیست سرورها را با فیلتر، جستجو و مرتب‌سازی مشاهده کنید.',
+                section_howto_p5: '۵. با کلیک روی دکمه <span class="highlight">"کپی"</span>، لینک یا کانفیگ مورد نظر را کپی کنید.',
+                section_disclaimer_title: 'هشدارها',
+                section_disclaimer_p1: '🔴 این پروژه صرفاً برای <span class="highlight">آزمایش و توسعه</span> طراحی شده است.',
+                section_disclaimer_p2: '🔴 سرورها ممکن است در هر زمان <span class="highlight">قطع یا غیرفعال</span> شوند.',
+                section_disclaimer_p3: '🔴 مسئولیت استفاده از این سرویس بر عهده <span class="highlight">کاربر</span> می‌باشد.',
+                section_disclaimer_p4: '🔴 استفاده از این سرورها برای فعالیت‌های <span class="highlight">غیرقانونی</span> ممنوع است.',
+                donate_badge: '🎉 حمایت از تولید محتوا',
+                donate_title: 'اگر از محتوای من<br><span class="highlight">لذت می‌برید</span>',
+                donate_sub: 'با <strong>یک قهوه ☕</strong> از من حمایت کنید تا<br>بتوانم محتوای باکیفیت‌تری تولید کنم.',
+                donate_btn: 'برای من قهوه بخر',
+                donate_msg: 'هر قهوه = <span class="highlight-msg">یک جشن تازه</span>',
+                back_btn: '🏠 بازگشت به صفحه اصلی',
+                footer_text: 'توسعه‌یافته توسط'
+            },
+            en: {
+                nav_home: 'Home',
+                nav_about: 'About',
+                nav_brand: 'Made by',
+                nav_telegram: 'Telegram',
+                nav_linkedin: 'LinkedIn',
+                nav_github: 'GitHub',
+                about_title: 'About V-Tunnel',
+                about_subtitle: 'DNS, Proxy & VPN Management Tool on Telegram',
+                section_mission_title: 'Project Mission',
+                section_mission_p1: '<span class="highlight">V-Tunnel</span> was built with one simple goal: <span class="highlight">Convenience</span>. Convenience for <span class="highlight">developers</span> who need quick access to servers for testing and debugging, and convenience for <span class="highlight">regular users</span> who want to use the internet without technical knowledge or hassle.',
+                section_mission_p2: 'This project is not meant to be complicated or confusing. Just a simple, clean, and reliable tool so that anyone can access up-to-date lists of DNS, proxies, and VPN configs <span class="highlight">without difficulty</span>.',
+                section_dev_title: 'About Me',
+                section_dev_p1: 'I\'m <span class="highlight">Ilya Farahani</span>, a developer and white-hat (ethical) hacker. I\'ve been active in programming and cybersecurity for about <span class="highlight">4 to 5 years</span>.',
+                section_dev_p2: 'This project is part of my <span class="highlight">personal portfolio</span> to bring my skills together and build a stronger resume. My goal is to create things that are useful for myself and helpful to others.',
+                section_dev_p3: 'If you have any ideas or suggestions to improve this project, I\'d love to hear them. 🚀',
+                section_howto_title: 'How to Use',
+                section_howto_p1: '1. Start the Telegram bot by sending <span class="highlight">/start</span>.',
+                section_howto_p2: '2. Click the <span class="highlight">"Open App"</span> button to launch the Mini App.',
+                section_howto_p3: '3. Choose one of the three sections: <span class="highlight">DNS</span>, <span class="highlight">Proxy</span>, or <span class="highlight">VPN</span>.',
+                section_howto_p4: '4. Browse the server list using filters, search, and sorting.',
+                section_howto_p5: '5. Click the <span class="highlight">"Copy"</span> button to copy the link or config.',
+                section_disclaimer_title: 'Disclaimer',
+                section_disclaimer_p1: '🔴 This project is intended <span class="highlight">only for testing and development</span>.',
+                section_disclaimer_p2: '🔴 Servers may become <span class="highlight">unavailable or disabled</span> at any time.',
+                section_disclaimer_p3: '🔴 Responsibility for using this service lies with the <span class="highlight">user</span>.',
+                section_disclaimer_p4: '🔴 Using these servers for <span class="highlight">illegal activities</span> is prohibited.',
+                donate_badge: '🎉 Support Content Creation',
+                donate_title: 'If you enjoy<br><span class="highlight">my content</span>',
+                donate_sub: 'Support me with <strong>a coffee ☕</strong> so I can<br>create more high-quality content.',
+                donate_btn: 'Buy me a coffee',
+                donate_msg: 'Every coffee = <span class="highlight-msg">a new celebration</span>',
+                back_btn: '🏠 Back to Home',
+                footer_text: 'Developed by'
+            }
+        };
+
+        // ================================================================
+        // MODULE: i18n APPLY
+        // ================================================================
+        function applyTranslations() {
+            var dict = translations[currentLang];
+
+            document.querySelectorAll('[data-i18n]').forEach(function(el) {
+                var key = el.getAttribute('data-i18n');
+                if (dict[key] !== undefined) el.textContent = dict[key];
+            });
+
+            document.querySelectorAll('[data-i18n-html]').forEach(function(el) {
+                var key = el.getAttribute('data-i18n-html');
+                if (dict[key] !== undefined) el.innerHTML = dict[key];
+            });
+
+            document.documentElement.lang = currentLang;
+            document.documentElement.dir = currentLang === 'fa' ? 'rtl' : 'ltr';
+            document.body.classList.toggle('lang-en', currentLang === 'en');
+
+            document.querySelectorAll('.lang-btn').forEach(function(btn) {
+                btn.classList.toggle('active', btn.dataset.lang === currentLang);
+            });
+        }
+
+        // ================================================================
+        // MODULE: DONATION BUTTON RIPPLE EFFECT
+        // ================================================================
+        document.getElementById('donateBtn').addEventListener('click', function(e) {
+            var ripple = document.createElement('span');
+            ripple.classList.add('ripple-effect');
+            var rect = this.getBoundingClientRect();
+            var size = Math.max(rect.width, rect.height);
+            var x = e.clientX - rect.left - size / 2;
+            var y = e.clientY - rect.top - size / 2;
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            this.appendChild(ripple);
+            setTimeout(function() {
+                ripple.remove();
+            }, 600);
+        });
+
+        // ================================================================
+        // MODULE: EVENT LISTENERS
+        // ================================================================
+
+        // Language switch
+        document.getElementById('navLangSwitch').addEventListener('click', function(e) {
+            var btn = e.target.closest('.lang-btn');
+            if (!btn) return;
+            currentLang = btn.dataset.lang;
+            localStorage.setItem('about_lang', currentLang);
+            applyTranslations();
+        });
+
+        // ================================================================
+        // INIT
+        // ================================================================
+        applyTranslations();
+        console.log('About Page Loaded Successfully!');
+    </script>
+</body>
+</html>

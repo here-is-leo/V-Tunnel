@@ -1,0 +1,3097 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" id="htmlRoot">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title id="pageTitle">پروکسی‌های تلگرام - V-Tunnel</title>
+    <style>
+        /* ================================================================
+           1) ROOT VARIABLES & RESET
+           ================================================================ */
+        :root {
+            --bg: #05070d;
+            --bg-glow-1: rgba(74, 138, 181, 0.12);
+            --bg-glow-2: rgba(74, 181, 138, 0.08);
+            --glass-bg: rgba(16, 26, 42, 0.55);
+            --glass-border: rgba(120, 170, 255, 0.16);
+            --glass-blur: 18px;
+            --accent: #4a8ab5;
+            --accent-bright: #6cb6e8;
+            --accent-green: #4ade80;
+            --accent-red: #ef4444;
+            --text: #e8edf5;
+            --text-dim: #8db0d0;
+            --text-faint: #5a7a95;
+            --danger: #d45a6a;
+            --radius-xl: 34px;
+            --radius-lg: 26px;
+            --radius-md: 18px;
+            --radius-pill: 999px;
+            --shadow-soft: 0 20px 60px rgba(0, 0, 0, 0.55);
+            --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.35);
+            --neon-glow: 0 0 22px rgba(108, 182, 232, 0.16);
+            --ease: cubic-bezier(0.22, 1, 0.36, 1);
+            --copy-flash: rgba(74, 222, 128, 0.2);
+        }
+
+        /* تم روشن */
+        body.light-mode {
+            --bg: #e8edf5;
+            --bg-glow-1: rgba(74, 138, 181, 0.08);
+            --bg-glow-2: rgba(74, 181, 138, 0.05);
+            --glass-bg: rgba(255, 255, 255, 0.7);
+            --glass-border: rgba(0, 0, 0, 0.1);
+            --text: #1a1a2e;
+            --text-dim: #4a5a7a;
+            --text-faint: #7a8aaa;
+            --shadow-soft: 0 20px 60px rgba(0, 0, 0, 0.15);
+            --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.1);
+            --copy-flash: rgba(74, 222, 128, 0.3);
+        }
+
+        body.light-mode .nav-glass {
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        body.light-mode .nav-item:hover {
+            color: #1a1a2e;
+        }
+
+        body.light-mode .nav-brand-name:hover {
+            color: #1a1a2e;
+        }
+
+        body.light-mode .lang-btn:hover {
+            color: #1a1a2e;
+        }
+
+        body.light-mode .lang-btn.active {
+            background: linear-gradient(135deg, #4a8ab5, #2a6a95);
+            color: #fff;
+        }
+
+        body.light-mode .version-btn:hover {
+            color: #1a1a2e;
+        }
+
+        body.light-mode .version-btn.active {
+            background: linear-gradient(135deg, #4a8ab5, #2a6a95);
+            color: #fff;
+        }
+
+        body.light-mode .container {
+            background: rgba(255, 255, 255, 0.7);
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body.light-mode .proxy-item {
+            background: rgba(255, 255, 255, 0.6);
+            border-color: rgba(0, 0, 0, 0.08);
+        }
+
+        body.light-mode .proxy-item:hover {
+            background: rgba(255, 255, 255, 0.8);
+            border-color: rgba(74, 138, 181, 0.3);
+        }
+
+        body.light-mode .proxy-badge {
+            background: rgba(0, 0, 0, 0.06);
+            color: #1a1a2e;
+        }
+
+        body.light-mode .proxy-info {
+            background: rgba(0, 0, 0, 0.05);
+            color: #2a3a4a;
+        }
+
+        body.light-mode .copy-btn {
+            background: rgba(74, 138, 181, 0.15);
+            color: #1a1a2e;
+        }
+
+        body.light-mode .copy-btn:hover {
+            background: rgba(74, 138, 181, 0.25);
+        }
+
+        body.light-mode .header-stats {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        body.light-mode .search-wrap input {
+            background: rgba(255, 255, 255, 0.6);
+            color: #1a1a2e;
+        }
+
+        body.light-mode .filter-chip {
+            background: rgba(0, 0, 0, 0.05);
+            color: #4a5a7a;
+        }
+
+        body.light-mode .filter-chip.active {
+            background: linear-gradient(135deg, #4a8ab5, #2a6a95);
+            color: #fff;
+        }
+
+        body.light-mode .sort-btn {
+            color: #4a5a7a;
+        }
+
+        body.light-mode .sort-btn.active {
+            background: rgba(74, 138, 181, 0.15);
+            color: #1a1a2e;
+        }
+
+        body.light-mode .modal-box {
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        body.light-mode .rules-list {
+            background: rgba(0, 0, 0, 0.03);
+        }
+
+        body.light-mode .rules-list li {
+            color: #1a1a2e;
+        }
+
+        body.light-mode .footer {
+            border-top-color: rgba(0, 0, 0, 0.08);
+        }
+
+        body.light-mode .warning-banner {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            color: #1a1a2e;
+        }
+
+        body.light-mode .quick-guide-btn {
+            background: rgba(255, 255, 255, 0.8);
+            color: #1a1a2e;
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        body.light-mode .copy-toast-overlay {
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Vazirmatn', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background:
+                radial-gradient(circle at 15% 0%, var(--bg-glow-1), transparent 45%),
+                radial-gradient(circle at 85% 100%, var(--bg-glow-2), transparent 45%),
+                var(--bg);
+            background-attachment: fixed;
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 14px 28px;
+            transition: all 0.4s var(--ease);
+        }
+
+        body.lang-en {
+            font-family: 'Segoe UI', 'Inter', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+        ::selection {
+            background: rgba(108, 182, 232, 0.3);
+        }
+
+        a:focus-visible,
+        button:focus-visible,
+        input:focus-visible,
+        [tabindex]:focus-visible {
+            outline: 2px solid var(--accent-bright);
+            outline-offset: 3px;
+            border-radius: 8px;
+        }
+
+        /* ================================================================
+           2) SITE HEADER
+           ================================================================ */
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 600;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 16px 12px 10px;
+        }
+
+        .nav-glass {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2px;
+            max-width: 980px;
+            width: 100%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-pill);
+            padding: 6px 8px;
+            box-shadow: var(--shadow-soft), var(--neon-glow);
+            transition: box-shadow 0.3s var(--ease);
+        }
+
+        .nav-glass:hover {
+            box-shadow: var(--shadow-soft), 0 0 30px rgba(108, 182, 232, 0.22);
+        }
+
+        .nav-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: var(--radius-pill);
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: 500;
+            white-space: nowrap;
+            transition: all 0.25s var(--ease);
+            letter-spacing: 0.2px;
+        }
+
+        .nav-item:hover,
+        .nav-item:focus-visible {
+            background: rgba(74, 138, 181, 0.18);
+            color: #fff;
+            box-shadow: 0 0 16px rgba(108, 182, 232, 0.22);
+            transform: translateY(-1px);
+        }
+
+        body.light-mode .nav-item:hover,
+        body.light-mode .nav-item:focus-visible {
+            color: #1a1a2e;
+        }
+
+        .nav-brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 14px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--text-dim);
+            white-space: nowrap;
+        }
+
+        .nav-brand .brand-dot {
+            color: #ffd166;
+            font-size: 0.6rem;
+            filter: drop-shadow(0 0 6px rgba(255, 209, 102, 0.4));
+        }
+
+        .nav-brand-name {
+            color: var(--accent-bright);
+            font-weight: 700;
+            text-decoration: none;
+            border-bottom: 1px dotted transparent;
+            transition: 0.2s;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-brand-name:hover {
+            color: #fff;
+            border-bottom-color: var(--accent-bright);
+        }
+
+        body.light-mode .nav-brand-name:hover {
+            color: #1a1a2e;
+        }
+
+        .nav-divider {
+            width: 1px;
+            height: 22px;
+            background: rgba(120, 170, 255, 0.12);
+            margin: 0 3px;
+            flex-shrink: 0;
+        }
+
+        .nav-item .nav-label {
+            font-size: 0.78rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        .nav-brand .brand-label {
+            color: var(--text-faint);
+            font-size: 0.75rem;
+        }
+
+        /* ===== VERSION SWITCH ===== */
+        .version-switch {
+            display: flex;
+            gap: 2px;
+            background: rgba(0, 0, 0, 0.28);
+            padding: 3px;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--glass-border);
+        }
+
+        .version-btn {
+            border: none;
+            background: transparent;
+            color: var(--text-dim);
+            padding: 6px 14px;
+            border-radius: var(--radius-pill);
+            font-size: 0.72rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s var(--ease);
+            white-space: nowrap;
+            font-family: inherit;
+            letter-spacing: 0.3px;
+        }
+
+        .version-btn:hover {
+            color: #fff;
+        }
+
+        body.light-mode .version-btn:hover {
+            color: #1a1a2e;
+        }
+
+        .version-btn.active {
+            background: linear-gradient(135deg, #1a4a6a, #0d2a44);
+            color: #fff;
+            box-shadow: 0 0 14px rgba(108, 182, 232, 0.3), inset 0 0 12px rgba(108, 182, 232, 0.08);
+        }
+
+        body.light-mode .version-btn.active {
+            background: linear-gradient(135deg, #4a8ab5, #2a6a95);
+        }
+
+        .lang-switch {
+            display: flex;
+            gap: 2px;
+            background: rgba(0, 0, 0, 0.28);
+            padding: 3px;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--glass-border);
+        }
+
+        .lang-btn {
+            border: none;
+            background: transparent;
+            color: var(--text-dim);
+            padding: 6px 14px;
+            border-radius: var(--radius-pill);
+            font-size: 0.72rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s var(--ease);
+            white-space: nowrap;
+            letter-spacing: 0.3px;
+        }
+
+        .lang-btn:hover {
+            color: #fff;
+        }
+
+        body.light-mode .lang-btn:hover {
+            color: #1a1a2e;
+        }
+
+        .lang-btn.active {
+            background: linear-gradient(135deg, #1a4a6a, #0d2a44);
+            color: #fff;
+            box-shadow: 0 0 14px rgba(108, 182, 232, 0.3), inset 0 0 12px rgba(108, 182, 232, 0.08);
+        }
+
+        body.light-mode .lang-btn.active {
+            background: linear-gradient(135deg, #4a8ab5, #2a6a95);
+        }
+
+        @media (max-width: 640px) {
+            .nav-glass {
+                flex-direction: column;
+                border-radius: 22px;
+                padding: 12px;
+                align-items: stretch;
+            }
+            .nav-item,
+            .nav-brand {
+                justify-content: center;
+                width: 100%;
+                padding: 8px 12px;
+            }
+            .nav-divider {
+                display: none;
+            }
+            .version-switch {
+                width: 100%;
+                justify-content: center;
+            }
+            .lang-switch {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* ================================================================
+           3) MODAL (TERMS & CONDITIONS)
+           ================================================================ */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.82);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            padding: 20px;
+        }
+
+        .modal-box {
+            background: linear-gradient(145deg, rgba(26, 42, 62, 0.9), rgba(15, 26, 42, 0.95));
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border-radius: var(--radius-xl);
+            max-width: 580px;
+            width: 100%;
+            padding: 36px 32px 32px;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-soft), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            text-align: center;
+            max-height: 90vh;
+            overflow-y: auto;
+            transition: all 0.4s var(--ease);
+        }
+
+        .modal-box::-webkit-scrollbar {
+            width: 4px;
+        }
+        .modal-box::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+        }
+        .modal-box::-webkit-scrollbar-thumb {
+            background: #2a5a7a;
+            border-radius: 10px;
+        }
+
+        .modal-icon {
+            font-size: 3.4rem;
+            margin-bottom: 12px;
+            display: block;
+        }
+        .modal-title {
+            font-size: 1.55rem;
+            font-weight: 800;
+            color: #b7d4f0;
+            margin-bottom: 8px;
+        }
+        .modal-subtitle {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            margin-bottom: 22px;
+            line-height: 1.7;
+        }
+
+        .rules-list {
+            text-align: start;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: var(--radius-md);
+            padding: 18px 22px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(60, 100, 140, 0.1);
+        }
+
+        .rules-list li {
+            list-style: none;
+            padding: 7px 0;
+            font-size: 0.9rem;
+            color: #b0cce0;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            border-bottom: 1px solid rgba(60, 100, 140, 0.06);
+        }
+
+        .rules-list li:last-child {
+            border-bottom: none;
+        }
+
+        .rules-list li .check {
+            color: var(--accent-green);
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 8px;
+        }
+
+        .btn-accept,
+        .btn-reject {
+            border: none;
+            padding: 14px 40px;
+            border-radius: var(--radius-pill);
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s var(--ease);
+            flex: 1;
+            min-width: 140px;
+        }
+
+        .btn-accept {
+            background: linear-gradient(135deg, #1a6a4a, #0d4a2a);
+            color: #fff;
+            border: 1px solid rgba(74, 222, 128, 0.3);
+            box-shadow: 0 4px 24px rgba(74, 222, 128, 0.15);
+        }
+
+        .btn-accept:hover {
+            transform: scale(1.03);
+            box-shadow: 0 6px 32px rgba(74, 222, 128, 0.25);
+            background: linear-gradient(135deg, #1f7a54, #0f5a34);
+        }
+
+        .btn-accept:active {
+            transform: scale(0.95);
+        }
+
+        .btn-reject {
+            background: rgba(60, 60, 80, 0.3);
+            border: 1px solid rgba(212, 90, 106, 0.25);
+            color: #d8b0b0;
+        }
+
+        .btn-reject:hover {
+            background: rgba(212, 90, 106, 0.18);
+            border-color: rgba(212, 90, 106, 0.4);
+            color: #ffc7c7;
+        }
+
+        .btn-reject:active {
+            transform: scale(0.95);
+        }
+
+        .reject-screen {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: var(--bg);
+            color: var(--text);
+            text-align: center;
+            padding: 20px;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .reject-icon {
+            font-size: 4rem;
+        }
+        .reject-title {
+            color: var(--danger);
+            font-size: 1.4rem;
+        }
+        .reject-text {
+            color: var(--text-dim);
+            max-width: 420px;
+            line-height: 1.7;
+        }
+
+        .reject-btn {
+            background: linear-gradient(135deg, #1a3a5a, #0d2a44);
+            border: 1px solid var(--glass-border);
+            color: #fff;
+            padding: 13px 34px;
+            border-radius: var(--radius-pill);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 6px;
+            transition: 0.25s var(--ease);
+        }
+
+        .reject-btn:hover {
+            transform: scale(1.03);
+        }
+
+        /* ================================================================
+           4) WARNING BANNER
+           ================================================================ */
+        .warning-banner {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #1a1a2e;
+            padding: 14px 20px;
+            border-radius: var(--radius-md);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            box-shadow: 0 4px 24px rgba(245, 158, 11, 0.15);
+            font-weight: 500;
+        }
+
+        .warning-banner .icon {
+            font-size: 1.8rem;
+            flex-shrink: 0;
+        }
+
+        .warning-banner .text {
+            flex: 1;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        .warning-banner .text strong {
+            font-weight: 700;
+        }
+
+        .warning-banner .close-btn {
+            background: rgba(0, 0, 0, 0.15);
+            border: none;
+            color: #1a1a2e;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.25s;
+            flex-shrink: 0;
+        }
+
+        .warning-banner .close-btn:hover {
+            background: rgba(0, 0, 0, 0.25);
+            transform: rotate(90deg);
+        }
+
+        /* ================================================================
+           5) MAIN CONTAINER
+           ================================================================ */
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border-radius: var(--radius-xl);
+            padding: 28px 24px 32px;
+            box-shadow: var(--shadow-soft), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--glass-border);
+            display: none;
+            margin-top: 14px;
+            transition: all 0.4s var(--ease);
+        }
+
+        .main-header {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(60, 100, 140, 0.18);
+            padding-bottom: 18px;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .header-top h1 {
+            font-size: 1.9rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #8bb8e8, #4a8ab5, #2a6a95);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-top h1 .emoji {
+            font-size: 2.1rem;
+            -webkit-text-fill-color: initial;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .theme-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: var(--radius-pill);
+            background: linear-gradient(135deg, #1a3a5a, #0d2a44);
+            border: 1px solid rgba(60, 100, 140, 0.2);
+            color: #eef4fa;
+            cursor: pointer;
+            transition: all 0.3s var(--ease);
+            font-size: 0.8rem;
+            font-weight: 600;
+            font-family: inherit;
+        }
+
+        .theme-toggle:hover {
+            background: linear-gradient(135deg, #2a5a7a, #1a3a5a);
+            border-color: var(--accent);
+            transform: scale(1.04);
+        }
+
+        body.light-mode .theme-toggle {
+            background: rgba(0, 0, 0, 0.08);
+            color: #1a1a2e;
+        }
+
+        body.light-mode .theme-toggle:hover {
+            background: rgba(0, 0, 0, 0.15);
+        }
+
+        .refresh-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            border-radius: var(--radius-pill);
+            background: linear-gradient(135deg, #1a3a5a, #0d2a44);
+            border: 1px solid rgba(60, 100, 140, 0.2);
+            color: #eef4fa;
+            cursor: pointer;
+            transition: all 0.3s var(--ease);
+            font-size: 0.8rem;
+            font-weight: 600;
+            font-family: inherit;
+        }
+
+        .refresh-btn:hover {
+            background: linear-gradient(135deg, #2a5a7a, #1a3a5a);
+            border-color: var(--accent);
+            transform: scale(1.04);
+            box-shadow: 0 4px 20px rgba(108, 182, 232, 0.18);
+        }
+
+        body.light-mode .refresh-btn {
+            background: rgba(0, 0, 0, 0.08);
+            color: #1a1a2e;
+        }
+
+        body.light-mode .refresh-btn:hover {
+            background: rgba(0, 0, 0, 0.15);
+        }
+
+        .refresh-btn:active .refresh-icon {
+            animation: spin 0.8s linear;
+        }
+
+        .refresh-btn.loading .refresh-icon {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .header-stats {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 7px 20px;
+            border-radius: var(--radius-pill);
+            border: 1px solid rgba(60, 100, 140, 0.2);
+        }
+
+        .header-stats .count {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #b7d4f0;
+        }
+        .header-stats .count strong {
+            color: #fff;
+            font-size: 1.25rem;
+        }
+
+        .header-stats .dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .header-stats .total-label {
+            color: var(--text-faint);
+            font-size: 0.8rem;
+        }
+
+        body.light-mode .header-stats .count {
+            color: #4a5a7a;
+        }
+        body.light-mode .header-stats .count strong {
+            color: #1a1a2e;
+        }
+
+        /* ----- filters ----- */
+        .filters-section {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            flex-wrap: nowrap;
+            padding: 10px 12px;
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(60, 100, 140, 0.08);
+            scrollbar-width: thin;
+            scrollbar-color: #2a5a7a transparent;
+        }
+
+        .filters-section::-webkit-scrollbar {
+            height: 5px;
+        }
+        .filters-section::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .filters-section::-webkit-scrollbar-thumb {
+            background: #2a5a7a;
+            border-radius: 10px;
+        }
+
+        .filter-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: var(--radius-pill);
+            background: rgba(20, 40, 65, 0.5);
+            border: 1px solid rgba(60, 100, 140, 0.15);
+            cursor: pointer;
+            transition: all 0.25s var(--ease);
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #a0bdd8;
+            user-select: none;
+            flex-shrink: 0;
+            white-space: nowrap;
+        }
+
+        .filter-chip:hover {
+            background: rgba(40, 70, 110, 0.5);
+            border-color: rgba(108, 182, 232, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0, 40, 80, 0.3);
+        }
+
+        .filter-chip .chip-count {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0 7px;
+            border-radius: var(--radius-pill);
+            font-size: 0.65rem;
+            color: #7a9fc0;
+        }
+
+        .filter-chip.active {
+            background: linear-gradient(135deg, #1a4a6a, #0d2a44);
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(108, 182, 232, 0.15), inset 0 0 20px rgba(108, 182, 232, 0.05);
+            color: #fff;
+        }
+
+        .filter-chip.active .chip-count {
+            background: rgba(255, 255, 255, 0.1);
+            color: #b7d4f0;
+        }
+
+        body.light-mode .filter-chip {
+            background: rgba(0, 0, 0, 0.05);
+            color: #4a5a7a;
+        }
+
+        body.light-mode .filter-chip.active {
+            background: linear-gradient(135deg, #4a8ab5, #2a6a95);
+            color: #fff;
+        }
+
+        .filter-chip .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .filter-chip .status-dot.online {
+            background: var(--accent-green);
+        }
+
+        .filter-chip .status-dot.offline {
+            background: var(--accent-red);
+        }
+
+        /* ----- toolbar ----- */
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 20px 0 22px;
+            align-items: center;
+        }
+
+        .search-wrap {
+            flex: 2;
+            min-width: 200px;
+            position: relative;
+        }
+
+        .search-wrap input {
+            width: 100%;
+            padding: 12px 44px;
+            border-radius: var(--radius-pill);
+            border: 1px solid rgba(60, 100, 140, 0.2);
+            background: rgba(8, 16, 32, 0.6);
+            color: var(--text);
+            font-size: 0.95rem;
+            outline: none;
+            transition: 0.3s var(--ease);
+        }
+
+        .search-wrap input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(108, 182, 232, 0.1);
+        }
+        .search-wrap input::placeholder {
+            color: #5a7a95;
+        }
+
+        .search-wrap .search-icon {
+            position: absolute;
+            inset-inline-start: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1rem;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        /* Search suggestions */
+        .search-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--glass-blur));
+            border-radius: var(--radius-md);
+            border: 1px solid var(--glass-border);
+            margin-top: 8px;
+            z-index: 100;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .search-suggestions::-webkit-scrollbar {
+            width: 4px;
+        }
+        .search-suggestions::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+        }
+        .search-suggestions::-webkit-scrollbar-thumb {
+            background: #2a5a7a;
+            border-radius: 10px;
+        }
+
+        .search-suggestions .suggestion-item {
+            padding: 10px 16px;
+            cursor: pointer;
+            transition: background 0.2s;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-dim);
+            font-size: 0.9rem;
+        }
+
+        .search-suggestions .suggestion-item:hover {
+            background: rgba(74, 138, 181, 0.15);
+        }
+
+        .search-suggestions .suggestion-item:last-child {
+            border-bottom: none;
+        }
+
+        .sort-group {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            background: rgba(8, 16, 32, 0.4);
+            padding: 4px 6px;
+            border-radius: var(--radius-pill);
+            border: 1px solid rgba(60, 100, 140, 0.12);
+            flex-wrap: wrap;
+        }
+
+        .sort-group label {
+            font-size: 0.8rem;
+            color: #7a9fc0;
+            padding: 0 8px;
+        }
+
+        .sort-btn {
+            padding: 6px 14px;
+            border-radius: var(--radius-pill);
+            border: 1px solid transparent;
+            background: transparent;
+            color: #8db0d0;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+
+        .sort-btn:hover {
+            background: rgba(60, 100, 140, 0.15);
+        }
+
+        .sort-btn.active {
+            background: rgba(108, 182, 232, 0.15);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        body.light-mode .sort-btn {
+            color: #4a5a7a;
+        }
+
+        body.light-mode .sort-btn.active {
+            background: rgba(74, 138, 181, 0.15);
+            color: #1a1a2e;
+        }
+
+        /* ----- proxy list ----- */
+        .proxy-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-top: 4px;
+        }
+
+        .proxy-item {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(145deg, rgba(20, 40, 65, 0.5), rgba(10, 22, 40, 0.6));
+            backdrop-filter: blur(4px);
+            border-radius: var(--radius-lg);
+            padding: 18px 20px;
+            border-inline-start: 5px solid #8a5a2a;
+            border: 1px solid rgba(60, 100, 140, 0.08);
+            border-inline-start-width: 5px;
+            transition: all 0.35s var(--ease);
+            box-shadow: var(--shadow-card);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .proxy-item:hover {
+            background: linear-gradient(145deg, rgba(30, 60, 90, 0.55), rgba(15, 35, 60, 0.65));
+            border-inline-start-color: #aa7a3a;
+            border-color: rgba(108, 182, 232, 0.25);
+            transform: translateY(-4px) scale(1.01);
+            box-shadow: 0 12px 40px rgba(0, 20, 50, 0.5), 0 0 18px rgba(108, 182, 232, 0.1);
+        }
+
+        .proxy-item:active {
+            transform: scale(0.97);
+        }
+
+        /* افکت فلش کپی شدن */
+        .proxy-item.copy-flash {
+            animation: copyFlash 0.6s ease;
+        }
+
+        @keyframes copyFlash {
+            0% {
+                border-color: var(--accent-green);
+                box-shadow: 0 0 0 0 var(--copy-flash);
+            }
+            50% {
+                border-color: var(--accent-green);
+                box-shadow: 0 0 40px 20px var(--copy-flash);
+            }
+            100% {
+                border-color: var(--glass-border);
+                box-shadow: none;
+            }
+        }
+
+        body.light-mode .proxy-item {
+            background: rgba(255, 255, 255, 0.6);
+            border-color: rgba(0, 0, 0, 0.08);
+        }
+
+        body.light-mode .proxy-item:hover {
+            background: rgba(255, 255, 255, 0.8);
+            border-color: rgba(74, 138, 181, 0.3);
+        }
+
+        .proxy-item .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.25);
+            transform: scale(0);
+            pointer-events: none;
+            animation: rippleAnim 0.7s ease-out;
+        }
+
+        @keyframes rippleAnim {
+            to {
+                transform: scale(3.5);
+                opacity: 0;
+            }
+        }
+
+        .proxy-item .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 3px 12px;
+            border-radius: var(--radius-pill);
+            font-size: 0.7rem;
+            font-weight: 600;
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+        }
+
+        .proxy-item .status-badge.offline {
+            background: rgba(239, 68, 68, 0.15);
+            color: #ef4444;
+        }
+
+        .proxy-item .status-badge .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10b981;
+            animation: pulse-dot 2s infinite;
+        }
+
+        .proxy-item .status-badge.offline .dot {
+            background: #ef4444;
+            animation: none;
+        }
+
+        @keyframes pulse-dot {
+            0%,
+            100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+
+        .proxy-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px 14px;
+        }
+
+        .proxy-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 0, 0, 0.35);
+            padding: 5px 16px;
+            border-radius: var(--radius-pill);
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #c8dcee;
+            border: 1px solid rgba(60, 100, 140, 0.15);
+        }
+
+        body.light-mode .proxy-badge {
+            background: rgba(0, 0, 0, 0.06);
+            color: #1a1a2e;
+        }
+
+        .proxy-badge .type-icon {
+            font-size: 1rem;
+        }
+
+        .proxy-badge .secret-label-short {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0 10px;
+            border-radius: 12px;
+            font-size: 0.65rem;
+            color: #8db0d0;
+            font-weight: 500;
+        }
+
+        .proxy-item .actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 4px;
+        }
+
+        .proxy-item .actions button {
+            padding: 6px 14px;
+            border: none;
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            font-size: 0.72rem;
+            font-weight: 600;
+            transition: all 0.3s var(--ease);
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-family: inherit;
+        }
+
+        .proxy-item .actions button:hover {
+            transform: scale(1.05);
+        }
+
+        .proxy-item .actions button:active {
+            transform: scale(0.93);
+        }
+
+        .btn-copy {
+            background: linear-gradient(135deg, #1a3a5a, #0d2a44);
+            color: #eef4fa;
+            border: 1px solid rgba(60, 100, 140, 0.2) !important;
+        }
+
+        .btn-copy:hover {
+            background: linear-gradient(135deg, #2a5a7a, #1a3a5a);
+            border-color: var(--accent) !important;
+            box-shadow: 0 4px 20px rgba(108, 182, 232, 0.18);
+        }
+
+        .btn-copy.copied {
+            background: linear-gradient(135deg, #1a6a4a, #0d4a2a) !important;
+            border-color: #2a9a6a !important;
+        }
+
+        body.light-mode .btn-copy {
+            background: rgba(0, 0, 0, 0.08);
+            color: #1a1a2e;
+        }
+
+        body.light-mode .btn-copy:hover {
+            background: rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-fav {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-dim);
+        }
+
+        .btn-fav:hover {
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .btn-fav.favorited {
+            background: rgba(245, 158, 11, 0.2);
+            color: #f59e0b;
+        }
+
+        .btn-fav.favorited:hover {
+            background: rgba(245, 158, 11, 0.3);
+        }
+
+        body.light-mode .btn-fav {
+            background: rgba(0, 0, 0, 0.04);
+        }
+
+        body.light-mode .btn-fav:hover {
+            background: rgba(0, 0, 0, 0.08);
+        }
+
+        body.light-mode .btn-fav.favorited {
+            background: rgba(245, 158, 11, 0.15);
+        }
+
+        .btn-report {
+            background: rgba(239, 68, 68, 0.12);
+            color: #ef4444;
+        }
+
+        .btn-report:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
+        body.light-mode .btn-report {
+            background: rgba(239, 68, 68, 0.08);
+        }
+
+        body.light-mode .btn-report:hover {
+            background: rgba(239, 68, 68, 0.15);
+        }
+
+        .btn-report.reported {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+        }
+
+        .proxy-info {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 12px 16px;
+            border-radius: 14px;
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            font-size: 0.7rem;
+            word-break: break-all;
+            color: #b0cce0;
+            border: 1px solid rgba(60, 100, 140, 0.08);
+            direction: ltr;
+            text-align: left;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 16px;
+            line-height: 1.6;
+            transition: 0.2s;
+        }
+
+        .proxy-item:hover .proxy-info {
+            border-color: rgba(108, 182, 232, 0.18);
+        }
+
+        body.light-mode .proxy-info {
+            background: rgba(0, 0, 0, 0.05);
+            color: #2a3a4a;
+        }
+
+        .proxy-info .ip-port {
+            color: #8db0d0;
+        }
+
+        body.light-mode .proxy-info .ip-port {
+            color: #4a5a7a;
+        }
+
+        .proxy-info .secret-full {
+            color: #6a8aaa;
+            font-size: 0.65rem;
+        }
+
+        body.light-mode .proxy-info .secret-full {
+            color: #5a7a9a;
+        }
+
+        .proxy-item .rating {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        body.light-mode .proxy-item .rating {
+            border-top-color: rgba(0, 0, 0, 0.06);
+        }
+
+        .proxy-item .rating .stars {
+            display: flex;
+            gap: 3px;
+            font-size: 1.2rem;
+        }
+
+        .proxy-item .rating .stars span {
+            cursor: pointer;
+            transition: all 0.2s var(--ease);
+            opacity: 0.25;
+        }
+
+        .proxy-item .rating .stars span:hover,
+        .proxy-item .rating .stars span.active {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+
+        .proxy-item .rating .score {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            font-weight: 500;
+        }
+
+        body.light-mode .proxy-item .rating .score {
+            color: #4a5a7a;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-faint);
+            font-size: 1.05rem;
+        }
+        .empty-state .big-icon {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 16px;
+        }
+
+        /* Copy notification overlay */
+        .copy-toast-overlay {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.8);
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius-xl);
+            padding: 30px 50px;
+            border: 1px solid var(--accent-green);
+            box-shadow: 0 0 60px rgba(74, 222, 128, 0.2);
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.4s var(--ease);
+            text-align: center;
+        }
+
+        .copy-toast-overlay.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .copy-toast-overlay .icon {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .copy-toast-overlay .text {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .copy-toast-overlay .sub {
+            font-size: 0.85rem;
+            color: var(--text-dim);
+            margin-top: 4px;
+        }
+
+        body.light-mode .copy-toast-overlay {
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        /* ----- quick guide ----- */
+        .quick-guide-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1a4a6a, #0d2a44);
+            border: 1px solid var(--glass-border);
+            color: #eef4fa;
+            font-size: 1.4rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.3s var(--ease);
+            z-index: 500;
+            font-family: inherit;
+        }
+
+        .quick-guide-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(108, 182, 232, 0.2);
+        }
+
+        body.light-mode .quick-guide-btn {
+            background: rgba(255, 255, 255, 0.8);
+            color: #1a1a2e;
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .quick-guide {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .quick-guide .guide-content {
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--glass-blur));
+            border-radius: var(--radius-xl);
+            padding: 32px;
+            max-width: 400px;
+            width: 100%;
+            border: 1px solid var(--glass-border);
+            text-align: center;
+        }
+
+        body.light-mode .quick-guide .guide-content {
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .quick-guide .guide-content h3 {
+            font-size: 1.4rem;
+            margin-bottom: 16px;
+            color: var(--accent-bright);
+        }
+
+        body.light-mode .quick-guide .guide-content h3 {
+            color: #2a5a7a;
+        }
+
+        .quick-guide .guide-content ul {
+            list-style: none;
+            padding: 0;
+            text-align: start;
+        }
+
+        .quick-guide .guide-content li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-dim);
+            font-size: 0.95rem;
+        }
+
+        body.light-mode .quick-guide .guide-content li {
+            border-bottom-color: rgba(0, 0, 0, 0.06);
+            color: #4a5a7a;
+        }
+
+        .quick-guide .guide-content li strong {
+            color: var(--text);
+        }
+
+        body.light-mode .quick-guide .guide-content li strong {
+            color: #1a1a2e;
+        }
+
+        .quick-guide .guide-content .close-guide-btn {
+            margin-top: 16px;
+            padding: 10px 30px;
+            border-radius: var(--radius-pill);
+            border: none;
+            background: linear-gradient(135deg, #1a3a5a, #0d2a44);
+            color: #eef4fa;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s var(--ease);
+            font-family: inherit;
+        }
+
+        .quick-guide .guide-content .close-guide-btn:hover {
+            background: linear-gradient(135deg, #2a5a7a, #1a3a5a);
+            transform: scale(1.02);
+        }
+
+        body.light-mode .quick-guide .guide-content .close-guide-btn {
+            background: rgba(0, 0, 0, 0.08);
+            color: #1a1a2e;
+        }
+
+        body.light-mode .quick-guide .guide-content .close-guide-btn:hover {
+            background: rgba(0, 0, 0, 0.15);
+        }
+
+        /* ----- footer ----- */
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(60, 100, 140, 0.12);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: var(--text-faint);
+            text-align: center;
+            flex-wrap: wrap;
+        }
+
+        body.light-mode .footer {
+            border-top-color: rgba(0, 0, 0, 0.08);
+        }
+
+        .footer .footer-heart {
+            color: var(--danger);
+        }
+
+        .footer .footer-name {
+            color: #7aa0c0;
+            text-decoration: none;
+            font-weight: 700;
+            transition: 0.2s;
+            border-bottom: 1px dotted transparent;
+        }
+
+        .footer .footer-name:hover {
+            color: #b7d4f0;
+            border-bottom-color: var(--accent);
+        }
+
+        body.light-mode .footer .footer-name {
+            color: #4a6a8a;
+        }
+
+        body.light-mode .footer .footer-name:hover {
+            color: #2a4a6a;
+        }
+
+        /* ----- toast ----- */
+        .toast {
+            position: fixed;
+            bottom: 26px;
+            left: 50%;
+            transform: translateX(-50%) translateY(16px);
+            background: linear-gradient(135deg, #1a6a4a, #0d4a2a);
+            color: #fff;
+            padding: 13px 28px;
+            border-radius: var(--radius-pill);
+            font-weight: 600;
+            font-size: 0.9rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+            z-index: 3000;
+            border: 1px solid rgba(74, 222, 128, 0.35);
+            white-space: nowrap;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ================================================================
+           6) RESPONSIVE
+           ================================================================ */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 16px;
+                border-radius: 26px;
+            }
+            .header-top h1 {
+                font-size: 1.5rem;
+            }
+            .header-stats {
+                padding: 5px 16px;
+                font-size: 0.85rem;
+            }
+            .header-controls {
+                flex-direction: column;
+                align-items: stretch;
+                width: 100%;
+            }
+            .refresh-btn,
+            .theme-toggle {
+                justify-content: center;
+            }
+            .filter-chip {
+                font-size: 0.7rem;
+                padding: 5px 10px;
+            }
+            .proxy-item {
+                padding: 14px 14px;
+            }
+            .proxy-info {
+                font-size: 0.6rem;
+                padding: 8px 12px;
+            }
+            .proxy-item .actions button {
+                font-size: 0.65rem;
+                padding: 5px 10px;
+            }
+            .proxy-item .rating .stars {
+                font-size: 1rem;
+            }
+            .toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .sort-group {
+                justify-content: center;
+                padding: 6px 10px;
+            }
+            .warning-banner {
+                padding: 12px 16px;
+                font-size: 0.85rem;
+            }
+            .warning-banner .icon {
+                font-size: 1.4rem;
+            }
+            .modal-box {
+                padding: 28px 20px 24px;
+                margin: 10px;
+            }
+            .modal-title {
+                font-size: 1.3rem;
+            }
+            .rules-list {
+                padding: 14px 16px;
+            }
+            .rules-list li {
+                font-size: 0.8rem;
+            }
+            .btn-accept,
+            .btn-reject {
+                padding: 12px 20px;
+                font-size: 0.9rem;
+                min-width: 100px;
+            }
+            .quick-guide-btn {
+                bottom: 12px;
+                right: 12px;
+                width: 42px;
+                height: 42px;
+                font-size: 1.2rem;
+            }
+            .copy-toast-overlay {
+                padding: 24px 30px;
+            }
+            .copy-toast-overlay .icon {
+                font-size: 2.4rem;
+            }
+            .copy-toast-overlay .text {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 0 6px 20px;
+            }
+            .container {
+                padding: 16px 12px;
+                border-radius: 20px;
+            }
+            .header-top {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+            .header-top h1 {
+                font-size: 1.35rem;
+                justify-content: center;
+            }
+            .header-stats {
+                justify-content: center;
+                font-size: 0.75rem;
+                padding: 4px 12px;
+            }
+            .filter-chip {
+                font-size: 0.6rem;
+                padding: 4px 8px;
+            }
+            .proxy-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+            .proxy-item .actions {
+                justify-content: center;
+            }
+            .proxy-item .actions button {
+                flex: 1;
+                justify-content: center;
+                min-width: 60px;
+            }
+            .warning-banner {
+                flex-direction: column;
+                text-align: center;
+                padding: 12px 14px;
+            }
+            .warning-banner .close-btn {
+                align-self: flex-end;
+            }
+            .modal-box {
+                padding: 22px 16px 20px;
+            }
+            .modal-title {
+                font-size: 1.15rem;
+            }
+            .modal-icon {
+                font-size: 2.8rem;
+            }
+            .modal-actions {
+                flex-direction: column;
+            }
+            .btn-accept,
+            .btn-reject {
+                width: 100%;
+                justify-content: center;
+            }
+            .quick-guide-btn {
+                bottom: 10px;
+                right: 10px;
+                width: 38px;
+                height: 38px;
+                font-size: 1rem;
+            }
+            .quick-guide .guide-content {
+                padding: 20px;
+            }
+            .quick-guide .guide-content h3 {
+                font-size: 1.2rem;
+            }
+            .quick-guide .guide-content li {
+                font-size: 0.85rem;
+                padding: 8px 0;
+            }
+            .copy-toast-overlay {
+                padding: 20px 24px;
+                max-width: 90%;
+            }
+            .copy-toast-overlay .icon {
+                font-size: 2rem;
+            }
+            .copy-toast-overlay .text {
+                font-size: 0.95rem;
+            }
+            .copy-toast-overlay .sub {
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+         SITE HEADER
+         ============================================================ -->
+    <header class="site-header" role="banner">
+        <nav class="nav-glass" aria-label="Main navigation">
+            <a class="nav-item" href="index.html" data-i18n-title="nav_home" title="خانه">
+                <span class="nav-label" data-i18n="nav_home">خانه</span>
+            </a>
+            <div class="nav-divider" aria-hidden="true"></div>
+            <a class="nav-item" href="About.html" data-i18n-title="nav_about" title="درباره">
+                <span class="nav-label" data-i18n="nav_about">درباره</span>
+            </a>
+            <div class="nav-divider" aria-hidden="true"></div>
+            <span class="nav-brand">
+                <span class="brand-dot">◆</span>
+                <span class="brand-label" data-i18n="nav_brand">ساخته شده توسط</span>
+                <a class="nav-brand-name" href="https://github.com/this-is-the-leo" target="_blank" rel="noopener noreferrer">Leo</a>
+            </span>
+            <div class="nav-divider" aria-hidden="true"></div>
+            <a class="nav-item" href="https://github.com/this-is-the-leo" target="_blank" rel="noopener noreferrer" data-i18n-title="nav_github" title="گیت‌هاب">
+                <span class="nav-label" data-i18n="nav_github">گیت‌هاب</span>
+            </a>
+            <a class="nav-item" href="https://www.linkedin.com/in/ilya-farahani-2160103b0" target="_blank" rel="noopener noreferrer" data-i18n-title="nav_linkedin" title="لینکدین">
+                <span class="nav-label" data-i18n="nav_linkedin">لینکدین</span>
+            </a>
+            <a class="nav-item" href="https://t.me/Here_is_leo" target="_blank" rel="noopener noreferrer" data-i18n-title="nav_telegram" title="تلگرام">
+                <span class="nav-label" data-i18n="nav_telegram">تلگرام</span>
+            </a>
+            <div class="nav-divider" aria-hidden="true"></div>
+            <div class="version-switch" id="navVersionSwitch" role="group" aria-label="Version switch">
+                <button type="button" class="version-btn active" data-version="2">✨ V2</button>
+                <button type="button" class="version-btn" data-version="1">📦 V1</button>
+            </div>
+            <div class="nav-divider" aria-hidden="true"></div>
+            <div class="lang-switch" id="navLangSwitch" role="group" aria-label="Language switch">
+                <button type="button" class="lang-btn active" data-lang="fa">فارسی</button>
+                <button type="button" class="lang-btn" data-lang="en">English</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ============================================================
+         MODAL (TERMS & CONDITIONS)
+         ============================================================ -->
+    <div class="modal-overlay" id="termsModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal-box">
+            <span class="modal-icon" aria-hidden="true">📜</span>
+            <h2 class="modal-title" id="modalTitle" data-i18n="modal_title">شرایط و قوانین استفاده</h2>
+            <p class="modal-subtitle" data-i18n="modal_subtitle">
+                لطفاً قبل از استفاده از این سرویس، قوانین زیر را مطالعه و تأیید کنید.
+            </p>
+
+            <ul class="rules-list">
+                <li>
+                    <span class="check" aria-hidden="true">✅</span>
+                    <span data-i18n-html="rule1">استفاده از این سرویس صرفاً برای <strong>آزمایش و توسعه</strong> مجاز است.</span>
+                </li>
+                <li>
+                    <span class="check" aria-hidden="true">✅</span>
+                    <span data-i18n-html="rule2">پروکسی‌ها ممکن است در هر زمان <strong>قطع یا غیرفعال</strong> شوند.</span>
+                </li>
+                <li>
+                    <span class="check" aria-hidden="true">✅</span>
+                    <span data-i18n-html="rule3">مسئولیت استفاده از این پروکسی‌ها بر عهده <strong>کاربر</strong> می‌باشد.</span>
+                </li>
+                <li>
+                    <span class="check" aria-hidden="true">✅</span>
+                    <span data-i18n-html="rule4">این سرویس <strong>رایگان</strong> است و هیچ تعهدی برای پایداری ندارد.</span>
+                </li>
+                <li>
+                    <span class="check" aria-hidden="true">✅</span>
+                    <span data-i18n-html="rule5">استفاده از این پروکسی‌ها برای فعالیت‌های <strong>غیرقانونی</strong> ممنوع است.</span>
+                </li>
+            </ul>
+
+            <div class="modal-actions">
+                <button class="btn-accept" id="acceptTerms" type="button" data-i18n="btn_accept">✔️ پذیرش و ورود</button>
+                <button class="btn-reject" id="rejectTerms" type="button" data-i18n="btn_reject">✖️ عدم پذیرش</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         MAIN CONTENT
+         ============================================================ -->
+    <div class="container" id="mainContent">
+
+        <!-- WARNING BANNER -->
+        <div class="warning-banner" id="warningBanner">
+            <span class="icon" aria-hidden="true">⚠️</span>
+            <div class="text">
+                <strong data-i18n="warning_strong">هشدار:</strong>
+                <span data-i18n="warning_text"> پروکسی‌های رایگان ممکن است به‌طور موقت قطع یا غیرفعال باشند. لطفاً در صورت عدم اتصال، پروکسی دیگری را تست کنید.</span>
+            </div>
+            <button class="close-btn" id="closeWarning" type="button" title="بستن" aria-label="بستن هشدار">✕</button>
+        </div>
+
+        <!-- HEADER -->
+        <div class="main-header">
+            <div class="header-top">
+                <h1><span class="emoji" aria-hidden="true">🔹</span> <span data-i18n="header_title">پروکسی‌های تلگرام (MTProto)</span></h1>
+                <div class="header-controls">
+                    <button class="theme-toggle" onclick="toggleTheme()" title="تغییر تم">
+                        <span class="theme-icon">🌓</span>
+                        <span data-i18n="theme_btn">تم</span>
+                    </button>
+                    <button class="refresh-btn" onclick="refreshData()" title="بروزرسانی">
+                        <span class="refresh-icon">🔄</span>
+                        <span data-i18n="refresh_btn">بروزرسانی</span>
+                    </button>
+                    <div class="header-stats">
+                        <span class="dot" aria-hidden="true"></span>
+                        <span class="count">
+                            <strong id="filteredCount">0</strong>
+                            <span data-i18n="count_label">نمایش داده شد</span>
+                            <span style="opacity:0.3;margin:0 4px;">/</span>
+                            <span class="total-label">
+                                <span id="totalCount">0</span>
+                                <span data-i18n="total_label">کل</span>
+                            </span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="filters-section" id="filtersSection" role="group" aria-label="Filter options">
+                <div class="filter-chip active" data-filter="all">🌐 <span data-i18n="filter_all">همه</span> <span class="chip-count" id="allCount">0</span></div>
+                <div class="filter-chip" data-filter="online">🟢 <span data-i18n="filter_online">آنلاین</span> <span class="chip-count" id="onlineCount">0</span></div>
+                <div class="filter-chip" data-filter="offline">🔴 <span data-i18n="filter_offline">آفلاین</span> <span class="chip-count" id="offlineCount">0</span></div>
+                <div class="filter-chip" data-filter="favorites">⭐ <span data-i18n="filter_favorites">مورد علاقه</span> <span class="chip-count" id="favCount">0</span></div>
+                <div class="filter-chip" data-filter="ee104462821249bd7ac519130220c25d">🔐 <span data-i18n="filter_type1">نوع ۱</span> <span class="chip-count" id="type1Count">0</span></div>
+                <div class="filter-chip" data-filter="eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee">🔐 <span data-i18n="filter_type2">نوع ۲</span> <span class="chip-count" id="type2Count">0</span></div>
+            </div>
+        </div>
+
+        <!-- TOOLBAR -->
+        <div class="toolbar">
+            <div class="search-wrap" role="search">
+                <span class="search-icon" aria-hidden="true">🔍</span>
+                <input type="text" id="searchInput" data-i18n-placeholder="search_placeholder" placeholder="جستجو در پروکسی‌ها (آی‌پی، پورت، سکرت...)" aria-label="Search proxies">
+            </div>
+            <div class="sort-group" id="sortGroup">
+                <label data-i18n="sort_label">📊 مرتب‌سازی:</label>
+                <button class="sort-btn active" data-sort="default" type="button" data-i18n="sort_default">پیش‌فرض</button>
+                <button class="sort-btn" data-sort="rating" type="button" data-i18n="sort_rating">⭐ امتیاز</button>
+                <button class="sort-btn" data-sort="recent" type="button" data-i18n="sort_recent">🕐 جدیدترین</button>
+                <button class="sort-btn" data-sort="ip" type="button" data-i18n="sort_ip">🌐 آی‌پی</button>
+                <button class="sort-btn" data-sort="port" type="button" data-i18n="sort_port">🔢 پورت</button>
+            </div>
+        </div>
+
+        <!-- PROXY LIST -->
+        <div class="proxy-list" id="proxyList" aria-live="polite"></div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <span class="footer-heart" aria-hidden="true">❤️</span>
+            <span data-i18n="footer_text">توسعه‌یافته توسط</span>
+            <a class="footer-name" href="https://github.com/this-is-the-leo" target="_blank" rel="noopener noreferrer">Leo</a>
+        </div>
+    </div>
+
+    <!-- COPY TOAST OVERLAY -->
+    <div class="copy-toast-overlay" id="copyToastOverlay">
+        <span class="icon">✅</span>
+        <div class="text" id="copyToastText">کپی شد!</div>
+        <div class="sub" id="copyToastSub">لینک پروکسی در کلیپ‌بورد ذخیره شد</div>
+    </div>
+
+    <!-- QUICK GUIDE -->
+    <button class="quick-guide-btn" onclick="toggleGuide()" aria-label="راهنما">
+        <span>❓</span>
+    </button>
+
+    <div class="quick-guide" id="quickGuide">
+        <div class="guide-content">
+            <h3>📖 راهنمای سریع</h3>
+            <ul>
+                <li>📋 <strong>کپی:</strong> روی هر کارت کلیک کنید یا دکمه کپی را بزنید</li>
+                <li>🔍 <strong>جستجو:</strong> در کادر بالا تایپ کنید</li>
+                <li>🎯 <strong>فیلتر:</strong> روی برچسب‌ها کلیک کنید</li>
+                <li>⭐ <strong>امتیاز:</strong> روی ستاره‌ها کلیک کنید</li>
+                <li>❤️ <strong>مورد علاقه:</strong> دکمه قلب را بزنید</li>
+                <li>🚨 <strong>گزارش:</strong> پروکسی خراب را گزارش دهید</li>
+                <li>🔄 <strong>بروزرسانی:</strong> دکمه refresh را بزنید</li>
+                <li>🌓 <strong>تم:</strong> بین تاریک/روشن تغییر دهید</li>
+                <li>⌨️ <strong>میانبر:</strong> ESC برای بستن</li>
+            </ul>
+            <button class="close-guide-btn" onclick="toggleGuide()">بستن ✕</button>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script>
+        // ================================================================
+        // MODULE: STATE
+        // ================================================================
+        var currentLang = localStorage.getItem('proxy_lang') || 'fa';
+        var currentVersion = localStorage.getItem('selected_version') || '2';
+        var toastTimer = null;
+        var copyToastTimer = null;
+
+        // ================================================================
+        // MODULE: TRANSLATIONS (i18n)
+        // ================================================================
+        var translations = {
+            fa: {
+                page_title: 'پروکسی‌های تلگرام',
+                nav_home: 'خانه',
+                nav_about: 'درباره',
+                nav_brand: 'ساخته شده توسط',
+                nav_telegram: 'تلگرام',
+                nav_linkedin: 'لینکدین',
+                nav_github: 'گیت‌هاب',
+                theme_btn: 'تم',
+                refresh_btn: 'بروزرسانی',
+                modal_title: 'شرایط و قوانین استفاده',
+                modal_subtitle: 'لطفاً قبل از استفاده از این سرویس، قوانین زیر را مطالعه و تأیید کنید.',
+                rule1: 'استفاده از این سرویس صرفاً برای <strong>آزمایش و توسعه</strong> مجاز است.',
+                rule2: 'پروکسی‌ها ممکن است در هر زمان <strong>قطع یا غیرفعال</strong> شوند.',
+                rule3: 'مسئولیت استفاده از این پروکسی‌ها بر عهده <strong>کاربر</strong> می‌باشد.',
+                rule4: 'این سرویس <strong>رایگان</strong> است و هیچ تعهدی برای پایداری ندارد.',
+                rule5: 'استفاده از این پروکسی‌ها برای فعالیت‌های <strong>غیرقانونی</strong> ممنوع است.',
+                btn_accept: '✔️ پذیرش و ورود',
+                btn_reject: '✖️ عدم پذیرش',
+                reject_title: 'شما شرایط استفاده را نپذیرفتید',
+                reject_text: 'برای استفاده از این سرویس، لازم است شرایط و قوانین را بپذیرید.',
+                reject_btn: '🔄 بازگشت و پذیرش',
+                warning_strong: 'هشدار:',
+                warning_text: ' پروکسی‌های رایگان ممکن است به‌طور موقت قطع یا غیرفعال باشند. لطفاً در صورت عدم اتصال، پروکسی دیگری را تست کنید.',
+                header_title: 'پروکسی‌های تلگرام (MTProto)',
+                count_label: 'نمایش داده شد',
+                total_label: 'کل',
+                filter_all: 'همه',
+                filter_online: 'آنلاین',
+                filter_offline: 'آفلاین',
+                filter_favorites: 'مورد علاقه',
+                filter_type1: 'نوع ۱',
+                filter_type2: 'نوع ۲',
+                search_placeholder: 'جستجو در پروکسی‌ها (آی‌پی، پورت، سکرت...)',
+                sort_label: '📊 مرتب‌سازی:',
+                sort_default: 'پیش‌فرض',
+                sort_rating: '⭐ امتیاز',
+                sort_recent: '🕐 جدیدترین',
+                sort_ip: '🌐 آی‌پی',
+                sort_port: '🔢 پورت',
+                btn_copy: '📋 کپی',
+                btn_fav: '❤️',
+                btn_report: '🚨 گزارش',
+                btn_reported: '✅ گزارش شد',
+                toast_copied: '✅ کپی شد',
+                toast_copied_title: '✅ کپی شد!',
+                toast_copied_sub: 'لینک پروکسی در کلیپ‌بورد ذخیره شد',
+                toast_fav_added: '❤️ به مورد علاقه‌ها اضافه شد',
+                toast_fav_removed: '💔 از مورد علاقه‌ها حذف شد',
+                toast_reported: '✅ گزارش ثبت شد! از کمک شما متشکریم.',
+                toast_refreshed: '✅ لیست بروزرسانی شد!',
+                toast_rated: '⭐ امتیاز شما ثبت شد',
+                empty_state: 'هیچ پروکسی با این فیلتر یافت نشد',
+                footer_text: 'توسعه‌یافته توسط',
+                version_v2_badge: '✨ نسخه V2 - جدید',
+                version_v1_badge: '📦 نسخه V1 - کلاسیک'
+            },
+            en: {
+                page_title: 'Telegram Proxies',
+                nav_home: 'Home',
+                nav_about: 'About',
+                nav_brand: 'Made by',
+                nav_telegram: 'Telegram',
+                nav_linkedin: 'LinkedIn',
+                nav_github: 'GitHub',
+                theme_btn: 'Theme',
+                refresh_btn: 'Refresh',
+                modal_title: 'Terms & Conditions of Use',
+                modal_subtitle: 'Please read and accept the following rules before using this service.',
+                rule1: 'This service is intended <strong>only for testing and development</strong>.',
+                rule2: 'Proxies may become <strong>unavailable or disabled</strong> at any time.',
+                rule3: 'Responsibility for using these proxies lies with the <strong>user</strong>.',
+                rule4: 'This service is <strong>free</strong> and comes with no uptime guarantee.',
+                rule5: 'Using these proxies for <strong>illegal activities</strong> is prohibited.',
+                btn_accept: '✔️ Accept & Enter',
+                btn_reject: '✖️ Decline',
+                reject_title: 'You did not accept the terms of use',
+                reject_text: 'To use this service, you must accept the terms and conditions.',
+                reject_btn: '🔄 Go back & accept',
+                warning_strong: 'Warning:',
+                warning_text: ' Free proxies may be temporarily down. Please try another proxy if you cannot connect.',
+                header_title: 'Telegram Proxies (MTProto)',
+                count_label: 'shown',
+                total_label: 'total',
+                filter_all: 'All',
+                filter_online: 'Online',
+                filter_offline: 'Offline',
+                filter_favorites: 'Favorites',
+                filter_type1: 'Type 1',
+                filter_type2: 'Type 2',
+                search_placeholder: 'Search proxies (IP, port, secret...)',
+                sort_label: '📊 Sort:',
+                sort_default: 'Default',
+                sort_rating: '⭐ Rating',
+                sort_recent: '🕐 Recent',
+                sort_ip: '🌐 IP',
+                sort_port: '🔢 Port',
+                btn_copy: '📋 Copy',
+                btn_fav: '❤️',
+                btn_report: '🚨 Report',
+                btn_reported: '✅ Reported',
+                toast_copied: '✅ Copied',
+                toast_copied_title: '✅ Copied!',
+                toast_copied_sub: 'Proxy link saved to clipboard',
+                toast_fav_added: '❤️ Added to favorites',
+                toast_fav_removed: '💔 Removed from favorites',
+                toast_reported: '✅ Report submitted! Thank you.',
+                toast_refreshed: '✅ List refreshed!',
+                toast_rated: '⭐ Your rating saved',
+                empty_state: 'No proxy found for this filter',
+                footer_text: 'Developed by',
+                version_v2_badge: '✨ Version V2 - New',
+                version_v1_badge: '📦 Version V1 - Classic'
+            }
+        };
+
+        // ================================================================
+        // MODULE: i18n APPLY
+        // ================================================================
+        function applyTranslations() {
+            var dict = translations[currentLang];
+
+            document.querySelectorAll('[data-i18n]').forEach(function(el) {
+                var key = el.getAttribute('data-i18n');
+                if (dict[key] !== undefined) el.textContent = dict[key];
+            });
+
+            document.querySelectorAll('[data-i18n-html]').forEach(function(el) {
+                var key = el.getAttribute('data-i18n-html');
+                if (dict[key] !== undefined) el.innerHTML = dict[key];
+            });
+
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+                var key = el.getAttribute('data-i18n-placeholder');
+                if (dict[key] !== undefined) el.setAttribute('placeholder', dict[key]);
+            });
+
+            document.querySelectorAll('[data-i18n-title]').forEach(function(el) {
+                var key = el.getAttribute('data-i18n-title');
+                if (dict[key] !== undefined) el.setAttribute('title', dict[key]);
+            });
+
+            document.title = dict.page_title;
+            document.documentElement.lang = currentLang;
+            document.documentElement.dir = currentLang === 'fa' ? 'rtl' : 'ltr';
+            document.body.classList.toggle('lang-en', currentLang === 'en');
+
+            document.querySelectorAll('.lang-btn').forEach(function(btn) {
+                btn.classList.toggle('active', btn.dataset.lang === currentLang);
+            });
+
+            updateCounts();
+            render();
+        }
+
+        // ================================================================
+        // MODULE: PROXY DATA WITH ID
+        // ================================================================
+        var PROXY_DATA = [
+            { ip: "185.159.157.125", port: "25565", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "185.159.157.126", port: "25565", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "185.159.157.127", port: "25565", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "185.159.157.128", port: "25565", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "185.159.157.129", port: "25565", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "45.88.97.28", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "45.88.97.29", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "45.88.97.30", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "45.88.97.31", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "45.88.97.32", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "91.108.56.125", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "91.108.56.126", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "91.108.56.127", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "91.108.56.128", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "91.108.56.129", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "185.216.35.45", port: "8443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "185.216.35.46", port: "8443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "185.216.35.47", port: "8443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "185.216.35.48", port: "8443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "185.216.35.49", port: "8443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "77.105.146.177", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "77.105.146.178", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "77.105.146.179", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "77.105.146.180", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "77.105.146.181", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "45.150.65.233", port: "443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "45.150.65.234", port: "443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "45.150.65.235", port: "443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "45.150.65.236", port: "443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "45.150.65.237", port: "443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "5.161.211.150", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "5.161.211.151", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "5.161.211.152", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "5.161.211.153", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "5.161.211.154", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "45.91.95.92", port: "443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "45.91.95.93", port: "443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "45.91.95.94", port: "443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "45.91.95.95", port: "443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "45.91.95.96", port: "443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "89.116.24.125", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "89.116.24.126", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "89.116.24.127", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "89.116.24.128", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "89.116.24.129", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "103.152.154.45", port: "8443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "103.152.154.46", port: "8443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "103.152.154.47", port: "8443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "103.152.154.48", port: "8443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "103.152.154.49", port: "8443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "172.64.148.72", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "172.64.148.73", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "172.64.148.74", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "172.64.148.75", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "172.64.148.76", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "104.22.71.215", port: "443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "104.22.71.216", port: "443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "104.22.71.217", port: "443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "104.22.71.218", port: "443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "104.22.71.219", port: "443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "35.187.43.119", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "35.187.43.120", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "35.187.43.121", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "35.187.43.122", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "35.187.43.123", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "45.76.159.54", port: "8443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "45.76.159.55", port: "8443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "45.76.159.56", port: "8443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "45.76.159.57", port: "8443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "45.76.159.58", port: "8443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "149.28.129.89", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "149.28.129.90", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "149.28.129.91", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "149.28.129.92", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "149.28.129.93", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "142.93.146.154", port: "8443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "142.93.146.155", port: "8443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "142.93.146.156", port: "8443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "142.93.146.157", port: "8443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "142.93.146.158", port: "8443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "103.27.108.36", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "103.27.108.37", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "103.27.108.38", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "103.27.108.39", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "103.27.108.40", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "131.153.17.12", port: "8443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "131.153.17.13", port: "8443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "131.153.17.14", port: "8443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "131.153.17.15", port: "8443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "131.153.17.16", port: "8443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "37.97.187.234", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "37.97.187.235", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "37.97.187.236", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "37.97.187.237", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "37.97.187.238", port: "443", secret: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee" },
+            { ip: "51.158.131.223", port: "8443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "51.158.131.224", port: "8443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "51.158.131.225", port: "8443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "51.158.131.226", port: "8443", secret: "ee104462821249bd7ac519130220c25d" },
+            { ip: "51.158.131.227", port: "8443", secret: "ee104462821249bd7ac519130220c25d" }
+        ];
+
+        // اضافه کردن id به هر پروکسی
+        PROXY_DATA.forEach(function(item, index) {
+            item.id = index + 1;
+            item.online = Math.random() > 0.25;
+            item.rating = Math.floor(Math.random() * 8) + 1;
+            item.ratingCount = Math.floor(Math.random() * 20) + 1;
+            item.createdAt = Date.now() - Math.floor(Math.random() * 86400000 * 30);
+        });
+
+        // ================================================================
+        // MODULE: LOCAL STORAGE HELPERS
+        // ================================================================
+        function getFavorites() {
+            try {
+                return JSON.parse(localStorage.getItem('proxy_favorites') || '[]');
+            } catch { return []; }
+        }
+
+        function setFavorites(favs) {
+            localStorage.setItem('proxy_favorites', JSON.stringify(favs));
+        }
+
+        function getRatings() {
+            try {
+                return JSON.parse(localStorage.getItem('proxy_ratings') || '{}');
+            } catch { return {}; }
+        }
+
+        function setRatings(ratings) {
+            localStorage.setItem('proxy_ratings', JSON.stringify(ratings));
+        }
+
+        function getReports() {
+            try {
+                return JSON.parse(localStorage.getItem('proxy_reports') || '[]');
+            } catch { return []; }
+        }
+
+        function setReports(reports) {
+            localStorage.setItem('proxy_reports', JSON.stringify(reports));
+        }
+
+        function getTheme() {
+            return localStorage.getItem('proxy_theme') || 'dark';
+        }
+
+        function setTheme(theme) {
+            localStorage.setItem('proxy_theme', theme);
+        }
+
+        // ================================================================
+        // MODULE: THEME TOGGLE
+        // ================================================================
+        function toggleTheme() {
+            var body = document.body;
+            if (body.classList.contains('light-mode')) {
+                body.classList.remove('light-mode');
+                setTheme('dark');
+            } else {
+                body.classList.add('light-mode');
+                setTheme('light');
+            }
+        }
+
+        function loadTheme() {
+            var theme = getTheme();
+            if (theme === 'light') {
+                document.body.classList.add('light-mode');
+            }
+        }
+
+        // ================================================================
+        // MODULE: VERSION MANAGEMENT
+        // ================================================================
+        function getVersion() {
+            var params = new URLSearchParams(window.location.search);
+            var urlVersion = params.get('v');
+
+            if (urlVersion && (urlVersion === '1' || urlVersion === '2')) {
+                currentVersion = urlVersion;
+                localStorage.setItem('selected_version', currentVersion);
+                return currentVersion;
+            }
+
+            return localStorage.getItem('selected_version') || '2';
+        }
+
+        function switchVersion(version) {
+            if (version === currentVersion) return;
+
+            currentVersion = version;
+            localStorage.setItem('selected_version', version);
+
+            var currentPath = window.location.pathname;
+            var currentParams = new URLSearchParams(window.location.search);
+            currentParams.set('v', version);
+
+            var newPath = currentPath;
+            if (currentPath.includes('/v1/')) {
+                newPath = currentPath.replace('/v1/', '/');
+            }
+
+            window.location.href = newPath + '?' + currentParams.toString();
+        }
+
+        function updateVersionUI() {
+            var version = getVersion();
+
+            document.querySelectorAll('.version-btn').forEach(function(btn) {
+                btn.classList.toggle('active', btn.dataset.version === version);
+            });
+
+            var badge = document.getElementById('versionBadge');
+            var dict = translations[currentLang];
+            if (version === '2') {
+                badge.textContent = dict.version_v2_badge || '✨ نسخه V2 - جدید';
+                badge.style.background = 'rgba(108, 182, 232, 0.15)';
+                badge.style.borderColor = 'rgba(108, 182, 232, 0.2)';
+                badge.style.color = 'var(--accent-bright)';
+            } else {
+                badge.textContent = dict.version_v1_badge || '📦 نسخه V1 - کلاسیک';
+                badge.style.background = 'rgba(245, 158, 11, 0.15)';
+                badge.style.borderColor = 'rgba(245, 158, 11, 0.2)';
+                badge.style.color = '#f59e0b';
+            }
+        }
+
+        // ================================================================
+        // MODULE: HELPERS
+        // ================================================================
+        function getSecretLabel(secret) {
+            if (secret === 'ee104462821249bd7ac519130220c25d') {
+                return 'نوع ۱';
+            } else {
+                return 'نوع ۲';
+            }
+        }
+
+        function getSecretShort(secret) {
+            return secret.substring(0, 12) + '...';
+        }
+
+        function getSecretIcon(secret) {
+            return secret === 'ee104462821249bd7ac519130220c25d' ? '🔐' : '🔑';
+        }
+
+        // ================================================================
+        // MODULE: UPDATE COUNTS
+        // ================================================================
+        function updateCounts() {
+            var total = PROXY_DATA.length;
+            var online = PROXY_DATA.filter(function(p) { return p.online; }).length;
+            var offline = PROXY_DATA.filter(function(p) { return !p.online; }).length;
+            var favorites = getFavorites();
+            var favCount = PROXY_DATA.filter(function(p) { return favorites.indexOf(p.id) !== -1; }).length;
+            var type1 = PROXY_DATA.filter(function(p) { return p.secret === 'ee104462821249bd7ac519130220c25d'; }).length;
+            var type2 = PROXY_DATA.filter(function(p) { return p.secret === 'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee'; }).length;
+
+            document.getElementById('allCount').textContent = total;
+            document.getElementById('onlineCount').textContent = online;
+            document.getElementById('offlineCount').textContent = offline;
+            document.getElementById('favCount').textContent = favCount;
+            document.getElementById('type1Count').textContent = type1;
+            document.getElementById('type2Count').textContent = type2;
+        }
+
+        // ================================================================
+        // MODULE: SORT
+        // ================================================================
+        function sortProxies(proxyList, sortType) {
+            var sorted = proxyList.slice();
+            if (sortType === 'default') {
+                return sorted;
+            } else if (sortType === 'rating') {
+                sorted.sort(function(a, b) {
+                    var ratingA = getRatings()[a.id] || a.rating || 0;
+                    var ratingB = getRatings()[b.id] || b.rating || 0;
+                    return ratingB - ratingA;
+                });
+            } else if (sortType === 'recent') {
+                sorted.sort(function(a, b) {
+                    return b.createdAt - a.createdAt;
+                });
+            } else if (sortType === 'ip') {
+                sorted.sort(function(a, b) {
+                    var ipA = a.ip.split('.').map(Number);
+                    var ipB = b.ip.split('.').map(Number);
+                    for (var i = 0; i < 4; i++) {
+                        if (ipA[i] !== ipB[i]) return ipA[i] - ipB[i];
+                    }
+                    return 0;
+                });
+            } else if (sortType === 'port') {
+                sorted.sort(function(a, b) {
+                    return parseInt(a.port) - parseInt(b.port);
+                });
+            }
+            return sorted;
+        }
+
+        // ================================================================
+        // MODULE: MAIN RENDER
+        // ================================================================
+        function render() {
+            var list = document.getElementById('proxyList');
+            var dict = translations[currentLang];
+            var search = document.getElementById('searchInput').value.toLowerCase().trim();
+
+            var activeChip = document.querySelector('.filter-chip.active');
+            var filter = activeChip ? activeChip.dataset.filter : 'all';
+
+            var activeSort = document.querySelector('.sort-btn.active');
+            var sortType = activeSort ? activeSort.dataset.sort : 'default';
+
+            var favorites = getFavorites();
+            var userRatings = getRatings();
+
+            var filtered = [];
+            for (var i = 0; i < PROXY_DATA.length; i++) {
+                var proxy = PROXY_DATA[i];
+                var fullText = (proxy.ip + ' ' + proxy.port + ' ' + proxy.secret).toLowerCase();
+
+                if (filter === 'online' && !proxy.online) continue;
+                if (filter === 'offline' && proxy.online) continue;
+                if (filter === 'favorites' && favorites.indexOf(proxy.id) === -1) continue;
+                if (filter !== 'all' && filter !== 'online' && filter !== 'offline' && filter !== 'favorites' && proxy.secret !==
+                    filter) continue;
+
+                if (search && fullText.indexOf(search) === -1) continue;
+
+                filtered.push(proxy);
+            }
+
+            filtered = sortProxies(filtered, sortType);
+
+            saveFilters();
+
+            var totalCount = document.getElementById('totalCount');
+            var filteredCount = document.getElementById('filteredCount');
+            if (totalCount) totalCount.textContent = PROXY_DATA.length;
+            if (filteredCount) filteredCount.textContent = filtered.length;
+
+            if (filtered.length === 0) {
+                list.innerHTML = '<div class="empty-state"><span class="big-icon" aria-hidden="true">🔍</span>' + dict.empty_state +
+                    '</div>';
+                return;
+            }
+
+            var parts = [];
+            for (var j = 0; j < filtered.length; j++) {
+                var proxy = filtered[j];
+                var isFav = favorites.indexOf(proxy.id) !== -1;
+                var rating = userRatings[proxy.id] || proxy.rating || 0;
+                var ratingDisplay = Math.round(rating);
+                var stars = '⭐'.repeat(Math.min(5, Math.ceil(ratingDisplay / 2)));
+
+                var secretShort = getSecretShort(proxy.secret);
+                var secretIcon = getSecretIcon(proxy.secret);
+                var secretLabel = getSecretLabel(proxy.secret);
+                var statusText = proxy.online ? 'آنلاین' : 'آفلاین';
+                var statusClass = proxy.online ? '' : 'offline';
+
+                var proxyLink = 'https://t.me/proxy?server=' + proxy.ip + '&port=' + proxy.port + '&secret=' + proxy.secret;
+                var escaped = encodeURIComponent(proxyLink);
+
+                var reported = getReports().indexOf(proxy.id) !== -1;
+
+                parts.push(
+                    '<div class="proxy-item" data-id="' + proxy.id + '" data-link="' + escaped + '" onclick="handleCardClick(this, event)">' +
+                    '<div class="proxy-header">' +
+                    '<span class="proxy-badge">' +
+                    '<span class="type-icon" aria-hidden="true">' + secretIcon + '</span>' +
+                    secretLabel +
+                    '<span class="secret-label-short">' + secretShort + '</span>' +
+                    '</span>' +
+                    '<div class="status-badge ' + statusClass + '">' +
+                    '<span class="dot"></span> ' + statusText +
+                    '</div>' +
+                    '</div>' +
+
+                    '<div class="proxy-info">' +
+                    '<span class="ip-port">🌐 ' + proxy.ip + ':' + proxy.port + '</span>' +
+                    '<span class="secret-full">🔑 سکرت: ' + proxy.secret + '</span>' +
+                    '</div>' +
+
+                    '<div class="rating">' +
+                    '<div class="stars">' +
+                    '<span onclick="event.stopPropagation(); rateProxy(' + proxy.id + ', 1)">⭐</span>' +
+                    '<span onclick="event.stopPropagation(); rateProxy(' + proxy.id + ', 2)">⭐</span>' +
+                    '<span onclick="event.stopPropagation(); rateProxy(' + proxy.id + ', 3)">⭐</span>' +
+                    '<span onclick="event.stopPropagation(); rateProxy(' + proxy.id + ', 4)">⭐</span>' +
+                    '<span onclick="event.stopPropagation(); rateProxy(' + proxy.id + ', 5)">⭐</span>' +
+                    '</div>' +
+                    '<div class="score">' + ratingDisplay + '/10 (' + (proxy.ratingCount || 0) + ' نظر)</div>' +
+                    '</div>' +
+
+                    '<div class="actions">' +
+                    '<button class="btn-copy" onclick="event.stopPropagation(); copyProxy(' + proxy.id +
+                    ')">📋 کپی</button>' +
+                    '<button class="btn-fav ' + (isFav ? 'favorited' : '') + '" onclick="event.stopPropagation(); toggleFavorite(' +
+                    proxy.id + ')">' +
+                    (isFav ? '❤️' : '🤍') +
+                    '</button>' +
+                    '<button class="btn-report ' + (reported ? 'reported' : '') + '" onclick="event.stopPropagation(); reportProxy(' +
+                    proxy.id + ')">' +
+                    (reported ? '✅ گزارش شد' : '🚨 گزارش') +
+                    '</button>' +
+                    '</div>' +
+                    '</div>'
+                );
+            }
+
+            list.innerHTML = parts.join('');
+        }
+
+        // ================================================================
+        // MODULE: CARD CLICK - COPY ON WHOLE CARD
+        // ================================================================
+        function handleCardClick(card, event) {
+            if (event.target.closest('button')) {
+                return;
+            }
+            copyProxy(parseInt(card.dataset.id));
+        }
+
+        // ================================================================
+        // MODULE: COPY WITH OVERLAY
+        // ================================================================
+        function fallbackCopy(text, cb) {
+            var ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.cssText = 'position:fixed;opacity:0;left:-9999px;';
+            document.body.appendChild(ta);
+            ta.select();
+            var ok = false;
+            try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+            document.body.removeChild(ta);
+            cb(ok);
+        }
+
+        function copyText(text, cb) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(function() { cb(true); }).catch(function() { fallbackCopy(text, cb); });
+            } else {
+                fallbackCopy(text, cb);
+            }
+        }
+
+        function showCopyToast(text) {
+            var overlay = document.getElementById('copyToastOverlay');
+            var titleEl = document.getElementById('copyToastText');
+            var subEl = document.getElementById('copyToastSub');
+            var dict = translations[currentLang];
+
+            titleEl.textContent = dict.toast_copied_title || '✅ کپی شد!';
+            subEl.textContent = dict.toast_copied_sub || 'لینک پروکسی در کلیپ‌بورد ذخیره شد';
+
+            overlay.classList.add('show');
+            clearTimeout(copyToastTimer);
+            copyToastTimer = setTimeout(function() {
+                overlay.classList.remove('show');
+            }, 1500);
+        }
+
+        function copyProxy(id) {
+            var proxy = PROXY_DATA.find(function(p) { return p.id === id; });
+            if (!proxy) return;
+
+            var text = 'Server: ' + proxy.ip + '\nPort: ' + proxy.port + '\nSecret: ' + proxy.secret;
+
+            copyText(text, function(success) {
+                if (!success) return;
+
+                showCopyToast();
+
+                var card = document.querySelector('.proxy-item[data-id="' + id + '"]');
+                if (card) {
+                    card.classList.remove('copy-flash');
+                    void card.offsetWidth;
+                    card.classList.add('copy-flash');
+                    setTimeout(function() {
+                        card.classList.remove('copy-flash');
+                    }, 600);
+                }
+
+                var btn = card ? card.querySelector('.btn-copy') : null;
+                if (btn) {
+                    btn.textContent = '✅ کپی شد';
+                    btn.classList.add('copied');
+                    setTimeout(function() {
+                        btn.textContent = '📋 کپی';
+                        btn.classList.remove('copied');
+                    }, 2000);
+                }
+            });
+        }
+
+        // ================================================================
+        // MODULE: FAVORITES
+        // ================================================================
+        function toggleFavorite(id) {
+            var favs = getFavorites();
+            var idx = favs.indexOf(id);
+            var dict = translations[currentLang];
+
+            if (idx > -1) {
+                favs.splice(idx, 1);
+                showToast(dict.toast_fav_removed);
+            } else {
+                favs.push(id);
+                showToast(dict.toast_fav_added);
+            }
+
+            setFavorites(favs);
+            updateCounts();
+            render();
+        }
+
+        // ================================================================
+        // MODULE: RATING
+        // ================================================================
+        function rateProxy(id, stars) {
+            var ratings = getRatings();
+            var value = stars * 2;
+            ratings[id] = Math.min(10, Math.max(0, value));
+
+            var proxy = PROXY_DATA.find(function(p) { return p.id === id; });
+            if (proxy) {
+                proxy.ratingCount = (proxy.ratingCount || 0) + 1;
+            }
+
+            setRatings(ratings);
+            showToast(translations[currentLang].toast_rated);
+            render();
+        }
+
+        // ================================================================
+        // MODULE: REPORT
+        // ================================================================
+        function reportProxy(id) {
+            var reports = getReports();
+            var dict = translations[currentLang];
+
+            if (reports.indexOf(id) !== -1) {
+                showToast('✅ قبلاً گزارش شده');
+                return;
+            }
+
+            if (confirm('آیا از گزارش این پروکسی مطمئنی؟')) {
+                reports.push(id);
+                setReports(reports);
+                showToast(dict.toast_reported);
+                render();
+            }
+        }
+
+        // ================================================================
+        // MODULE: TOAST
+        // ================================================================
+        function showToast(msg) {
+            var toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(function() { toast.classList.remove('show'); }, 2000);
+        }
+
+        // ================================================================
+        // MODULE: REFRESH
+        // ================================================================
+        function refreshData() {
+            var btn = document.querySelector('.refresh-btn');
+            btn.classList.add('loading');
+            var label = btn.querySelector('span:last-child');
+            var originalText = label.textContent;
+            label.textContent = 'در حال بروزرسانی...';
+
+            setTimeout(function() {
+                PROXY_DATA.forEach(function(p) {
+                    p.online = Math.random() > 0.25;
+                });
+
+                btn.classList.remove('loading');
+                label.textContent = originalText;
+                showToast(translations[currentLang].toast_refreshed);
+                updateCounts();
+                render();
+            }, 1500);
+        }
+
+        // ================================================================
+        // MODULE: QUICK GUIDE
+        // ================================================================
+        function toggleGuide() {
+            var guide = document.getElementById('quickGuide');
+            if (guide.style.display === 'flex') {
+                guide.style.display = 'none';
+            } else {
+                guide.style.display = 'flex';
+            }
+        }
+
+        // ================================================================
+        // MODULE: LOAD/SAVE FILTERS
+        // ================================================================
+        function loadFilters() {
+            var saved = localStorage.getItem('lastFilter_proxy');
+            if (saved) {
+                try {
+                    var data = JSON.parse(saved);
+                    if (data.search) {
+                        var input = document.getElementById('searchInput');
+                        if (input) input.value = data.search;
+                    }
+                    if (data.filter) {
+                        var chip = document.querySelector('.filter-chip[data-filter="' + data.filter + '"]');
+                        if (chip) {
+                            document.querySelectorAll('.filter-chip').forEach(function(c) { c.classList.remove('active'); });
+                            chip.classList.add('active');
+                        }
+                    }
+                    if (data.sort) {
+                        var btn = document.querySelector('.sort-btn[data-sort="' + data.sort + '"]');
+                        if (btn) {
+                            document.querySelectorAll('.sort-btn').forEach(function(b) { b.classList.remove('active'); });
+                            btn.classList.add('active');
+                        }
+                    }
+                } catch (e) {}
+            }
+        }
+
+        function saveFilters() {
+            var search = document.getElementById('searchInput')?.value || '';
+            var activeChip = document.querySelector('.filter-chip.active');
+            var filter = activeChip?.dataset.filter || 'all';
+            var activeSort = document.querySelector('.sort-btn.active');
+            var sort = activeSort?.dataset.sort || 'default';
+
+            localStorage.setItem('lastFilter_proxy', JSON.stringify({
+                search: search,
+                filter: filter,
+                sort: sort
+            }));
+        }
+
+        // ================================================================
+        // MODULE: SMART SEARCH
+        // ================================================================
+        var SmartSearch = {
+            init: function(inputId, dataSource) {
+                var input = document.getElementById(inputId);
+                if (!input) return;
+
+                input.addEventListener('input', function(e) {
+                    var val = e.target.value.toLowerCase();
+                    SmartSearch.removeSuggestions();
+
+                    if (val.length < 2) {
+                        render();
+                        return;
+                    }
+
+                    var suggestions = dataSource.filter(function(item) {
+                        return item.toLowerCase().includes(val);
+                    });
+
+                    SmartSearch.showSuggestions(suggestions.slice(0, 5), input);
+                    render();
+                });
+
+                input.addEventListener('blur', function() {
+                    setTimeout(SmartSearch.removeSuggestions, 200);
+                });
+
+                input.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape') SmartSearch.removeSuggestions();
+                });
+            },
+
+            showSuggestions: function(items, input) {
+                SmartSearch.removeSuggestions();
+                if (items.length === 0) return;
+
+                var div = document.createElement('div');
+                div.className = 'search-suggestions';
+
+                items.forEach(function(item) {
+                    var el = document.createElement('div');
+                    el.className = 'suggestion-item';
+                    el.textContent = item;
+                    el.addEventListener('click', function() {
+                        input.value = item;
+                        input.dispatchEvent(new Event('input'));
+                        SmartSearch.removeSuggestions();
+                        render();
+                    });
+                    div.appendChild(el);
+                });
+
+                input.parentNode.appendChild(div);
+            },
+
+            removeSuggestions: function() {
+                var old = document.querySelector('.search-suggestions');
+                if (old) old.remove();
+            }
+        };
+
+        // ================================================================
+        // MODULE: EVENT LISTENERS
+        // ================================================================
+
+        document.getElementById('acceptTerms').addEventListener('click', function() {
+            localStorage.setItem('proxy_terms_accepted', 'true');
+            document.getElementById('termsModal').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+
+            var searchInput = document.getElementById('searchInput');
+            if (searchInput) {
+                var searchData = PROXY_DATA.map(function(p) { return p.ip + ':' + p.port; });
+                SmartSearch.init('searchInput', searchData);
+            }
+
+            updateCounts();
+            loadFilters();
+            render();
+        });
+
+        document.getElementById('rejectTerms').addEventListener('click', function() {
+            var dict = translations[currentLang];
+            document.body.innerHTML =
+                '<div class="reject-screen">' +
+                '<div class="reject-icon" aria-hidden="true">🚫</div>' +
+                '<h2 class="reject-title">' + dict.reject_title + '</h2>' +
+                '<p class="reject-text">' + dict.reject_text + '</p>' +
+                '<button class="reject-btn" onclick="location.reload()">' + dict.reject_btn + '</button>' +
+                '</div>';
+        });
+
+        document.getElementById('closeWarning').addEventListener('click', function() {
+            var banner = document.getElementById('warningBanner');
+            banner.style.transition = 'opacity 0.4s, transform 0.4s';
+            banner.style.opacity = '0';
+            banner.style.transform = 'translateY(-10px) scale(0.96)';
+            setTimeout(function() { banner.style.display = 'none'; }, 400);
+        });
+
+        document.getElementById('navLangSwitch').addEventListener('click', function(e) {
+            var btn = e.target.closest('.lang-btn');
+            if (!btn) return;
+            currentLang = btn.dataset.lang;
+            localStorage.setItem('proxy_lang', currentLang);
+            applyTranslations();
+            updateVersionUI();
+        });
+
+        document.getElementById('navVersionSwitch').addEventListener('click', function(e) {
+            var btn = e.target.closest('.version-btn');
+            if (!btn) return;
+            var version = btn.dataset.version;
+            switchVersion(version);
+        });
+
+        document.getElementById('searchInput').addEventListener('input', function() {
+            render();
+        });
+
+        document.getElementById('filtersSection').addEventListener('click', function(e) {
+            var chip = e.target.closest('.filter-chip');
+            if (!chip) return;
+            document.querySelectorAll('#filtersSection .filter-chip').forEach(function(c) { c.classList.remove('active'); });
+            chip.classList.add('active');
+            render();
+        });
+        document.getElementById('filtersSection').addEventListener('keydown', function(e) {
+            if (e.key !== 'Enter' && e.key !== ' ') return;
+            var chip = e.target.closest('.filter-chip');
+            if (!chip) return;
+            e.preventDefault();
+            chip.click();
+        });
+
+        document.getElementById('sortGroup').addEventListener('click', function(e) {
+            var btn = e.target.closest('.sort-btn');
+            if (!btn) return;
+            document.querySelectorAll('#sortGroup .sort-btn').forEach(function(b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+            render();
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                var guide = document.getElementById('quickGuide');
+                if (guide.style.display === 'flex') guide.style.display = 'none';
+                var overlay = document.getElementById('copyToastOverlay');
+                if (overlay.classList.contains('show')) overlay.classList.remove('show');
+            }
+        });
+
+        // ================================================================
+        // INIT
+        // ================================================================
+        (function init() {
+            loadTheme();
+
+            var version = getVersion();
+            updateVersionUI();
+
+            applyTranslations();
+
+            var accepted = localStorage.getItem('proxy_terms_accepted') === 'true';
+            var modal = document.getElementById('termsModal');
+            var mainContent = document.getElementById('mainContent');
+
+            if (accepted) {
+                modal.style.display = 'none';
+                mainContent.style.display = 'block';
+
+                var searchInput = document.getElementById('searchInput');
+                if (searchInput) {
+                    var searchData = PROXY_DATA.map(function(p) { return p.ip + ':' + p.port; });
+                    SmartSearch.init('searchInput', searchData);
+                }
+
+                updateCounts();
+                loadFilters();
+                render();
+            } else {
+                modal.style.display = 'flex';
+                mainContent.style.display = 'none';
+            }
+        })();
+    </script>
+</body>
+</html>

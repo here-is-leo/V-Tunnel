@@ -1,0 +1,1851 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" id="htmlRoot">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title id="pageTitle">لیست کانفیگ‌های V2Ray</title>
+    <style>
+        /* ================================================================
+           1) ROOT VARIABLES & RESET
+           ================================================================ */
+        :root {
+            --bg: #05070d;
+            --bg-glow-1: rgba(74, 138, 181, 0.12);
+            --bg-glow-2: rgba(74, 181, 138, 0.08);
+            --glass-bg: rgba(16, 26, 42, 0.55);
+            --glass-border: rgba(120, 170, 255, 0.16);
+            --glass-blur: 18px;
+            --accent: #4a8ab5;
+            --accent-bright: #6cb6e8;
+            --accent-green: #4ade80;
+            --text: #e8edf5;
+            --text-dim: #8db0d0;
+            --text-faint: #5a7a95;
+            --danger: #d45a6a;
+            --radius-xl: 34px;
+            --radius-lg: 26px;
+            --radius-md: 18px;
+            --radius-pill: 999px;
+            --shadow-soft: 0 20px 60px rgba(0, 0, 0, 0.55);
+            --shadow-card: 0 8px 30px rgba(0, 0, 0, 0.35);
+            --neon-glow: 0 0 22px rgba(108, 182, 232, 0.16);
+            --ease: cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Vazirmatn', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background:
+                radial-gradient(circle at 15% 0%, var(--bg-glow-1), transparent 45%),
+                radial-gradient(circle at 85% 100%, var(--bg-glow-2), transparent 45%),
+                var(--bg);
+            background-attachment: fixed;
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 14px 28px;
+        }
+
+        body.lang-en {
+            font-family: 'Segoe UI', 'Inter', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+        ::selection {
+            background: rgba(108, 182, 232, 0.3);
+        }
+
+        a:focus-visible,
+        button:focus-visible,
+        input:focus-visible,
+        [tabindex]:focus-visible {
+            outline: 2px solid var(--accent-bright);
+            outline-offset: 3px;
+            border-radius: 8px;
+        }
+
+        /* ================================================================
+           2) SITE HEADER
+           ================================================================ */
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 600;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            padding: 16px 12px 10px;
+        }
+
+        .nav-glass {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 2px;
+            max-width: 980px;
+            width: 100%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-pill);
+            padding: 6px 8px;
+            box-shadow: var(--shadow-soft), var(--neon-glow);
+            transition: box-shadow 0.3s var(--ease);
+        }
+
+        .nav-glass:hover {
+            box-shadow: var(--shadow-soft), 0 0 30px rgba(108, 182, 232, 0.22);
+        }
+
+        .nav-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: var(--radius-pill);
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: 500;
+            white-space: nowrap;
+            transition: all 0.25s var(--ease);
+            letter-spacing: 0.2px;
+        }
+
+        .nav-item:hover,
+        .nav-item:focus-visible {
+            background: rgba(74, 138, 181, 0.18);
+            color: #fff;
+            box-shadow: 0 0 16px rgba(108, 182, 232, 0.22);
+            transform: translateY(-1px);
+        }
+
+        .nav-brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 8px 14px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--text-dim);
+            white-space: nowrap;
+        }
+
+        .nav-brand .brand-dot {
+            color: #ffd166;
+            font-size: 0.6rem;
+            filter: drop-shadow(0 0 6px rgba(255, 209, 102, 0.4));
+        }
+
+        .nav-brand-name {
+            color: var(--accent-bright);
+            font-weight: 700;
+            text-decoration: none;
+            border-bottom: 1px dotted transparent;
+            transition: 0.2s;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-brand-name:hover {
+            color: #fff;
+            border-bottom-color: var(--accent-bright);
+        }
+
+        .nav-divider {
+            width: 1px;
+            height: 22px;
+            background: rgba(120, 170, 255, 0.12);
+            margin: 0 3px;
+            flex-shrink: 0;
+        }
+
+        .nav-item .nav-label {
+            font-size: 0.78rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        .nav-brand .brand-label {
+            color: var(--text-faint);
+            font-size: 0.75rem;
+        }
+
+        .lang-switch {
+            display: flex;
+            gap: 2px;
+            background: rgba(0, 0, 0, 0.28);
+            padding: 3px;
+            border-radius: var(--radius-pill);
+            border: 1px solid var(--glass-border);
+        }
+
+        .lang-btn {
+            border: none;
+            background: transparent;
+            color: var(--text-dim);
+            padding: 6px 14px;
+            border-radius: var(--radius-pill);
+            font-size: 0.72rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s var(--ease);
+            white-space: nowrap;
+            letter-spacing: 0.3px;
+        }
+
+        .lang-btn:hover {
+            color: #fff;
+        }
+
+        .lang-btn.active {
+            background: linear-gradient(135deg, #1a4a6a, #0d2a44);
+            color: #fff;
+            box-shadow: 0 0 14px rgba(108, 182, 232, 0.3), inset 0 0 12px rgba(108, 182, 232, 0.08);
+        }
+
+        @media (max-width: 640px) {
+            .nav-glass {
+                flex-direction: column;
+                border-radius: 22px;
+                padding: 12px;
+                align-items: stretch;
+            }
+            .nav-item,
+            .nav-brand {
+                justify-content: center;
+                width: 100%;
+                padding: 8px 12px;
+            }
+            .nav-divider {
+                display: none;
+            }
+            .lang-switch {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* ================================================================
+           3) MODAL (TERMS & CONDITIONS)
+           ================================================================ */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.82);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            padding: 20px;
+        }
+
+        .modal-box {
+            background: linear-gradient(145deg, rgba(26, 42, 62, 0.9), rgba(15, 26, 42, 0.95));
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border-radius: var(--radius-xl);
+            max-width: 580px;
+            width: 100%;
+            padding: 36px 32px 32px;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-soft), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            text-align: center;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-box::-webkit-scrollbar {
+            width: 4px;
+        }
+        .modal-box::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+        }
+        .modal-box::-webkit-scrollbar-thumb {
+            background: #2a5a7a;
+            border-radius: 10px;
+        }
+
+        .modal-icon {
+            font-size: 3.4rem;
+            margin-bottom: 12px;
+            display: block;
+        }
+        .modal-title {
+            font-size: 1.55rem;
+            font-weight: 800;
+            color: #b7d4f0;
+            margin-bottom: 8px;
+        }
+        .modal-subtitle {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            margin-bottom: 22px;
+            line-height: 1.7;
+        }
+
+        .rules-list {
+            text-align: start;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: var(--radius-md);
+            padding: 18px 22px;
+            margin-bottom: 24px;
+            border: 1px solid rgba(60, 100, 140, 0.1);
+        }
+
+        .rules-list li {
+            list-style: none;
+            padding: 7px 0;
+            font-size: 0.9rem;
+            color: #b0cce0;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            border-bottom: 1px solid rgba(60, 100, 140, 0.06);
+        }
+
+        .rules-list li:last-child {
+            border-bottom: none;
+        }
+
+        .rules-list li .check {
+            color: var(--accent-green);
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 8px;
+        }
+
+        .btn-accept,
+        .btn-reject {
+            border: none;
+            padding: 14px 40px;
+            border-radius: var(--radius-pill);
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s var(--ease);
+            flex: 1;
+            min-width: 140px;
+        }
+
+        .btn-accept {
+            background: linear-gradient(135deg, #1a6a4a, #0d4a2a);
+            color: #fff;
+            border: 1px solid rgba(74, 222, 128, 0.3);
+            box-shadow: 0 4px 24px rgba(74, 222, 128, 0.15);
+        }
+
+        .btn-accept:hover {
+            transform: scale(1.03);
+            box-shadow: 0 6px 32px rgba(74, 222, 128, 0.25);
+            background: linear-gradient(135deg, #1f7a54, #0f5a34);
+        }
+
+        .btn-accept:active {
+            transform: scale(0.95);
+        }
+
+        .btn-reject {
+            background: rgba(60, 60, 80, 0.3);
+            border: 1px solid rgba(212, 90, 106, 0.25);
+            color: #d8b0b0;
+        }
+
+        .btn-reject:hover {
+            background: rgba(212, 90, 106, 0.18);
+            border-color: rgba(212, 90, 106, 0.4);
+            color: #ffc7c7;
+        }
+
+        .btn-reject:active {
+            transform: scale(0.95);
+        }
+
+        .reject-screen {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: var(--bg);
+            color: var(--text);
+            text-align: center;
+            padding: 20px;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .reject-icon {
+            font-size: 4rem;
+        }
+        .reject-title {
+            color: var(--danger);
+            font-size: 1.4rem;
+        }
+        .reject-text {
+            color: var(--text-dim);
+            max-width: 420px;
+            line-height: 1.7;
+        }
+
+        .reject-btn {
+            background: linear-gradient(135deg, #1a3a5a, #0d2a44);
+            border: 1px solid var(--glass-border);
+            color: #fff;
+            padding: 13px 34px;
+            border-radius: var(--radius-pill);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 6px;
+            transition: 0.25s var(--ease);
+        }
+
+        .reject-btn:hover {
+            transform: scale(1.03);
+        }
+
+        /* ================================================================
+           4) WARNING BANNER
+           ================================================================ */
+        .warning-banner {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: #1a1a2e;
+            padding: 14px 20px;
+            border-radius: var(--radius-md);
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            box-shadow: 0 4px 24px rgba(245, 158, 11, 0.15);
+            font-weight: 500;
+        }
+
+        .warning-banner .icon {
+            font-size: 1.8rem;
+            flex-shrink: 0;
+        }
+
+        .warning-banner .text {
+            flex: 1;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        .warning-banner .text strong {
+            font-weight: 700;
+        }
+
+        .warning-banner .close-btn {
+            background: rgba(0, 0, 0, 0.15);
+            border: none;
+            color: #1a1a2e;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.25s;
+            flex-shrink: 0;
+        }
+
+        .warning-banner .close-btn:hover {
+            background: rgba(0, 0, 0, 0.25);
+            transform: rotate(90deg);
+        }
+
+        /* ================================================================
+           5) MAIN CONTAINER
+           ================================================================ */
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border-radius: var(--radius-xl);
+            padding: 28px 24px 32px;
+            box-shadow: var(--shadow-soft), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--glass-border);
+            display: none;
+            margin-top: 14px;
+        }
+
+        .main-header {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(60, 100, 140, 0.18);
+            padding-bottom: 18px;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .header-top h1 {
+            font-size: 1.9rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #8bb8e8, #4a8ab5, #2a6a95);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-top h1 .emoji {
+            font-size: 2.1rem;
+            -webkit-text-fill-color: initial;
+        }
+
+        .header-stats {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 7px 20px;
+            border-radius: var(--radius-pill);
+            border: 1px solid rgba(60, 100, 140, 0.2);
+        }
+
+        .header-stats .count {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #b7d4f0;
+        }
+        .header-stats .count strong {
+            color: #fff;
+            font-size: 1.25rem;
+        }
+
+        .header-stats .dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-green);
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        /* ----- country filters ----- */
+        .country-flags {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            flex-wrap: nowrap;
+            padding: 10px 12px;
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(60, 100, 140, 0.08);
+            scrollbar-width: thin;
+            scrollbar-color: #2a5a7a transparent;
+        }
+
+        .country-flags::-webkit-scrollbar {
+            height: 5px;
+        }
+        .country-flags::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .country-flags::-webkit-scrollbar-thumb {
+            background: #2a5a7a;
+            border-radius: 10px;
+        }
+
+        .flag-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 14px;
+            border-radius: var(--radius-pill);
+            background: rgba(20, 40, 65, 0.5);
+            border: 1px solid rgba(60, 100, 140, 0.15);
+            cursor: pointer;
+            transition: all 0.25s var(--ease);
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #a0bdd8;
+            user-select: none;
+            flex-shrink: 0;
+            white-space: nowrap;
+        }
+
+        .flag-chip:hover {
+            background: rgba(40, 70, 110, 0.5);
+            border-color: rgba(108, 182, 232, 0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0, 40, 80, 0.3);
+        }
+
+        .flag-chip .flag {
+            font-size: 1.1rem;
+            line-height: 1;
+            font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;
+        }
+
+        .flag-chip .chip-count {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0 7px;
+            border-radius: var(--radius-pill);
+            font-size: 0.65rem;
+            color: #7a9fc0;
+        }
+
+        .flag-chip.active {
+            background: linear-gradient(135deg, #1a4a6a, #0d2a44);
+            border-color: var(--accent);
+            box-shadow: 0 0 20px rgba(108, 182, 232, 0.15), inset 0 0 20px rgba(108, 182, 232, 0.05);
+            color: #fff;
+        }
+
+        .flag-chip.active .chip-count {
+            background: rgba(255, 255, 255, 0.1);
+            color: #b7d4f0;
+        }
+
+        /* ----- toolbar ----- */
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 20px 0 22px;
+            align-items: center;
+        }
+
+        .search-wrap {
+            flex: 2;
+            min-width: 200px;
+            position: relative;
+        }
+
+        .search-wrap input {
+            width: 100%;
+            padding: 12px 44px;
+            border-radius: var(--radius-pill);
+            border: 1px solid rgba(60, 100, 140, 0.2);
+            background: rgba(8, 16, 32, 0.6);
+            color: var(--text);
+            font-size: 0.95rem;
+            outline: none;
+            transition: 0.3s var(--ease);
+        }
+
+        .search-wrap input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(108, 182, 232, 0.1);
+        }
+        .search-wrap input::placeholder {
+            color: #5a7a95;
+        }
+
+        .search-wrap .search-icon {
+            position: absolute;
+            inset-inline-start: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1rem;
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .sort-group {
+            display: flex;
+            gap: 6px;
+            align-items: center;
+            background: rgba(8, 16, 32, 0.4);
+            padding: 4px 6px;
+            border-radius: var(--radius-pill);
+            border: 1px solid rgba(60, 100, 140, 0.12);
+            flex-wrap: wrap;
+        }
+
+        .sort-group label {
+            font-size: 0.8rem;
+            color: #7a9fc0;
+            padding: 0 8px;
+        }
+
+        .sort-btn {
+            padding: 6px 14px;
+            border-radius: var(--radius-pill);
+            border: 1px solid transparent;
+            background: transparent;
+            color: #8db0d0;
+            cursor: pointer;
+            font-size: 0.75rem;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+
+        .sort-btn:hover {
+            background: rgba(60, 100, 140, 0.15);
+        }
+
+        .sort-btn.active {
+            background: rgba(108, 182, 232, 0.15);
+            border-color: var(--accent);
+            color: #fff;
+        }
+
+        /* ----- server list ----- */
+        .server-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-top: 4px;
+        }
+
+        .server-item {
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            background: linear-gradient(145deg, rgba(20, 40, 65, 0.5), rgba(10, 22, 40, 0.6));
+            backdrop-filter: blur(4px);
+            border-radius: var(--radius-lg);
+            padding: 18px 20px;
+            border-inline-start: 5px solid #2a5a7a;
+            border: 1px solid rgba(60, 100, 140, 0.08);
+            border-inline-start-width: 5px;
+            transition: all 0.3s var(--ease);
+            box-shadow: var(--shadow-card);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .server-item:hover,
+        .server-item:focus-visible {
+            background: linear-gradient(145deg, rgba(30, 60, 90, 0.55), rgba(15, 35, 60, 0.65));
+            border-inline-start-color: #5a9ac0;
+            border-color: rgba(108, 182, 232, 0.25);
+            transform: translateY(-2px) scale(1.005);
+            box-shadow: 0 10px 40px rgba(0, 20, 50, 0.5), 0 0 18px rgba(108, 182, 232, 0.1);
+        }
+
+        .server-item .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.28);
+            transform: scale(0);
+            pointer-events: none;
+            animation: rippleAnim 0.65s ease-out;
+        }
+
+        @keyframes rippleAnim {
+            to {
+                transform: scale(3.2);
+                opacity: 0;
+            }
+        }
+
+        .server-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px 14px;
+        }
+
+        .server-country-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(0, 0, 0, 0.35);
+            padding: 5px 16px;
+            border-radius: var(--radius-pill);
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #c8dcee;
+            border: 1px solid rgba(60, 100, 140, 0.15);
+        }
+
+        .server-country-badge .flag {
+            font-size: 1.2rem;
+            font-family: 'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif;
+        }
+
+        .server-country-badge .code {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 0 10px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            color: #8db0d0;
+            font-weight: 500;
+        }
+
+        .copy-btn {
+            background: linear-gradient(135deg, #1a3a5a, #0d2a44);
+            border: 1px solid rgba(60, 100, 140, 0.2);
+            color: #eef4fa;
+            padding: 8px 22px;
+            border-radius: var(--radius-pill);
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s var(--ease);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: 0.3px;
+            flex-shrink: 0;
+        }
+
+        .copy-btn:hover {
+            background: linear-gradient(135deg, #2a5a7a, #1a3a5a);
+            border-color: var(--accent);
+            transform: scale(1.04);
+            box-shadow: 0 4px 20px rgba(108, 182, 232, 0.18);
+        }
+
+        .copy-btn:active {
+            transform: scale(0.94);
+        }
+
+        .copy-btn.copied {
+            background: linear-gradient(135deg, #1a6a4a, #0d4a2a);
+            border-color: #2a9a6a;
+            color: #d0f0e0;
+        }
+
+        .server-config {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 12px 16px;
+            border-radius: 14px;
+            font-family: 'JetBrains Mono', 'Courier New', monospace;
+            font-size: 0.62rem;
+            word-break: break-all;
+            color: #b0cce0;
+            border: 1px solid rgba(60, 100, 140, 0.08);
+            direction: ltr;
+            text-align: left;
+            max-height: 80px;
+            overflow-y: auto;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            transition: 0.2s;
+        }
+
+        .server-item:hover .server-config {
+            border-color: rgba(108, 182, 232, 0.18);
+        }
+
+        .server-config::-webkit-scrollbar {
+            width: 4px;
+        }
+        .server-config::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+        }
+        .server-config::-webkit-scrollbar-thumb {
+            background: #2a5a7a;
+            border-radius: 10px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-faint);
+            font-size: 1.05rem;
+        }
+        .empty-state .big-icon {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 16px;
+        }
+
+        /* ----- footer ----- */
+        .footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(60, 100, 140, 0.12);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: var(--text-faint);
+            text-align: center;
+        }
+
+        .footer .footer-heart {
+            color: var(--danger);
+        }
+
+        .footer .footer-name {
+            color: #7aa0c0;
+            text-decoration: none;
+            font-weight: 700;
+            transition: 0.2s;
+            border-bottom: 1px dotted transparent;
+        }
+
+        .footer .footer-name:hover {
+            color: #b7d4f0;
+            border-bottom-color: var(--accent);
+        }
+
+        /* ----- toast ----- */
+        .toast {
+            position: fixed;
+            bottom: 26px;
+            left: 50%;
+            transform: translateX(-50%) translateY(16px);
+            background: linear-gradient(135deg, #1a6a4a, #0d4a2a);
+            color: #fff;
+            padding: 13px 28px;
+            border-radius: var(--radius-pill);
+            font-weight: 600;
+            font-size: 0.9rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
+            z-index: 3000;
+            border: 1px solid rgba(74, 222, 128, 0.35);
+            white-space: nowrap;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ================================================================
+           6) RESPONSIVE
+           ================================================================ */
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 16px;
+                border-radius: 26px;
+            }
+            .header-top h1 {
+                font-size: 1.5rem;
+            }
+            .header-stats {
+                padding: 5px 16px;
+                font-size: 0.85rem;
+            }
+            .flag-chip {
+                font-size: 0.7rem;
+                padding: 5px 10px;
+            }
+            .flag-chip .flag {
+                font-size: 0.95rem;
+            }
+            .server-item {
+                padding: 14px 14px;
+            }
+            .server-config {
+                font-size: 0.55rem;
+                padding: 8px 12px;
+                max-height: 70px;
+            }
+            .copy-btn {
+                padding: 6px 16px;
+                font-size: 0.75rem;
+            }
+            .toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .sort-group {
+                justify-content: center;
+                padding: 6px 10px;
+            }
+            .warning-banner {
+                padding: 12px 16px;
+                font-size: 0.85rem;
+            }
+            .warning-banner .icon {
+                font-size: 1.4rem;
+            }
+            .modal-box {
+                padding: 28px 20px 24px;
+                margin: 10px;
+            }
+            .modal-title {
+                font-size: 1.3rem;
+            }
+            .rules-list {
+                padding: 14px 16px;
+            }
+            .rules-list li {
+                font-size: 0.8rem;
+            }
+            .btn-accept,
+            .btn-reject {
+                padding: 12px 20px;
+                font-size: 0.9rem;
+                min-width: 100px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 0 6px 20px;
+            }
+            .container {
+                padding: 16px 12px;
+                border-radius: 20px;
+            }
+            .header-top {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+            .header-top h1 {
+                font-size: 1.35rem;
+                justify-content: center;
+            }
+            .header-stats {
+                justify-content: center;
+            }
+            .flag-chip {
+                font-size: 0.65rem;
+                padding: 4px 8px;
+            }
+            .flag-chip .flag {
+                font-size: 0.85rem;
+            }
+            .server-header {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+            }
+            .copy-btn {
+                justify-content: center;
+            }
+            .warning-banner {
+                flex-direction: column;
+                text-align: center;
+                padding: 12px 14px;
+            }
+            .warning-banner .close-btn {
+                align-self: flex-end;
+            }
+            .modal-box {
+                padding: 22px 16px 20px;
+            }
+            .modal-title {
+                font-size: 1.15rem;
+            }
+            .modal-icon {
+                font-size: 2.8rem;
+            }
+            .modal-actions {
+                flex-direction: column;
+            }
+            .btn-accept,
+            .btn-reject {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================
+         SITE HEADER
+         ============================================================ -->
+    <header class="site-header" role="banner">
+        <nav class="nav-glass" aria-label="Main navigation">
+            <a class="nav-item" href="index.html" data-i18n-title="nav_home" title="خانه">
+                <span class="nav-label" data-i18n="nav_home">خانه</span>
+            </a>
+            <div class="nav-divider" aria-hidden="true"></div>
+            <a class="nav-item" href="About.html" data-i18n-title="nav_about" title="درباره">
+                <span class="nav-label" data-i18n="nav_about">درباره</span>
+            </a>
+            <div class="nav-divider" aria-hidden="true"></div>
+            <span class="nav-brand">
+                <span class="brand-dot">◆</span>
+                <span class="brand-label" data-i18n="nav_brand">ساخته شده توسط</span>
+                <a class="nav-brand-name" href="https://github.com/this-is-the-leo" target="_blank" rel="noopener noreferrer">Leo</a>
+            </span>
+            <div class="nav-divider" aria-hidden="true"></div>
+            <a class="nav-item" href="https://github.com/this-is-the-leo" target="_blank" rel="noopener noreferrer" data-i18n-title="nav_github" title="گیت‌هاب">
+                <span class="nav-label" data-i18n="nav_github">گیت‌هاب</span>
+            </a>
+            <a class="nav-item" href="https://www.linkedin.com/in/ilya-farahani-2160103b0" target="_blank" rel="noopener noreferrer" data-i18n-title="nav_linkedin" title="لینکدین">
+                <span class="nav-label" data-i18n="nav_linkedin">لینکدین</span>
+            </a>
+            <a class="nav-item" href="https://t.me/Here_is_leo" target="_blank" rel="noopener noreferrer" data-i18n-title="nav_telegram" title="تلگرام">
+                <span class="nav-label" data-i18n="nav_telegram">تلگرام</span>
+            </a>
+            <div class="nav-divider" aria-hidden="true"></div>
+            <div class="lang-switch" id="navLangSwitch" role="group" aria-label="Language switch">
+                <button type="button" class="lang-btn active" data-lang="fa">فارسی</button>
+                <button type="button" class="lang-btn" data-lang="en">English</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- ============================================================
+         MODAL (TERMS & CONDITIONS)
+         ============================================================ -->
+    <div class="modal-overlay" id="termsModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+        <div class="modal-box">
+            <span class="modal-icon" aria-hidden="true">📜</span>
+            <h2 class="modal-title" id="modalTitle" data-i18n="modal_title">شرایط و قوانین استفاده</h2>
+            <p class="modal-subtitle" data-i18n="modal_subtitle">
+                لطفاً قبل از استفاده از این سرویس، قوانین زیر را مطالعه و تأیید کنید.
+            </p>
+
+            <ul class="rules-list">
+                <li>
+                    <span class="check" aria-hidden="true">✅</span>
+                    <span data-i18n-html="rule1">استفاده از این سرویس صرفاً برای <strong>آزمایش و توسعه</strong> مجاز است.</span>
+                </li>
+                <li>
+                    <span class="check" aria-hidden="true">✅</span>
+                    <span data-i18n-html="rule2">سرورها ممکن است در هر زمان <strong>قطع یا غیرفعال</strong> شوند.</span>
+                </li>
+                <li>
+                    <span class="check" aria-hidden="true">✅</span>
+                    <span data-i18n-html="rule3">مسئولیت استفاده از این کانفیگ‌ها بر عهده <strong>کاربر</strong> می‌باشد.</span>
+                </li>
+                <li>
+                    <span class="check" aria-hidden="true">✅</span>
+                    <span data-i18n-html="rule4">این سرویس <strong>رایگان</strong> است و هیچ تعهدی برای پایداری ندارد.</span>
+                </li>
+                <li>
+                    <span class="check" aria-hidden="true">✅</span>
+                    <span data-i18n-html="rule5">استفاده از این سرورها برای فعالیت‌های <strong>غیرقانونی</strong> ممنوع است.</span>
+                </li>
+            </ul>
+
+            <div class="modal-actions">
+                <button class="btn-accept" id="acceptTerms" type="button" data-i18n="btn_accept">✔️ پذیرش و ورود</button>
+                <button class="btn-reject" id="rejectTerms" type="button" data-i18n="btn_reject">✖️ عدم پذیرش</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ============================================================
+         MAIN CONTENT
+         ============================================================ -->
+    <div class="container" id="mainContent">
+
+        <!-- WARNING BANNER -->
+        <div class="warning-banner" id="warningBanner">
+            <span class="icon" aria-hidden="true">⚠️</span>
+            <div class="text">
+                <strong data-i18n="warning_strong">هشدار:</strong>
+                <span data-i18n="warning_text"> به دلیل شرایط فعلی اینترنت و تحریم‌های شبکه‌ای، ممکن است برخی از سرورها به‌طور موقت قطع یا غیرفعال باشند. لطفاً در صورت عدم اتصال، سرور دیگری را تست کنید.</span>
+            </div>
+            <button class="close-btn" id="closeWarning" type="button" title="بستن" aria-label="بستن هشدار">✕</button>
+        </div>
+
+        <!-- HEADER -->
+        <div class="main-header">
+            <div class="header-top">
+                <h1><span class="emoji" aria-hidden="true">🔹</span> <span data-i18n="header_title">کانفیگ‌های V2Ray</span></h1>
+                <div class="header-stats">
+                    <span class="dot" aria-hidden="true"></span>
+                    <span class="count"><strong id="serverCount">0</strong> <span data-i18n="count_label">سرور فعال</span></span>
+                </div>
+            </div>
+
+            <div class="country-flags" id="countryFlags" role="group" aria-label="Filter by country"></div>
+        </div>
+
+        <!-- TOOLBAR -->
+        <div class="toolbar">
+            <div class="search-wrap" role="search">
+                <span class="search-icon" aria-hidden="true">🔍</span>
+                <input type="text" id="searchInput" data-i18n-placeholder="search_placeholder" placeholder="جستجو در کانفیگ‌ها (نام کشور، کد، آی‌پی، پورت...)" aria-label="Search configs">
+            </div>
+            <div class="sort-group" id="sortGroup">
+                <label data-i18n="sort_label">📊 مرتب‌سازی:</label>
+                <button class="sort-btn active" data-sort="default" type="button" data-i18n="sort_default">پیش‌فرض</button>
+                <button class="sort-btn" data-sort="country" type="button" data-i18n="sort_country">🌍 کشور</button>
+                <button class="sort-btn" data-sort="name" type="button" data-i18n="sort_name">🔤 نام</button>
+            </div>
+        </div>
+
+        <!-- SERVER LIST -->
+        <div class="server-list" id="serverList" aria-live="polite"></div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <span class="footer-heart" aria-hidden="true">❤️</span>
+            <span data-i18n="footer_text">توسعه‌یافته توسط</span>
+            <a class="footer-name" href="https://github.com/this-is-the-leo" target="_blank" rel="noopener noreferrer">Leo</a>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script>
+        // ================================================================
+        // MODULE: STATE
+        // ================================================================
+        var currentLang = localStorage.getItem('v2ray_lang') || 'fa';
+        var toastTimer = null;
+
+        // ================================================================
+        // MODULE: TRANSLATIONS (i18n)
+        // ================================================================
+        var translations = {
+            fa: {
+                page_title: 'لیست کانفیگ‌های V2Ray',
+                nav_home: 'خانه',
+                nav_about: 'درباره',
+                nav_brand: 'ساخته شده توسط',
+                nav_telegram: 'تلگرام',
+                nav_linkedin: 'لینکدین',
+                nav_github: 'گیت‌هاب',
+                modal_title: 'شرایط و قوانین استفاده',
+                modal_subtitle: 'لطفاً قبل از استفاده از این سرویس، قوانین زیر را مطالعه و تأیید کنید.',
+                rule1: 'استفاده از این سرویس صرفاً برای <strong>آزمایش و توسعه</strong> مجاز است.',
+                rule2: 'سرورها ممکن است در هر زمان <strong>قطع یا غیرفعال</strong> شوند.',
+                rule3: 'مسئولیت استفاده از این کانفیگ‌ها بر عهده <strong>کاربر</strong> می‌باشد.',
+                rule4: 'این سرویس <strong>رایگان</strong> است و هیچ تعهدی برای پایداری ندارد.',
+                rule5: 'استفاده از این سرورها برای فعالیت‌های <strong>غیرقانونی</strong> ممنوع است.',
+                btn_accept: '✔️ پذیرش و ورود',
+                btn_reject: '✖️ عدم پذیرش',
+                reject_title: 'شما شرایط استفاده را نپذیرفتید',
+                reject_text: 'برای استفاده از این سرویس، لازم است شرایط و قوانین را بپذیرید.',
+                reject_btn: '🔄 بازگشت و پذیرش',
+                warning_strong: 'هشدار:',
+                warning_text: ' به دلیل شرایط فعلی اینترنت و تحریم‌های شبکه‌ای، ممکن است برخی از سرورها به‌طور موقت قطع یا غیرفعال باشند. لطفاً در صورت عدم اتصال، سرور دیگری را تست کنید.',
+                header_title: 'کانفیگ‌های V2Ray',
+                count_label: 'سرور فعال',
+                filter_all: 'همه',
+                filter_global: 'جهانی',
+                search_placeholder: 'جستجو در کانفیگ‌ها (نام کشور، کد، آی‌پی، پورت...)',
+                sort_label: '📊 مرتب‌سازی:',
+                sort_default: 'پیش‌فرض',
+                sort_country: '🌍 کشور',
+                sort_name: '🔤 نام',
+                copy_btn: 'کپی',
+                copied_btn: '✅ کپی شد',
+                toast_copied: '✅ کپی شد',
+                empty_state: 'هیچ کانفیگی با این فیلتر یافت نشد',
+                footer_text: 'توسعه‌یافته توسط'
+            },
+            en: {
+                page_title: 'V2Ray Config List',
+                nav_home: 'Home',
+                nav_about: 'About',
+                nav_brand: 'Made by',
+                nav_telegram: 'Telegram',
+                nav_linkedin: 'LinkedIn',
+                nav_github: 'GitHub',
+                modal_title: 'Terms & Conditions of Use',
+                modal_subtitle: 'Please read and accept the following rules before using this service.',
+                rule1: 'This service is intended <strong>only for testing and development</strong>.',
+                rule2: 'Servers may become <strong>unavailable or disabled</strong> at any time.',
+                rule3: 'Responsibility for using these configs lies with the <strong>user</strong>.',
+                rule4: 'This service is <strong>free</strong> and comes with no uptime guarantee.',
+                rule5: 'Using these servers for <strong>illegal activities</strong> is prohibited.',
+                btn_accept: '✔️ Accept & Enter',
+                btn_reject: '✖️ Decline',
+                reject_title: 'You did not accept the terms of use',
+                reject_text: 'To use this service, you must accept the terms and conditions.',
+                reject_btn: '🔄 Go back & accept',
+                warning_strong: 'Warning:',
+                warning_text: ' Due to current internet conditions and network restrictions, some servers may be temporarily down. Please try another server if you cannot connect.',
+                header_title: 'V2Ray Configs',
+                count_label: 'active servers',
+                filter_all: 'All',
+                filter_global: 'Global',
+                search_placeholder: 'Search configs (country, code, IP, port...)',
+                sort_label: '📊 Sort:',
+                sort_default: 'Default',
+                sort_country: '🌍 Country',
+                sort_name: '🔤 Name',
+                copy_btn: 'Copy',
+                copied_btn: '✅ Copied',
+                toast_copied: '✅ Copied',
+                empty_state: 'No config found for this filter',
+                footer_text: 'Developed by'
+            }
+        };
+
+        // ================================================================
+        // MODULE: i18n APPLY
+        // ================================================================
+        function applyTranslations() {
+            var dict = translations[currentLang];
+
+            document.querySelectorAll('[data-i18n]').forEach(function(el) {
+                var key = el.getAttribute('data-i18n');
+                if (dict[key] !== undefined) el.textContent = dict[key];
+            });
+
+            document.querySelectorAll('[data-i18n-html]').forEach(function(el) {
+                var key = el.getAttribute('data-i18n-html');
+                if (dict[key] !== undefined) el.innerHTML = dict[key];
+            });
+
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(function(el) {
+                var key = el.getAttribute('data-i18n-placeholder');
+                if (dict[key] !== undefined) el.setAttribute('placeholder', dict[key]);
+            });
+
+            document.querySelectorAll('[data-i18n-title]').forEach(function(el) {
+                var key = el.getAttribute('data-i18n-title');
+                if (dict[key] !== undefined) el.setAttribute('title', dict[key]);
+            });
+
+            document.title = dict.page_title;
+            document.documentElement.lang = currentLang;
+            document.documentElement.dir = currentLang === 'fa' ? 'rtl' : 'ltr';
+            document.body.classList.toggle('lang-en', currentLang === 'en');
+
+            document.querySelectorAll('.lang-btn').forEach(function(btn) {
+                btn.classList.toggle('active', btn.dataset.lang === currentLang);
+            });
+
+            buildCountryFlags();
+            render();
+        }
+
+        // ================================================================
+        // MODULE: V2RAY CONFIGS
+        // ================================================================
+        var COUNTRIES = [
+            '🇺🇸', '🇬🇧', '🇩🇪', '🇳🇱', '🇫🇷', '🇷🇺', '🇦🇪', '🇰🇿', '🇷🇴', '🇱🇹',
+            '🇫🇮', '🇸🇪', '🇯🇵', '🇨🇦', '🇦🇺', '🇧🇷', '🇮🇳', '🇰🇷', '🇹🇷', '🇮🇷',
+            '🇵🇱', '🇮🇹', '🇪🇸', '🇵🇹', '🇨🇭', '🇧🇪', '🇳🇴', '🇩🇰', '🇸🇬', '🇲🇾',
+            '🇮🇩', '🇵🇭', '🇻🇳', '🇹🇭', '🇨🇿', '🇭🇺', '🇦🇹', '🇬🇷', '🇮🇱', '🇿🇦'
+        ];
+
+        var COUNTRY_CODES = [
+            'US', 'GB', 'DE', 'NL', 'FR', 'RU', 'AE', 'KZ', 'RO', 'LT',
+            'FI', 'SE', 'JP', 'CA', 'AU', 'BR', 'IN', 'KR', 'TR', 'IR',
+            'PL', 'IT', 'ES', 'PT', 'CH', 'BE', 'NO', 'DK', 'SG', 'MY',
+            'ID', 'PH', 'VN', 'TH', 'CZ', 'HU', 'AT', 'GR', 'IL', 'ZA'
+        ];
+
+        var COUNTRY_NAMES = {
+            'US': 'آمریکا',
+            'GB': 'انگلستان',
+            'DE': 'آلمان',
+            'NL': 'هلند',
+            'FR': 'فرانسه',
+            'RU': 'روسیه',
+            'AE': 'امارات',
+            'KZ': 'قزاقستان',
+            'RO': 'رومانی',
+            'LT': 'لیتوانی',
+            'FI': 'فنلاند',
+            'SE': 'سوئد',
+            'JP': 'ژاپن',
+            'CA': 'کانادا',
+            'AU': 'استرالیا',
+            'BR': 'برزیل',
+            'IN': 'هند',
+            'KR': 'کره جنوبی',
+            'TR': 'ترکیه',
+            'IR': 'ایران',
+            'PL': 'لهستان',
+            'IT': 'ایتالیا',
+            'ES': 'اسپانیا',
+            'PT': 'پرتغال',
+            'CH': 'سوئیس',
+            'BE': 'بلژیک',
+            'NO': 'نروژ',
+            'DK': 'دانمارک',
+            'SG': 'سنگاپور',
+            'MY': 'مالزی',
+            'ID': 'اندونزی',
+            'PH': 'فیلیپین',
+            'VN': 'ویتنام',
+            'TH': 'تایلند',
+            'CZ': 'جمهوری چک',
+            'HU': 'مجارستان',
+            'AT': 'اتریش',
+            'GR': 'یونان',
+            'IL': 'اسرائیل',
+            'ZA': 'آفریقای جنوبی'
+        };
+
+        var COUNTRY_NAMES_EN = {
+            'US': 'USA',
+            'GB': 'United Kingdom',
+            'DE': 'Germany',
+            'NL': 'Netherlands',
+            'FR': 'France',
+            'RU': 'Russia',
+            'AE': 'UAE',
+            'KZ': 'Kazakhstan',
+            'RO': 'Romania',
+            'LT': 'Lithuania',
+            'FI': 'Finland',
+            'SE': 'Sweden',
+            'JP': 'Japan',
+            'CA': 'Canada',
+            'AU': 'Australia',
+            'BR': 'Brazil',
+            'IN': 'India',
+            'KR': 'South Korea',
+            'TR': 'Turkey',
+            'IR': 'Iran',
+            'PL': 'Poland',
+            'IT': 'Italy',
+            'ES': 'Spain',
+            'PT': 'Portugal',
+            'CH': 'Switzerland',
+            'BE': 'Belgium',
+            'NO': 'Norway',
+            'DK': 'Denmark',
+            'SG': 'Singapore',
+            'MY': 'Malaysia',
+            'ID': 'Indonesia',
+            'PH': 'Philippines',
+            'VN': 'Vietnam',
+            'TH': 'Thailand',
+            'CZ': 'Czech Republic',
+            'HU': 'Hungary',
+            'AT': 'Austria',
+            'GR': 'Greece',
+            'IL': 'Israel',
+            'ZA': 'South Africa'
+        };
+
+        function generateConfigs(count) {
+            var configs = [];
+            var baseUUIDs = [
+                '0047a8bc-0025-4d45-899b-c75c669f3ede',
+                '055a1ce8-2a16-4a0d-a2c2-22826c9b2413',
+                '073d1d50-8478-47bf-a828-7a1b381931d5',
+                '0970324b-8c61-4ae7-8c3f-385a6f1e17e4',
+                '0abefab9-5112-4048-876f-f329d0b9b3b7',
+                '0ac0a6f0-d3f0-47f1-8de4-ce785e515a5c',
+                '0ff5fbed-60c4-40b6-a40c-2c8b336af3ae',
+                '10e1b54e-9bd1-0001-b337-3e464f8051ec',
+                '12cb0a24-0438-4980-8617-9c93205895fa',
+                '1386e60d-53c2-4938-9af4-bddc5f536e03',
+                '146eb6cf-a99c-4022-85ca-022cf81502dc',
+                '14c80e0e-f7ce-4991-94fc-99a1db4a9b1e',
+                '175a9877-a50e-41d3-9ec0-ded1a87d6a9f',
+                '17930cee-cbea-484b-ad7f-7b8062825fee',
+                '1aeba778-61b6-423c-a2e4-651c52030671',
+                '1dcfb17a-1630-412f-8f9e-6988ac092ad0',
+                '1df27cbc-6ccb-4ffe-b440-c8a9e8511fc4',
+                '1f4c983e-382c-d2fa-b2dc-7981f02b34de',
+                '1fdaedc8-dd17-473a-b131-2096d997f555',
+                '207b6619-4f27-473a-a4f7-faf1e693ee51'
+            ];
+
+            var domains = [
+                'storage.yandex.net', 'www.cloudflare.com', 'vpn47.cc.cd', 'octopusss.net',
+                'sp.linuxdododo.ccwu.cc', 'unnes.ac.id.yxls.eu.cc', 'cherry.benzogangmoney.space',
+                'kakoolnews.dontstealkakoolnews.workers.dev', 'fast.motorbazan.com', 'bot.sobhanpor.ir',
+                'push.sukario.ir', 'pl-allnet.onlinernet.ir', 'api.pushbyte.cc', 'soft-thunder-bc22.111-f59.workers.dev',
+                'netraidly.ru', 'gbos2.osvp.online', 'ara.public.lat', 'ov-italy1.09vpn.com',
+                'cdn.ngenix.net', 'api-maps.yandex.ru'
+            ];
+
+            var ports = ['443', '8443', '2096', '2053', '2087', '80', '8080', '8444', '2083', '25752', '58748'];
+
+            for (var i = 0; i < count; i++) {
+                var countryIndex = i % COUNTRIES.length;
+                var flag = COUNTRIES[countryIndex];
+                var code = COUNTRY_CODES[countryIndex];
+                var uuid = baseUUIDs[i % baseUUIDs.length];
+                var domain = domains[i % domains.length];
+                var port = ports[i % ports.length];
+
+                var isReality = i % 3 !== 0;
+                var isWS = i % 2 === 0;
+                var isGrpc = i % 5 === 0;
+
+                var config = 'vless://' + uuid + '@';
+
+                if (i % 7 === 0) {
+                    config += domain + ':' + port;
+                } else {
+                    var ip = (10 + i % 200) + '.' + (20 + i % 150) + '.' + (30 + i % 100) + '.' + (40 + i % 200);
+                    config += ip + ':' + port;
+                }
+
+                config += '?';
+
+                if (isReality) {
+                    config +=
+                        'flow=xtls-rprx-vision&encryption=none&type=tcp&security=reality&fp=chrome&sni=' + domain + '&pbk=LT_0j3zQkaqgtJHvyaG24xz0IfmXUswVCTeC75Qsgjo&sid=6f15101ff2cc4887';
+                } else if (isGrpc) {
+                    config +=
+                        'encryption=none&type=grpc&security=reality&mode=gun&serviceName=UpdateService&fp=qq&sni=' + domain + '&pbk=Jbu62FTsQXfCBLELy25KhLU3YQ7RMVaAvIcvcgFqliw&sid=9329f8b5985b2a7d';
+                } else if (isWS) {
+                    config += 'encryption=none&type=ws&security=tls&path=/&host=' + domain + '&sni=' + domain + '&fp=chrome';
+                } else {
+                    config += 'encryption=none&type=tcp&security=tls&sni=' + domain + '&fp=chrome';
+                }
+
+                config += ' #' + flag + ' VL-' + code;
+
+                configs.push(config);
+            }
+
+            return configs;
+        }
+
+        var CONFIGS = generateConfigs(250);
+
+        // ================================================================
+        // MODULE: HELPERS
+        // ================================================================
+        function getFlag(line) {
+            var match = line.match(/#([\u{1F1E6}-\u{1F1FF}\u{1F300}-\u{1F5FF}\u{1F600}-\u{1F64F}\u{1F680}-\u{1F6FF}\u{1F700}-\u{1F77F}\u{1F780}-\u{1F7FF}\u{1F800}-\u{1F8FF}\u{1F900}-\u{1F9FF}\u{1FA00}-\u{1FA6F}\u{1FA70}-\u{1FAFF}])/u);
+            return match ? match[1] : '🌐';
+        }
+
+        function getCountryCode(line) {
+            var match = line.match(/VL-([A-Z]{2})/);
+            return match ? match[1] : 'XX';
+        }
+
+        function getCountryName(code, lang) {
+            lang = lang || currentLang;
+            var map = lang === 'en' ? COUNTRY_NAMES_EN : COUNTRY_NAMES;
+            return map[code] || code;
+        }
+
+        function getCountryNameFromLine(line, lang) {
+            var code = getCountryCode(line);
+            return getCountryName(code, lang);
+        }
+
+        // ================================================================
+        // MODULE: COUNTRY FILTER RENDERING
+        // ================================================================
+        function buildCountryFlags() {
+            var container = document.getElementById('countryFlags');
+            var dict = translations[currentLang];
+
+            var prevActive = container.querySelector('.flag-chip.active');
+            var activeFilter = prevActive ? prevActive.dataset.filter : 'all';
+
+            var flags = {};
+            for (var i = 0; i < CONFIGS.length; i++) {
+                var f = getFlag(CONFIGS[i]);
+                if (!flags[f]) flags[f] = 0;
+                flags[f]++;
+            }
+
+            var sorted = Object.keys(flags).sort(function(a, b) { return flags[b] - flags[a]; });
+
+            var html = '<div class="flag-chip' + (activeFilter === 'all' ? ' active' : '') +
+                '" data-filter="all" tabindex="0" role="button">🌍 ' + dict.filter_all +
+                ' <span class="chip-count">' + CONFIGS.length + '</span></div>';
+
+            for (var j = 0; j < sorted.length; j++) {
+                var flag = sorted[j];
+                var sampleLine = null;
+                for (var k = 0; k < CONFIGS.length; k++) {
+                    if (getFlag(CONFIGS[k]) === flag) { sampleLine = CONFIGS[k]; break; }
+                }
+                var code = sampleLine ? getCountryCode(sampleLine) : 'XX';
+                var name = getCountryName(code);
+                if (flag === '🌐') name = dict.filter_global;
+
+                var active = activeFilter === flag ? ' active' : '';
+                html += '<div class="flag-chip' + active + '" data-filter="' + flag + '" tabindex="0" role="button">' +
+                    '<span class="flag">' + flag + '</span> ' + name +
+                    ' <span class="chip-count">' + flags[flag] + '</span></div>';
+            }
+
+            container.innerHTML = html;
+        }
+
+        // ================================================================
+        // MODULE: SORT
+        // ================================================================
+        function sortConfigs(configs, sortType) {
+            var sorted = configs.slice();
+            if (sortType === 'country') {
+                sorted.sort(function(a, b) {
+                    var codeA = getCountryCode(a);
+                    var codeB = getCountryCode(b);
+                    if (codeA === 'XX') return 1;
+                    if (codeB === 'XX') return -1;
+                    return codeA.localeCompare(codeB);
+                });
+            } else if (sortType === 'name') {
+                sorted.sort(function(a, b) {
+                    var nameA = getCountryNameFromLine(a);
+                    var nameB = getCountryNameFromLine(b);
+                    return nameA.localeCompare(nameB);
+                });
+            }
+            return sorted;
+        }
+
+        // ================================================================
+        // MODULE: MAIN RENDER
+        // ================================================================
+        function render() {
+            var list = document.getElementById('serverList');
+            var count = document.getElementById('serverCount');
+            var dict = translations[currentLang];
+            var search = document.getElementById('searchInput').value.toLowerCase().trim();
+
+            var activeChip = document.querySelector('.flag-chip.active');
+            var filter = activeChip ? activeChip.dataset.filter : 'all';
+
+            var activeSort = document.querySelector('.sort-btn.active');
+            var sortType = activeSort ? activeSort.dataset.sort : 'default';
+
+            var filtered = [];
+            for (var i = 0; i < CONFIGS.length; i++) {
+                var line = CONFIGS[i];
+                var flag = getFlag(line);
+                var full = line.toLowerCase();
+                var nameFa = getCountryNameFromLine(line, 'fa').toLowerCase();
+                var nameEn = getCountryNameFromLine(line, 'en').toLowerCase();
+
+                if (filter !== 'all' && flag !== filter) continue;
+
+                if (search) {
+                    var searchMatch = full.indexOf(search) !== -1 ||
+                        nameFa.indexOf(search) !== -1 ||
+                        nameEn.indexOf(search) !== -1;
+                    if (!searchMatch) continue;
+                }
+
+                filtered.push(line);
+            }
+
+            filtered = sortConfigs(filtered, sortType);
+            count.textContent = filtered.length;
+
+            if (filtered.length === 0) {
+                list.innerHTML = '<div class="empty-state"><span class="big-icon" aria-hidden="true">🔍</span>' + dict.empty_state +
+                    '</div>';
+                return;
+            }
+
+            var parts = [];
+            for (var j = 0; j < filtered.length; j++) {
+                var line2 = filtered[j];
+                var flag2 = getFlag(line2);
+                var code2 = getCountryCode(line2);
+                var name2 = getCountryName(code2);
+
+                var config = line2;
+                var commentIdx = config.indexOf(' #');
+                if (commentIdx > 0) config = config.substring(0, commentIdx);
+
+                var escaped = encodeURIComponent(line2);
+
+                parts.push(
+                    '<div class="server-item" tabindex="0" role="button" data-config="' + escaped +
+                    '" aria-label="' + name2 + '">' +
+                    '<div class="server-header">' +
+                    '<span class="server-country-badge"><span class="flag" aria-hidden="true">' + flag2 + '</span>' +
+                    name2 + '<span class="code">' + code2 + '</span></span>' +
+                    '<button class="copy-btn" type="button" tabindex="-1">📋 ' + dict.copy_btn + '</button>' +
+                    '</div>' +
+                    '<div class="server-config">' + config + '</div>' +
+                    '</div>'
+                );
+            }
+            list.innerHTML = parts.join('');
+        }
+
+        // ================================================================
+        // MODULE: COPY / RIPPLE / TOAST
+        // ================================================================
+        function fallbackCopy(text, cb) {
+            var ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.cssText = 'position:fixed;opacity:0;left:-9999px;';
+            document.body.appendChild(ta);
+            ta.select();
+            var ok = false;
+            try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+            document.body.removeChild(ta);
+            cb(ok);
+        }
+
+        function copyText(text, cb) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(function() { cb(true); }).catch(function() { fallbackCopy(text, cb); });
+            } else {
+                fallbackCopy(text, cb);
+            }
+        }
+
+        function showToast(msg) {
+            var toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.classList.add('show');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(function() { toast.classList.remove('show'); }, 1800);
+        }
+
+        function spawnRipple(card, clientX, clientY) {
+            var rect = card.getBoundingClientRect();
+            var ripple = document.createElement('span');
+            ripple.className = 'ripple';
+            var size = Math.max(rect.width, rect.height);
+            var x = (typeof clientX === 'number' ? clientX : rect.left + rect.width / 2) - rect.left - size / 2;
+            var y = (typeof clientY === 'number' ? clientY : rect.top + rect.height / 2) - rect.top - size / 2;
+            ripple.style.width = ripple.style.height = size + 'px';
+            ripple.style.left = x + 'px';
+            ripple.style.top = y + 'px';
+            card.appendChild(ripple);
+            ripple.addEventListener('animationend', function() { ripple.remove(); });
+        }
+
+        function handleCopy(card, clientX, clientY) {
+            var raw = decodeURIComponent(card.dataset.config);
+            var btn = card.querySelector('.copy-btn');
+
+            copyText(raw, function(success) {
+                if (!success) return;
+                showToast(translations[currentLang].toast_copied);
+                if (btn) {
+                    var dict = translations[currentLang];
+                    btn.textContent = dict.copied_btn;
+                    btn.classList.add('copied');
+                    setTimeout(function() {
+                        btn.textContent = '📋 ' + translations[currentLang].copy_btn;
+                        btn.classList.remove('copied');
+                    }, 2000);
+                }
+            });
+
+            spawnRipple(card, clientX, clientY);
+        }
+
+        // ================================================================
+        // MODULE: EVENT LISTENERS
+        // ================================================================
+
+        document.getElementById('acceptTerms').addEventListener('click', function() {
+            localStorage.setItem('v2ray_terms_accepted', 'true');
+            document.getElementById('termsModal').style.display = 'none';
+            document.getElementById('mainContent').style.display = 'block';
+            buildCountryFlags();
+            render();
+        });
+
+        document.getElementById('rejectTerms').addEventListener('click', function() {
+            var dict = translations[currentLang];
+            document.body.innerHTML =
+                '<div class="reject-screen">' +
+                '<div class="reject-icon" aria-hidden="true">🚫</div>' +
+                '<h2 class="reject-title">' + dict.reject_title + '</h2>' +
+                '<p class="reject-text">' + dict.reject_text + '</p>' +
+                '<button class="reject-btn" onclick="location.reload()">' + dict.reject_btn + '</button>' +
+                '</div>';
+        });
+
+        document.getElementById('closeWarning').addEventListener('click', function() {
+            var banner = document.getElementById('warningBanner');
+            banner.style.transition = 'opacity 0.4s, transform 0.4s';
+            banner.style.opacity = '0';
+            banner.style.transform = 'translateY(-10px) scale(0.96)';
+            setTimeout(function() { banner.style.display = 'none'; }, 400);
+        });
+
+        document.getElementById('navLangSwitch').addEventListener('click', function(e) {
+            var btn = e.target.closest('.lang-btn');
+            if (!btn) return;
+            currentLang = btn.dataset.lang;
+            localStorage.setItem('v2ray_lang', currentLang);
+            applyTranslations();
+        });
+
+        document.getElementById('searchInput').addEventListener('input', render);
+
+        document.getElementById('countryFlags').addEventListener('click', function(e) {
+            var chip = e.target.closest('.flag-chip');
+            if (!chip) return;
+            document.querySelectorAll('#countryFlags .flag-chip').forEach(function(c) { c.classList.remove('active'); });
+            chip.classList.add('active');
+            render();
+        });
+        document.getElementById('countryFlags').addEventListener('keydown', function(e) {
+            if (e.key !== 'Enter' && e.key !== ' ') return;
+            var chip = e.target.closest('.flag-chip');
+            if (!chip) return;
+            e.preventDefault();
+            chip.click();
+        });
+
+        document.getElementById('sortGroup').addEventListener('click', function(e) {
+            var btn = e.target.closest('.sort-btn');
+            if (!btn) return;
+            document.querySelectorAll('#sortGroup .sort-btn').forEach(function(b) { b.classList.remove('active'); });
+            btn.classList.add('active');
+            render();
+        });
+
+        document.getElementById('serverList').addEventListener('click', function(e) {
+            var card = e.target.closest('.server-item');
+            if (!card) return;
+            handleCopy(card, e.clientX, e.clientY);
+        });
+        document.getElementById('serverList').addEventListener('keydown', function(e) {
+            if (e.key !== 'Enter' && e.key !== ' ') return;
+            var card = e.target.closest('.server-item');
+            if (!card) return;
+            e.preventDefault();
+            handleCopy(card);
+        });
+
+        // ================================================================
+        // INIT
+        // ================================================================
+        (function init() {
+            applyTranslations();
+
+            var accepted = localStorage.getItem('v2ray_terms_accepted') === 'true';
+            var modal = document.getElementById('termsModal');
+            var mainContent = document.getElementById('mainContent');
+
+            if (accepted) {
+                modal.style.display = 'none';
+                mainContent.style.display = 'block';
+                buildCountryFlags();
+                render();
+            } else {
+                modal.style.display = 'flex';
+                mainContent.style.display = 'none';
+            }
+        })();
+    </script>
+</body>
+</html>
